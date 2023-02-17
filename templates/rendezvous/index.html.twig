@@ -1,0 +1,58 @@
+{% extends "Template_Back/base.html.twig" %}
+
+{% block content %}
+    <h1>Rendezvous index</h1>
+
+    <table class="table table-hover" id="rendezvous-table">
+    <thead>
+        <tr>
+            <th scope="col"> Id </th>
+            <th scope="col"> Date du Rendez-vous </th>
+            <th scope="col"> Salle </th>
+            <th scope="col"> Type </th>
+            <th scope="col"> Liste des Utilisateurs </th>
+            <th scope="col"> </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for r in RendezvousAndUtilisateur %}
+        <tr>
+            <td> {{ r.id }} </td>
+            <td> {{ r.daterv|date('d-m-Y') }} </td>
+            <td> {{ r.Salle }} </td>
+            <td> {{ r.Type }} </td>
+            <td>
+                {% if r.Utilisateur is not null and r.Utilisateur|length > 0 %}
+                    <li>
+                    {% for u in r.Utilisateur %}
+                        <ul> {{ u }}</ul>
+                    {% endfor %}
+                    </li>
+                {% else %}
+                    Aucun Utilisateur
+                {% endif %}
+            </td>
+            <td> 
+                <button class="btn"> <a href="{{ path('rendezvous_edit', {'id': r.id}) }}"> Edit </a> </button> 
+                {{ include('rendezvous/_delete_form.html.twig') }}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+
+    <a href="{{ path('rendezvous_new') }}"> Create new </a>
+
+{% endblock %}
+
+{% block javascript %}
+    {{parent()}}
+    <script>
+        const rendezvousTable = new simpleDatatables.DataTable('#rendezvous-table', {
+            sorting: {
+                // disable sorting for the sixth column
+                5: false
+            }
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends "Template_Back/base.html.twig" %}
+
+{% block content %}
+   <h1>Create new Rendezvous</h1>
+   
+   {{ include('rendezvous/_form.html.twig') }}
+
+   <a href="{{ path('rendezvous_index') }}">back to list</a>
+{% endblock %}
