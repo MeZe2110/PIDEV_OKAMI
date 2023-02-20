@@ -1,0 +1,26 @@
+{{ form_start(form,{'attr':{'novalidate':'novalidate'}}) }}
+<table>
+    <tr>
+        <td>{{ form_label(form.nomeq,"Nom equipement") }}</td>
+        <td>{{ form_widget(form.nomeq) }}</td>
+        <td>{{ form_errors(form.nomeq) }}</td>
+    </tr>
+    <tr>
+        <td>{{ form_label(form.etateq,"etat") }}</td>
+        <td>{{ form_widget(form.etateq) }}</td>
+        <td>{{ form_errors(form.etateq) }}</td>
+    </tr>
+    <tr>
+        <td>{{ form_label(form.dispoeq,"disponibilité") }}</td>
+        <td>{{ form_widget(form.dispoeq) }}</td>
+        <td>{{ form_errors(form.dispoeq) }}</td>
+    </tr>
+    <tr>
+        <td>{{ form_label(form.cate,"categorie") }}</td>
+        <td>{{ form_widget(form.cate) }}</td>
+        <td>{{ form_errors(form.cate) }}</td>
+    </tr>
+</table>
+    {{ form_widget(form) }}
+    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

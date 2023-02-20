@@ -6,6 +6,7 @@ use App\Repository\CategoriesequipementRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CategoriesequipementRepository::class)]
 class Categoriesequipement
@@ -16,6 +17,7 @@ class Categoriesequipement
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:"name is required")]
     private ?string $nomcate = null;
 
     #[ORM\OneToMany(mappedBy: 'cate', targetEntity: Equipement::class)]
@@ -71,5 +73,10 @@ class Categoriesequipement
         }
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->nomcate;
     }
 }

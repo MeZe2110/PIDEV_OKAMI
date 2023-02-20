@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Categoriesequipement{% endblock %}
+
+{% block content %}
+    <h1>Categoriesequipement</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ categoriesequipement.id }}</td>
+            </tr>
+            <tr>
+                <th>Nomcate</th>
+                <td>{{ categoriesequipement.nomcate }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_yes_index') }}">back to list</a>
+
+    <a href="{{ path('app_yes_edit', {'id': categoriesequipement.id}) }}">edit</a>
+
+    {{ include('yes/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,7 +1,12 @@
 {% extends "Template_Back/base.html.twig" %}
 
-  {% block body %}
-<body>
+  {% block header %}
+  {% endblock %}
+
+  {% block sidebar %}
+  {% endblock %}
+
+  {% block content %}
   <main>
     <div class="container">
 
@@ -71,6 +76,8 @@
       </section>
 
     </div>
-  </main>
-</body>
+  </main><!-- End #main -->
+  {% endblock %}
+
+  {% block footer %}
   {% endblock %}

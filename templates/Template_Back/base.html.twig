@@ -277,33 +277,20 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link " href="{{ path('back_index') }}">
+        <a class="nav-link " href="{{ path('app_equipement_index') }}">
           <i class="bi bi-grid"></i>
-          <span>Dashboard</span>
+          <span>Equipement</span>
         </a>
       </li><!-- End Dashboard Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-journal-text"></i><span>Forms</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="{{ path('back_forms') }}">
-              <i class="bi bi-circle"></i><span>Form Elements</span>
-            </a>
-          </li>
-        </ul>
-      </li><!-- End Forms Nav -->
-
-      <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-layout-text-window-reverse"></i><span>Tables</span><i class="bi bi-chevron-down ms-auto"></i>
+          <i class="bi bi-layout-text-window-reverse"></i><span>Categories</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="{{ path('back_tablesgeneral') }}">
-              <i class="bi bi-circle"></i><span>General Tables</span>
+            <a href="{{ path('app_yes_index') }}">
+              <i class="bi bi-circle"></i><span>Categories</span>
             </a>
           </li>
           <li>
@@ -314,96 +301,23 @@
         </ul>
       </li><!-- End Tables Nav -->
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-bar-chart"></i><span>Charts</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="charts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="{{ path('back_charts') }}">
-              <i class="bi bi-circle"></i><span>Chart.js</span>
-            </a>
-          </li>
-        </ul>
-      </li><!-- End Charts Nav -->
-
-      <li class="nav-heading">Pages</li>
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="{{ path('back_login') }}">
-          <i class="bi bi-person"></i>
-          <span>Profile</span>
-        </a>
-      </li><!-- End Profile Page Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="{{ path('rendezvous_index') }}">
-          <i class="bi bi-question-circle"></i>
-          <span>Rendez-Vous</span>
-        </a>
-      </li><!-- End Rendez-Vous Page Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="{{ path('back_faq') }}">
-          <i class="bi bi-question-circle"></i>
-          <span>F.A.Q</span>
-        </a>
-      </li><!-- End F.A.Q Page Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="{{ path('back_contact') }}">
-          <i class="bi bi-envelope"></i>
-          <span>Contact</span>
-        </a>
-      </li><!-- End Contact Page Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="{{ path('back_register') }}">
-          <i class="bi bi-card-list"></i>
-          <span>Register</span>
-        </a>
-      </li><!-- End Register Page Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="{{ path('back_login') }}">
-          <i class="bi bi-box-arrow-in-right"></i>
-          <span>Login</span>
-        </a>
-      </li><!-- End Login Page Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="{{ path('back_error404') }}">
-          <i class="bi bi-dash-circle"></i>
-          <span>Error 404</span>
-        </a>
-      </li><!-- End Error 404 Page Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="{{ path('back_blank') }}">
-          <i class="bi bi-file-earmark"></i>
-          <span>Blank</span>
-        </a>
-      </li><!-- End Blank Page Nav -->
-
     </ul>
 
   </aside>
   <!-- End Sidebar-->
   {% endblock %}
-
-<main id="main" class="main">
+  <main id="main" class="main">
   {% block content %}
   {% endblock %}
-</main>
-
+  </main>
   <!-- ======= Footer ======= -->
   {% block footer %}
   <footer id="footer" class="footer">
     <div class="copyright">
-      &copy; Copyright <strong><span>Malcador the Sigillite</span></strong>. All Rights Reserved
+      &copy; Copyright <strong><span>SEPHIROTH</span></strong>. All Rights Reserved
     </div>
     <div class="credits">
-      Designed by <a href="https://www.youtube.com/watch?v=ZK1pNGmNBEc">Roboute Guilliman</a>
+      Designed by <a href="https://www.youtube.com/watch?v=24rwZ3pzX68">Roboute Guilliman</a>
     </div>
   </footer>
   <!-- End Footer -->
