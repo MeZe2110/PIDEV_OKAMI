@@ -5,6 +5,8 @@ namespace App\Form;
 use App\Entity\Rendezvous;
 use App\Entity\Utilisateur;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormFactory;
+use Symfony\Component\Form\ResolvedFormType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -20,14 +22,14 @@ class RendezvousType extends AbstractType
                 'class' => Utilisateur::class,
                 'expanded' => true,
                 'multiple' => true,
+                'attr' => ['class' => 'rendezvous-checkbox'],
             ])
             ->add('Salle')
             ->add('Type')
             ->add('Save',SubmitType::class, [
                 'label' => 'Save',
                 'attr' => ['class' => 'btn'],
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -36,4 +38,6 @@ class RendezvousType extends AbstractType
             'data_class' => Rendezvous::class,
         ]);
     }
+
+
 }

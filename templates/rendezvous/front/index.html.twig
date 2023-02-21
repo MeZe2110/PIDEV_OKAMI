@@ -1,0 +1,50 @@
+{% extends "Template_Front/base.html.twig" %}
+
+  {% block title %} Rendez-Vous {% endblock %}
+
+  {% block content %}
+  <section class="contact_section layout_padding" style="background-image: url('https://media.discordapp.net/attachments/802118030100135936/1077610051486892173/Vergil_Smile.jpg'); background-repeat: no-repeat;background-size: 100% 100%;">
+    <div class="container" style="max-width: 80%;">
+      <h1>Rendezvous index</h1>
+
+        <table class="table table-hover" id="rendezvous-table">
+    <thead>
+        <tr>
+            <th scope="col"> Date du Rendez-vous </th>
+            <th scope="col"> Salle </th>
+            <th scope="col"> Type </th>
+            <th scope="col"> Personnes présentes </th>
+            <th scope="col"> </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for r in RendezvousAndUtilisateur %}
+        <tr>
+            <td> {{ r.daterv|date('d-m-Y') }} </td>
+            <td> {{ r.Salle }} </td>
+            <td> {{ r.Type }} </td>
+            <td>
+                {% if r.Utilisateur is not null and r.Utilisateur|length > 0 %}
+                    <ul>
+                    {% for u in r.Utilisateur %}
+                        <li> {{ u }}</ul>
+                    {% endfor %}
+                    </ul>
+                {% else %}
+                    Aucun Utilisateur
+                {% endif %}
+            </td>
+            <td> 
+                <button class="btn"> <a href="{{ path('front_rendezvous_edit', {'id': r.id}) }}"> Edit </a> </button> 
+                {{ include('rendezvous/front/delete_form.html.twig') }}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+
+    <a href="{{ path('front_rendezvous_new') }}"> Create new </a>
+    </div>
+  </section>
+  <!-- end contact section -->
+  {% endblock %}

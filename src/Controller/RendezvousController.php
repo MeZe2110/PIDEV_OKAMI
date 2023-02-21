@@ -9,13 +9,31 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/rendezvous')]
+
+use Symfony\Component\HttpFoundation\Session\Session;
+
+// create a new session with a mock storage
+$session = new Session();
+if (!$session->isStarted()) {
+    $session->start();
+}
+// set a value in the session
+$session->set('userId', 3);
+$session->save();
+
+
+
+
+
+
+
 class RendezvousController extends AbstractController
 {
-    #[Route('/', name: 'rendezvous_index', methods: ['GET'])]
-    public function index(EntityManagerInterface $em): Response
+    #[Route('/back/rendezvous/', name: 'back_rendezvous_index', methods: ['GET'])]
+    public function backIndex(EntityManagerInterface $em): Response
     {
         $qb = $em->createQueryBuilder();
         $RendezvousAndUtilisateur = $qb
@@ -25,13 +43,13 @@ class RendezvousController extends AbstractController
             ->getQuery()
             ->getResult();
 
-        return $this->render('rendezvous/index.html.twig', [
+        return $this->render('rendezvous/back/index.html.twig', [
             'RendezvousAndUtilisateur' => $RendezvousAndUtilisateur,
         ]);
     }
 
-    #[Route('/new', name: 'rendezvous_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, RendezvousRepository $rendezvousRepository): Response
+    #[Route('/back/rendezvous/new', name: 'back_rendezvous_new', methods: ['GET', 'POST'])]
+    public function backNew(Request $request, RendezvousRepository $rendezvousRepository): Response
     {
         $rendezvous = new Rendezvous();
         $form = $this->createForm(RendezvousType::class, $rendezvous);
@@ -40,25 +58,17 @@ class RendezvousController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $rendezvousRepository->save($rendezvous, true);
 
-            return $this->redirectToRoute('rendezvous_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('back_rendezvous_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('rendezvous/new.html.twig', [
+        return $this->renderForm('rendezvous/back/new.html.twig', [
             'rendezvous' => $rendezvous,
             'form' => $form,
         ]);
     }
 
-    #[Route('/{id}', name: 'rendezvous_show', methods: ['GET'])]
-    public function show(Rendezvous $rendezvous): Response
-    {
-        return $this->render('rendezvous/show.html.twig', [
-            'rendezvous' => $rendezvous,
-        ]);
-    }
-
-    #[Route('/{id}/edit', name: 'rendezvous_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Rendezvous $rendezvous, RendezvousRepository $rendezvousRepository): Response
+    #[Route('back/rendezvous/edit/{id}', name: 'back_rendezvous_edit', methods: ['GET', 'POST'])]
+    public function backEdit(Request $request, Rendezvous $rendezvous, RendezvousRepository $rendezvousRepository): Response
     {
         $form = $this->createForm(RendezvousType::class, $rendezvous);
         $form->handleRequest($request);
@@ -66,22 +76,92 @@ class RendezvousController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $rendezvousRepository->save($rendezvous, true);
 
-            return $this->redirectToRoute('rendezvous_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('back_rendezvous_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('rendezvous/edit.html.twig', [
+        return $this->renderForm('rendezvous/back/edit.html.twig', [
             'rendezvous' => $rendezvous,
             'form' => $form,
         ]);
     }
 
-    #[Route('/{id}', name: 'rendezvous_delete', methods: ['POST'])]
-    public function delete(Request $request, Rendezvous $rendezvous, RendezvousRepository $rendezvousRepository): Response
+    #[Route('back/rendezvous/delete/{id}', name: 'back_rendezvous_delete', methods: ['POST'])]
+    public function backDelete(Request $request, Rendezvous $rendezvous, RendezvousRepository $rendezvousRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$rendezvous->getId(), $request->request->get('_token'))) {
             $rendezvousRepository->remove($rendezvous, true);
         }
 
-        return $this->redirectToRoute('rendezvous_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('back_rendezvous_index', [], Response::HTTP_SEE_OTHER);
     }
+
+
+
+    #[Route('/rendezvous', name: 'front_rendezvous_index', methods: ['GET'])]
+    public function frontIndex(EntityManagerInterface $em, SessionInterface $session): Response
+    {
+        $userId = $session->get('userId');
+
+        $qb = $em->createQueryBuilder();
+        $RendezvousAndUtilisateur = $qb
+            ->select('r, Utilisateur')
+            ->from(Rendezvous::class, 'r')
+            ->leftJoin('r.Utilisateur', 'Utilisateur')
+            ->where('Utilisateur.id = :userId')
+            ->setParameter('userId', $userId)
+            ->getQuery()
+            ->getResult();
+
+        return $this->render('rendezvous/front/index.html.twig', [
+            'RendezvousAndUtilisateur' => $RendezvousAndUtilisateur,
+        ]);
+    }
+
+    #[Route('/rendezvous/new', name: 'front_rendezvous_new', methods: ['GET', 'POST'])]
+    public function frontNew(Request $request, RendezvousRepository $rendezvousRepository): Response
+    {
+        $rendezvous = new Rendezvous();
+        $form = $this->createForm(RendezvousType::class, $rendezvous);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $rendezvousRepository->save($rendezvous, true);
+
+            return $this->redirectToRoute('front_rendezvous_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('rendezvous/front/new.html.twig', [
+            'rendezvous' => $rendezvous,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('rendezvous/edit/{id}', name: 'front_rendezvous_edit', methods: ['GET', 'POST'])]
+    public function frontEdit(Request $request, Rendezvous $rendezvous, RendezvousRepository $rendezvousRepository): Response
+    {
+        $form = $this->createForm(RendezvousType::class, $rendezvous);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $rendezvousRepository->save($rendezvous, true);
+
+            return $this->redirectToRoute('front_rendezvous_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('rendezvous/front/edit.html.twig', [
+            'rendezvous' => $rendezvous,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('rendezvous/delete/{id}', name: 'front_rendezvous_delete', methods: ['POST'])]
+    public function frontDelete(Request $request, Rendezvous $rendezvous, RendezvousRepository $rendezvousRepository): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$rendezvous->getId(), $request->request->get('_token'))) {
+            $rendezvousRepository->remove($rendezvous, true);
+        }
+
+        return $this->redirectToRoute('front_rendezvous_index', [], Response::HTTP_SEE_OTHER);
+    }
+
 }

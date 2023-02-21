@@ -8,8 +8,10 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: RendezvousRepository::class)]
+#[UniqueEntity(fields:['daterv', 'Salle'], errorPath: 'Salle', message:"A rendez-vous already exists this day in this room.")]
 class Rendezvous
 {
     #[ORM\Id]
@@ -34,8 +36,6 @@ class Rendezvous
 
     #[ORM\ManyToOne(inversedBy: 'rendezvous')]
     private ?RendezvousType $Type = null; 
-
-    // #[Assert\Unique(fields:['daterv', 'Salle'], message:"A rendez-vous already exists this day in this room.")]
 
     public function __construct()
     {
@@ -105,5 +105,10 @@ class Rendezvous
         $this->Type = $Type;
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return 'Rendez-vous ' . $this->Type . ' le : ' . $this->daterv->format('d-m-Y') . ' en salle ' . $this->Salle;
     }
 }
