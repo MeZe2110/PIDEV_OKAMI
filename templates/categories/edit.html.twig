@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+
+
+{% block body %}
+<main id="main" class="main">
+    <table class="table">
+        <tr>
+           <center>
+ <h1 style="color:#336699; font-family: Arial, sans-serif; ;">modifier un medicament</h1>
+ </center>
+        </tr>
+        <tr>
+            <td>
+                {{ include('categories/_form.html.twig', {'button_label': 'Update'}) }}
+            </td>
+        </tr>
+       
+            <td>
+                <a href="{{ path('app_categories_index') }}" class="btn btn-secondary mx-0" >back to list</a>
+            </td>
+        </tr>
+    </table>
+</main>
+
+{% endblock %}

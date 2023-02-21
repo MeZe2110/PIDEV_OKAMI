@@ -1,0 +1,18 @@
+
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+
+<main id="main" class="main">
+  <div class="d-flex flex-column align-items-center justify-content-center" style="height: 100vh;margin-top: -200px;"> 
+    <center>
+<h1 style="color:#336699; font-family: Arial, sans-serif; ;">Ajouter un medicament</h1>
+ </center>
+    <div class="d-flex flex-column align-items-center justify-content-center" style="height: 250px; ">
+      {{ include('categories/_form.html.twig') }}
+    </div>
+    <a href="{{ path('app_categories_index') }}"" class="btn btn-secondary mx-0"style="margin-top: -20px;margin-left:20px">Retour à la liste</a>
+  </div>
+</main>
+{% endblock %}

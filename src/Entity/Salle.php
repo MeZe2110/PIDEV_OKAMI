@@ -24,16 +24,12 @@ class Salle
     #[ORM\Column(length: 255)]
     private ?string $typesa = null;
 
-    #[ORM\OneToMany(mappedBy: 'salle', targetEntity: Plannification::class)]
+    #[ORM\OneToMany(mappedBy: 'salle', targetEntity: plannification::class)]
     private Collection $plannificationsalle;
-
-    #[ORM\OneToMany(mappedBy: 'Salle', targetEntity: Rendezvous::class, orphanRemoval: true)]
-    private Collection $Rendezvous;
 
     public function __construct()
     {
         $this->plannificationsalle = new ArrayCollection();
-        $this->Rendezvous = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -78,14 +74,14 @@ class Salle
     }
 
     /**
-     * @return Collection<int, Plannification>
+     * @return Collection<int, plannification>
      */
     public function getPlannificationsalle(): Collection
     {
         return $this->plannificationsalle;
     }
 
-    public function addPlannificationsalle(Plannification $plannificationsalle): self
+    public function addPlannificationsalle(plannification $plannificationsalle): self
     {
         if (!$this->plannificationsalle->contains($plannificationsalle)) {
             $this->plannificationsalle->add($plannificationsalle);
@@ -95,7 +91,7 @@ class Salle
         return $this;
     }
 
-    public function removePlannificationsalle(Plannification $plannificationsalle): self
+    public function removePlannificationsalle(plannification $plannificationsalle): self
     {
         if ($this->plannificationsalle->removeElement($plannificationsalle)) {
             // set the owning side to null (unless already changed)
@@ -105,40 +101,5 @@ class Salle
         }
 
         return $this;
-    }
-
-    /**
-     * @return Collection<int, Rendezvous>
-     */
-    public function getRendezvous(): Collection
-    {
-        return $this->Rendezvous;
-    }
-
-    public function addRendezvou(Rendezvous $rendezvou): self
-    {
-        if (!$this->Rendezvous->contains($rendezvou)) {
-            $this->Rendezvous->add($rendezvou);
-            $rendezvou->setSalle($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRendezvou(Rendezvous $rendezvou): self
-    {
-        if ($this->Rendezvous->removeElement($rendezvou)) {
-            // set the owning side to null (unless already changed)
-            if ($rendezvou->getSalle() === $this) {
-                $rendezvou->setSalle(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function __toString()
-    {
-        return 'Salle ' . $this->etagesa . $this->numsa;
     }
 }

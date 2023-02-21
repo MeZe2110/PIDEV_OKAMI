@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+
+
+{% block body %}
+
+<main id="main" class="main">
+    <style>
+        table {
+            margin: 50px auto;
+            width: 80%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        th {
+            color:blue ;
+            
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+     </style>
+ <center>
+ <h1 style="color:#336699; font-family: Arial, sans-serif; ;">Liste de medicaments</h1>
+ </center>
+ <div> 
+    <a href="{{ path('app_stockc_new')}}" class="btn btn-primary">Create new</a>
+
+    <table border="3" class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nomst</th>
+                <th>Quantites</th>
+                <th>Dateexpirationst</th>
+                <th>Description</th>
+                <th>Categories</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for stock in stocks %}
+            <tr>
+                <td>{{ stock.id }}</td>
+                <td>{{ stock.nomst }}</td>
+                <td>{{ stock.quantites }}</td>
+                <td>{{ stock.dateexpirationst ? stock.dateexpirationst|date('Y-m-d') : '' }}</td>
+                <td>{{ stock.description }}</td>
+                <td>{{ stock.stockcat }}</td>
+                <td>
+                    <a href="{{ path('app_stockc_show', {'id': stock.id}) }}">show</a>
+                    <a href="{{ path('app_stockc_edit', {'id': stock.id}) }}">edit</a>
+                    <form method="post" action="{{ path('app_stockc_delete', {'id': stock.id}) }}" >
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ stock.id) }}">
+    <button class="btn btn-danger">Delete</button>
+</form>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+ </div>
+</main> 
+{% endblock %}

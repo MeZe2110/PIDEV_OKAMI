@@ -1,0 +1,60 @@
+
+{% extends 'base.html.twig' %}
+
+
+
+
+{% block body %}
+<style>
+label {
+  font-weight: bold;
+  color: Blue sky;
+  text-transform: uppercase;
+}
+
+</style>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-80 col-lg-80">
+    
+          {{ form_start(form,{'attr': {'novalidate': 'novalidate '}}) }}
+            <div class="form-floating mb-3">
+              {{ form_widget(form.nomst, {'attr': {'class': 'form-control', 'placeholder': 'Nom du medicament'}}) }}
+              {{ form_errors(form.nomst) }}
+              {{ form_label(form.nomst, "Nom du medicament", {'label_attr': {'class': 'small mb-1'}}) }}
+            </div>
+            <div class="form-floating mb-3">
+              {{ form_widget(form.quantites, {'attr': {'class': 'form-control', 'placeholder': 'Quantites'}}) }}
+              {{ form_errors(form.quantites) }}
+              {{ form_label(form.quantites, "Quantites", {'label_attr': {'class': 'small mb-1'}}) }}
+            </div>
+            <div class="form-floating mb-3">
+              {{ form_widget(form.dateexpirationst, {'attr': {'class': 'form-control', 'placeholder': 'Date d\'expiration'}}) }}
+              {{ form_errors(form.dateexpirationst) }}
+              {{ form_label(form.dateexpirationst, "Date d'expiration", {'label_attr': {'class': 'small mb-1'}}) }}
+            </div>
+            <div class="form-floating mb-3">
+              {{ form_widget(form.description, {'attr': {'class': 'form-control', 'placeholder': 'Description'}}) }}
+              {{ form_errors(form.description) }}
+              {{ form_label(form.description, "Description", {'label_attr': {'class': 'small mb-1'}}) }}
+            </div>
+            <div class="form-floating mb-3">
+              {{ form_widget(form.stockcat, {'attr': {'class': 'form-control', 'placeholder': 'Type de medicament'}}) }}
+              {{ form_errors(form.stockcat) }}
+              {{ form_label(form.stockcat, "Type de medicament", {'label_attr': {'class': 'small mb-1'}}) }}
+            </div>
+            <div class="mt-4 mb-0">
+              <div class="d-grid"><button class="btn btn-primary btn-block" type="submit">{{ button_success|default('Sauvegarder') }}</button></div>
+               <a href="{{ path('app_stockc_index') }}"" class="btn btn-secondary mx-0"style="margin-top: 20px;margin-left:200px">Retour à la liste</a>
+  </div>
+            </div>
+          {{ form_end(form) }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+

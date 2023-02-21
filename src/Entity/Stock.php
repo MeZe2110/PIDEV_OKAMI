@@ -4,6 +4,11 @@ namespace App\Entity;
 
 use App\Repository\StockRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\DBAL\Types\Types;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\GreaterThan;
+use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
+
 
 #[ORM\Entity(repositoryClass: StockRepository::class)]
 class Stock
@@ -14,16 +19,26 @@ class Stock
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank (message: "Name is required") ]
     private ?string $nomst = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $etatst = null;
+    #[Assert\NotBlank (message: "description is required") ]
+    private ?string $description = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $dateexpirationst = null;
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[GreaterThan(value: "today", message: "La date d'expiration doit être supérieure à la date actuelle")]
+    private ?\DateTimeInterface $dateexpirationst = null;
+
 
     #[ORM\ManyToOne(inversedBy: 'stocks')]
-    private ?stockcategories $stockcat = null;
+    #[Assert\NotBlank (message: "stockcat is required") ]
+    private ?Stockcategories $stockcat = null;
+
+    #[ORM\Column]
+    #[Assert\NotBlank (message: "quantites is required") ]
+    #[Assert\Positive(message:"quantite doit etre positive !")]
+    private ?int $quantites = null;
 
 
     public function getId(): ?int
@@ -43,24 +58,24 @@ class Stock
         return $this;
     }
 
-    public function getEtatst(): ?string
+    public function getdescription(): ?string
     {
-        return $this->etatst;
+        return $this->description;
     }
 
-    public function setEtatst(string $etatst): self
+    public function setdescription(string $description): self
     {
-        $this->etatst = $etatst;
+        $this->description= $description;
 
         return $this;
     }
 
-    public function getDateexpirationst(): ?string
+    public function getDateexpirationst(): ?\DateTimeInterface
     {
         return $this->dateexpirationst;
     }
 
-    public function setDateexpirationst(string $dateexpirationst): self
+    public function setDateexpirationst(\DateTimeInterface $dateexpirationst): self
     {
         $this->dateexpirationst = $dateexpirationst;
 
@@ -75,6 +90,18 @@ class Stock
     public function setStockcat(?stockcategories $stockcat): self
     {
         $this->stockcat = $stockcat;
+
+        return $this;
+    }
+
+    public function getQuantites(): ?int
+    {
+        return $this->quantites;
+    }
+
+    public function setQuantites(int $quantites): self
+    {
+        $this->quantites = $quantites;
 
         return $this;
     }

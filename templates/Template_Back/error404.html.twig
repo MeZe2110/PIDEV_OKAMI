@@ -1,7 +1,12 @@
 {% extends "Template_Back/base.html.twig" %}
 
-  {% block body %}
-<body>
+  {% block header %}
+  {% endblock %}
+
+  {% block sidebar %}
+  {% endblock %}
+
+  {% block content %}
   <main>
     <div class="container">
 
@@ -15,7 +20,10 @@
           Designed by <a href="https://www.youtube.com/watch?v=ZK1pNGmNBEc">Roboute Guilliman</a>
         </div>
       </section>
+
     </div>
   </main><!-- End #main -->
-</body>
+  {% endblock %}
+
+  {% block footer %}
   {% endblock %}

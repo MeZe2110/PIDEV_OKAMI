@@ -337,13 +337,6 @@
       </li><!-- End Profile Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="{{ path('rendezvous_index') }}">
-          <i class="bi bi-question-circle"></i>
-          <span>Rendez-Vous</span>
-        </a>
-      </li><!-- End Rendez-Vous Page Nav -->
-
-      <li class="nav-item">
         <a class="nav-link collapsed" href="{{ path('back_faq') }}">
           <i class="bi bi-question-circle"></i>
           <span>F.A.Q</span>
@@ -391,11 +384,9 @@
   <!-- End Sidebar-->
   {% endblock %}
 
-<main id="main" class="main">
   {% block content %}
   {% endblock %}
-</main>
-
+  
   <!-- ======= Footer ======= -->
   {% block footer %}
   <footer id="footer" class="footer">
