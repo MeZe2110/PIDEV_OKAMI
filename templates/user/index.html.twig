@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Utilisateur index{% endblock %}
+
+{% block body %}
+<center>
+
+    <h1>user index</h1>
+<div class="d-flex align-items-center justify-content-center" style="height: 250px;"> </div>
+
+    <table class="table" style="width:80PX">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Email</th>
+                <th>mdp</th>
+                <th>role</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.nom }}</td>
+                <td>{{ user.prenom}}</td>
+                <td>{{ user.email}}</td>
+                <td>****</td>
+                <td>{{ user.role}}</td>
+                <td>
+                <div class="my-2"></div><a href="{{ path('app_user_show', {'id': user.id}) }}"class="btn btn-success btn-icon-split"><span class="text">show</span></a>
+                <a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-warning">edit</a>
+                
+             </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+ </div>
+    <a href="{{ path('app_user_new') }}" class="btn btn-danger">Create new</a>
+    </center>
+    
+
+{% endblock %}

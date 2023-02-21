@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit User{% endblock %}
+
+{% block body %}
+<center>
+    <h1>Edit Roleuser</h1>
+<div class="d-flex align-items-center justify-content-center" style="height: 250px;"> </div>
+    {{ include('roleuser/_form.html.twig', {'button_label': 'Update'}) }}
+
+                          <div class="my-2"></div>
+               
+                                     <a href="{{ path('app_roleuser_index', {'id': roleuser.id}) }}"class="btn btn-success btn-icon-split">
+                                      
+                                        <span class="text">go to back</span>
+                                    </a>
+
+    {{ include('roleuser/_delete_form.html.twig', ) }}
+    </center>
+{% endblock %}

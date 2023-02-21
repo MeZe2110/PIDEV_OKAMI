@@ -1,0 +1,55 @@
+    {% extends 'base.html.twig' %}
+{% block body %}
+<center>
+<div class="d-flex align-items-center justify-content-center" style="height: 550px;"> </div>
+<head>
+	<title>Mon titre de page</title>
+</head>
+<body>
+	<h1>Bienvenue admin AZIZ.</h1>
+	<p>Vous voulez ajouter quelqu'un :</p>
+</body>
+{{form_start (form,{'attr': {'novalidate': 'novalidate '}} ) }}
+
+<table>
+<tr>
+<td> {{ form_label( form.nomut, "Nom : ") }} </td>
+<td> {{ form_widget(form.nomut) }} </td>
+<td> {{ form_errors(form.nomut) }} </td>
+</tr>
+<tr>
+
+<td> {{ form_label(form.prenomut, "prenom : ") }} </td>
+<td> {{ form_widget(form.prenomut) }} </td>
+<td> {{ form_errors(form.prenomut) }} </td>
+</tr>
+<tr>
+<td> {{ form_label(form.emailut, "email : ") }} </td>
+<td> {{ form_widget(form.emailut) }} </td>
+<td> {{ form_errors(form.emailut) }} </td>
+</tr>
+<tr>
+<td> {{ form_label(form.mdput, "mdput : ") }} </td>
+<td> {{ form_widget(form.mdput) }} </td>
+<td> {{ form_errors(form.mdput) }} </td>
+</tr>
+<tr>
+<td> {{ form_label(form.roleut, "roleut :  ") }} </td>
+<td> {{ form_widget(form.roleut) }} </td>
+<td> {{ form_errors(form.roleut) }} </td>
+</tr>
+
+</table>
+ <div class="col-sm-10">
+      <button type="submit" class="btn btn-primary" _msttexthash="499135" _msthash="115"{{ button_label|default('Save') }}>create</button>
+           
+
+     </div>
+
+                 
+{{ form_end(form) }}
+</center>
+{% endblock %}
+    
+    
+    

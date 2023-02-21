@@ -3,10 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UtilisateurRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
 class Utilisateur
 {
@@ -16,28 +14,27 @@ class Utilisateur
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank (message: "Name is required") ]
     private ?string $nomut = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank (message: "prenom is required") ]
     private ?string $prenomut = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank (message: "email is required") ]
+    #[Assert\Email(
+        message: 'The email {{ value }} is not a valid email.',
+    )]
     private ?string $emailut = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank (message: "mdp is required") ]
     private ?string $mdput = null;
 
     #[ORM\ManyToOne(inversedBy: 'utilisateurs')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Roleutilisateur $roleut = null;
-
-    #[ORM\ManyToMany(targetEntity: Rendezvous::class, mappedBy: 'Utilisateur')]
-    private Collection $Rendezvous;
-
-    public function __construct()
-    {
-        $this->Rendezvous = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -92,47 +89,15 @@ class Utilisateur
         return $this;
     }
 
-    public function getRoleut(): ?Roleutilisateur
+    public function getRoleut(): ?roleutilisateur
     {
         return $this->roleut;
     }
 
-    public function setRoleut(?Roleutilisateur $roleut): self
+    public function setRoleut(?roleutilisateur $roleut): self
     {
         $this->roleut = $roleut;
 
         return $this;
-    }
-
-    /**
-     * @return Collection<int, Rendezvous>
-     */
-    public function getRendezvous(): Collection
-    {
-        return $this->Rendezvous;
-    }
-
-    public function addRendezvou(Rendezvous $rendezvou): self
-    {
-        if (!$this->Rendezvous->contains($rendezvou)) {
-            $this->Rendezvous->add($rendezvou);
-            $rendezvou->addUtilisateur($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRendezvou(Rendezvous $rendezvou): self
-    {
-        if ($this->Rendezvous->removeElement($rendezvou)) {
-            $rendezvou->removeUtilisateur($this);
-        }
-
-        return $this;
-    }
-
-    public function __toString()
-    {
-        return $this->nomut . ' ' . $this->prenomut;
     }
 }
