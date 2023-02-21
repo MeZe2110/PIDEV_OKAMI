@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Plannification{% endblock %}
+
+{% block body %}
+    <h1>Create new Plannification</h1>
+
+    <div>
+        {{ include('plannification/_form.html.twig') }}
+    </div>
+
+            <a href="{{ path('app_plannification_index') }}">back to list</a>
+
+
+{% endblock %}

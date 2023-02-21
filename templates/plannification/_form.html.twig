@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {{form_start (form,{'attr': {'novalidate': 'novalidate '}} ) }}
+
+    <center>
+        <style>
+            table{
+                margin-top:150px;
+                margin-right:-40px;
+
+            }
+            input[type=text], select {
+                padding: 12px 20px;
+                margin: 8px 0;
+                border: 1px solid rgba(0, 128, 255, 0.39);
+                border-radius: 4px;
+                box-sizing: border-box;
+            }
+            input[type=submit] {
+                background-color: #4CAF50;
+                color: white;
+                padding: 12px 20px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+            input[type=submit]:hover {
+                background-color: #45a049;
+            }
+            .error {
+                color: red;
+            }
+        </style>
+
+        <table>
+            <tr>
+                <td> {{ form_label( form.datepl, "Date de Plannification") }} </td>
+                <td> {{ form_widget(form.datepl, {'attr': {'class': 'form-control'}}) }} </td>
+                <td> {{ form_errors(form.datepl, {'attr': {'class': 'error'}}) }} </td>
+            </tr>
+            <tr>
+                <td> {{ form_label(form.heuredebutpl, "Heure de début ") }} </td>
+                <td> {{ form_widget(form.heuredebutpl, {'attr': {'class': 'form-control'}}) }} </td>
+                <td> {{ form_errors(form.heuredebutpl, {'attr': {'class': 'error'}}) }} </td>
+            </tr>
+            <tr>
+                <td> {{ form_label(form.heurefinpl, "Heure de fin ") }} </td>
+                <td> {{ form_widget(form.heurefinpl, {'attr': {'class': 'form-control'}}) }} </td>
+                <td> {{ form_errors(form.heurefinpl, {'attr': {'class': 'error'}}) }} </td>
+            </tr>
+            <tr>
+                <td> {{ form_label(form.salle, "Numéro de Salle ") }} </td>
+                <td> {{ form_widget(form.salle, {'attr': {'class': 'form-control'}}) }} </td>
+                <td> {{ form_errors(form.salle, {'attr': {'class': 'error'}}) }} </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="submit" value="{{ button_success|default('Enregistrer') }}"></td>
+                <td><a href="{{ path('app_plannification_index') }}" class="btn btn-primary">Retour à la liste</a></td>
+            </tr>
+
+        </table>
+    </center>
+
+    {{ form_end(form) }}
+{% endblock %}

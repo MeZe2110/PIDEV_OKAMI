@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {{form_start (form,{'attr': {'novalidate': 'novalidate '}} ) }}
+
+    <center>
+        <style>
+            table{
+                margin-top:150px;
+                margin-right:-40px;
+
+            }
+            input[type=text], select {
+                padding: 12px 20px;
+                margin: 8px 0;
+                border: 1px solid rgba(0, 128, 255, 0.39);
+                border-radius: 4px;
+                box-sizing: border-box;
+            }
+            input[type=submit] {
+                background-color: #4CAF50;
+                color: white;
+                padding: 12px 20px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+            input[type=submit]:hover {
+                background-color: #45a049;
+            }
+            .error {
+                color: red;
+            }
+        </style>
+
+        <table>
+            <tr>
+                <td> {{ form_label( form.numsa, "Numero de salle") }} </td>
+                <td> {{ form_widget(form.numsa, {'attr': {'class': 'form-control'}}) }} </td>
+                <td> {{ form_errors(form.numsa, {'attr': {'class': 'error'}}) }} </td>
+            </tr>
+            <tr>
+                <td> {{ form_label(form.etagesa, "Etage ") }} </td>
+                <td> {{ form_widget(form.etagesa, {'attr': {'class': 'form-control'}}) }} </td>
+                <td> {{ form_errors(form.etagesa, {'attr': {'class': 'error'}}) }} </td>
+            </tr>
+            <tr>
+                <td>{{ form_label(form.typesa, "Type de salle ") }}</td>
+                <td>{{ form_widget(form.typesa, {'attr': {'class': 'custom-select'}, 'multiple': true, 'choices': {'soin': 'Soin', 'operation': 'Opération'}}) }}</td>
+                <td>{{ form_errors(form.typesa, {'attr': {'class': 'error'}}) }}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="submit" value="{{ button_success|default('Enregistrer') }}"></td>
+                <td><a href="{{ path('app_salle_index') }}" class="btn btn-primary">Retour à la liste</a></td>
+            </tr>
+
+        </table>
+    </center>
+
+    {{ form_end(form) }}
+{% endblock %}
