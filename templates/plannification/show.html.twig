@@ -51,7 +51,10 @@
             <tr>
                 <th><a href="{{ path('app_plannification_index') }}" class="btn btn-primary">Retour à la liste</a></th>
 
-                <td><a href="{{ path('app_plannification_edit', {'id': plannification.id}) }}" class="btn btn-primary">Modifier</a></td>
+                <td>
+                    <a href="{{ path('app_plannification_edit', {'id': plannification.id}) }}" class="btn btn-primary">Modifier</a>
+                    <a href="{{ path('app_generate_pdf', {'id': plannification.id}) }}" class="btn btn-success">Export PDF</a>
+                </td>
             </tr>
             </tbody>
         </table>
