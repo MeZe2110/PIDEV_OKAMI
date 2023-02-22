@@ -1,0 +1,104 @@
+{% extends 'front.html.twig' %}
+
+{% block body %}
+<div  >
+    <br/>
+	<div class="row justify-content-left">
+                        <div class="col-5 col-md-5 col-lg-5">
+                            <form class="card card-sm">
+                                <div class="card-body row no-gutters align-items-center">
+                                    
+                                    <!--end of col-->
+                                    <div class="col">
+                                        <input class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search vehicules or keywords">
+                                    </div>
+                                    <!--end of col-->
+                                    <div class="col-auto">
+                                        <button class="btn btn-lg btn-outline-success" type="submit">Search</button>
+                                    </div>
+                                    <!--end of col-->
+                                </div>
+                            </form>
+                        </div>
+                        <!--end of col-->
+                    </div>
+</div>
+<BR>
+ <div class="container-fluid">
+    <div class="row">
+       
+      {% for vehicule in vehicules %}
+
+      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <div class="row">
+            <!--1 card-->
+                    <div class="container block rounded-lg rounded-sm ">
+                             <!--1st row-->
+ 
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12">  
+                                <a ><img class="img-fluid" src="{{asset('assert2/img/' ~ vehicule.imagesvh) }}" alt="image_article" width="200" height="100"></a>
+                                <h4><a> {{vehicule.etatvh }} </a></h4>
+                                 <a  > {{vehicule.nomvh }}</a>
+                                 <a href="{{ path('hrouz',{'id': vehicule.id}) }}"><button type="button" class="btn btn-sm btn-outline-primary">View</button></a>
+                            </div>
+                        </div>
+                        <!--2nd row-->
+                        <div class="row" >
+                            <div class="col-lg-12 col-md-12 col-sm-12 block2">
+                            <p class="listing-tagline">{{ vehicule.descvh  }}</p>
+                            </div>
+                        </div>
+                    </div>
+                <!--2nd card-->
+                 
+
+            </div>
+        </div>
+        {% endfor %}
+        
+
+    </div>
+</div>
+<div class="container" style="margin-left: -10px;">
+  <ul class="pagination">
+    <li class="page-item "><a class="page-link" href="#">Previous</a></li>
+    <li class="page-item "><a class="page-link" href="#">1</a></li>
+    <li class="page-item "><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+  </ul>
+</div>
+<!-- about section -->
+<br>
+<br>
+<br>
+  <section class="about_section layout_margin-bottom">
+    <div class="container  ">
+      <div class="row">
+        <div class="col-md-6 ">
+          <div class="img-box">
+            <img src="{{asset('Template_front/images/about-img.jpg')}}" alt="">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="detail-box">
+            <div class="heading_container">
+              <h2>
+                About <span>Us</span>
+              </h2>
+            </div>
+            <p>
+             Our hospital is known for its exceptional reliability in providing high-quality healthcare services to patients. We have a team of skilled and experienced medical professionals who are dedicated to providing the best possible care to each and every patient. Our hospital is equipped with the latest medical technologies and equipment, ensuring accurate diagnosis and treatment. Patient safety is our top priority, and we follow strict protocols and procedures to ensure that our hospital is a safe and reliable place for patients to receive the care they need.
+            </p>
+            <a href="">
+              Read More
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- end about section -->
+{% endblock %}

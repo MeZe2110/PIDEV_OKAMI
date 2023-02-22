@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Vehicules{% endblock %}
+
+{% block body %}
+<style>
+        table {
+            margin: 50px auto;
+            width: 80%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        th {
+            color:blue ;
+            
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+     </style>
+
+    <h1>Vehicules</h1>
+ 
+   <table class="table" style=" margin-left: 150px;">
+   
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ vehicule.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom du vehicule</th>
+                <td>{{ vehicule.nomvh }}</td>
+            </tr>
+            <tr>
+                <th>Dispo(yes/no)</th>
+                <td>{{ vehicule.dispovh ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>Etat du vehicule </th>
+                <td>{{ vehicule.etatvh }}</td>
+            </tr>
+            <tr>
+                <th>Description du vehicule</th>
+                <td>{{ vehicule.descvh }}</td>
+            </tr>
+            <tr>
+                <th>categorie du vehicule</th>
+                <td>{{ vehicule.catv }}</td>
+            </tr>
+            <tr>
+                <th>image du vehicule</th>
+                <td><img class="img-fluid" src="{{asset('assert2/img/' ~ vehicule.imagesvh) }}" alt="image_article" width="100" height="100"> </td>
+            </tr>
+          <tr>
+    <td><a href="{{ path('app_vehicules_index') }}"><button class="btn btn-primary">back to list</button></a></td>
+   
+   
+     <td><a href="{{ path('update_post', {'id': vehicule.id}) }}"><button class="btn btn-primary">Editer</button></a>
+ <form method="post" action="{{ path('supprimerc', {'id': vehicule.id}) }} ">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ vehicule.id) }}">
+    <button class="btn btn-danger">Delete</button>
+</form>  </tr>
+         
+
+   
+</table>
+   
+
+   
+    
+</div>
+{% endblock %}

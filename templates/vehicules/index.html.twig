@@ -1,0 +1,103 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Vehicules index{% endblock %}
+
+{% block body %}
+<style>
+        table {
+            margin: 50px auto;
+            width: 80%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        th {
+            color:blue ;
+            
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+     </style>
+
+
+<div><h1>Vehicules index</h1></div>
+<div class="d-flex align-items-center justify-content-center" style="height: 1500px;"> 
+                                  
+   <table class="table" style="
+    
+    margin-left: 310px;
+    margin-top: -300px;
+    ">
+
+    
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom </th>
+                <th>Dispo(yes/no)</th>
+                <th>Etat </th>
+                <th>Description </th>
+                <th>categorie </th>
+                <th>actions</th>
+                
+               
+                <th>
+                
+                <form method="post" action="{{ path('app_vehicules_new') }} ">
+    <button class="btn btn-success">create new</button>
+</form>
+
+                
+                
+                
+                
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+        
+        {% for vehicule in vehicules %}
+            <tr>
+                <td>{{ vehicule.id }}</td>
+                <td>{{ vehicule.nomvh }}</td>
+                <td>{{ vehicule.dispovh ? 'Yes' : 'No' }}</td>
+                <td>{{ vehicule.etatvh }}</td>
+                <td>{{ vehicule.descvh }}</td>
+                 <td>{{ vehicule.catv }}</td>
+                <td>
+                    <a href="{{ path('app_vehicules_show', {'id': vehicule.id}) }} "><button class="btn btn-primary">show</button></a>
+                    <a href="{{ path('update_post', {'id': vehicule.id}) }}"><button class="btn btn-primary">Editer</button></a>
+                   
+                    <br>
+                    
+                    
+                    <form method="post" action="{{ path('supprimerc', {'id': vehicule.id}) }} ">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ vehicule.id) }}">
+    <button class="btn btn-danger">Delete</button>
+</form>
+
+                </td>
+                
+            </tr>
+                 
+                   
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+     
+        
+        <!-- <a href="{{ path('app_vehicules_new') }}">Create new</a> -->
+        </tbody>
+    </table>
+
+   
+             
+    </div>
+{% endblock %}
