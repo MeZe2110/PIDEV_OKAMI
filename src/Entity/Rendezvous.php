@@ -24,17 +24,19 @@ class Rendezvous
     #[Assert\GreaterThanOrEqual("today", message:"You cannot have a Rendez-Vous in the past.")]
     private ?\DateTimeInterface $daterv = null;
 
-
-    #[ORM\ManyToMany(targetEntity: Utilisateur::class, inversedBy: 'Rendezvous')]
+    #[ORM\ManyToMany(targetEntity: Utilisateur::class, inversedBy: 'Rendezvous')]    
+    #[ORM\JoinColumn(nullable: true)]
     #[Assert\NotBlank(message:"You must choose a user")]
     #[Assert\Count(min:2, minMessage:"There must be at  two users to start a rendez-vous.")]
     private Collection $Utilisateur;
 
     #[ORM\ManyToOne(inversedBy: 'Rendezvous')]
+    #[ORM\JoinColumn(name: "Salle", referencedColumnName: "id", onDelete: "SET NULL")]
     #[Assert\NotBlank(message:"A rendez-vous must be set in a room.")]
     private ?Salle $Salle = null;
 
     #[ORM\ManyToOne(inversedBy: 'rendezvous')]
+    #[ORM\JoinColumn(name: "Type", referencedColumnName: "id", onDelete: "SET NULL")]
     private ?RendezvousType $Type = null; 
 
     public function __construct()

@@ -1,0 +1,35 @@
+{% extends "Template_Back/base.html.twig" %}
+
+{% block content %}
+
+    <h1>RendezvousType index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Type</th>
+                <th> </th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for rendezvous_type in rendezvous_types %}
+            <tr>
+                <td>{{ rendezvous_type.id }}</td>
+                <td>{{ rendezvous_type.type }}</td>
+                <td>
+                    <button class="btn"><a href="{{ path('back_rendezvous_type_edit', {'id': rendezvous_type.id}) }}">edit</a> </button>
+                    {{ include('rendezvous/back/type/_delete_form.html.twig') }}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('back_rendezvous_type_new') }}">Create new</a>
+
+{% endblock %}

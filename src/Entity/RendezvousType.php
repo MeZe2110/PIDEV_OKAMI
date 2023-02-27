@@ -6,6 +6,7 @@ use App\Repository\RendezvousTypeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: RendezvousTypeRepository::class)]
 class RendezvousType
@@ -16,6 +17,8 @@ class RendezvousType
     private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\NotBlank(message:"Must put a type first")]
+    #[Assert\Regex( pattern:'/^[a-z éèàùê&]{3,}$/i', message:'Not a valid type.' )]
     private ?string $type = null;
 
     #[ORM\OneToMany(mappedBy: 'Type', targetEntity: Rendezvous::class)]

@@ -13,20 +13,6 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 
-use Symfony\Component\HttpFoundation\Session\Session;
-
-// create a new session with a mock storage
-$session = new Session();
-if (!$session->isStarted()) {
-    $session->start();
-}
-// set a value in the session
-$session->set('userId', 3);
-$session->save();
-
-
-
-
 
 
 
@@ -100,7 +86,8 @@ class RendezvousController extends AbstractController
     #[Route('/rendezvous', name: 'front_rendezvous_index', methods: ['GET'])]
     public function frontIndex(EntityManagerInterface $em, SessionInterface $session): Response
     {
-        $userId = $session->get('userId');
+        // $userId = $session->get('userId');
+        $userId = 2;
 
         $qb = $em->createQueryBuilder();
         $RendezvousAndUtilisateur = $qb
