@@ -4,10 +4,11 @@
 
 {% block body %}
     <style>
+
         table {
             background-color: rgba(0, 34, 255, 0.03);
             border-collapse: collapse;
-            margin-top: 200px;
+            margin-top: 250px;
             width: 70%;
             font-size: 20px;
             margin-right: 50px;
@@ -23,17 +24,25 @@
         }
     </style>
     <h1 class="text-center">Plannification Index</h1>
+
+    <form method="GET" action="{{ path('app_plannification_index') }}">
+        <div class="input-group" style="width: 500px">
+            <input type="text" name="search" class="form-control" id="searchInput" placeholder="Entrez votre recherche">
+            <button type="submit" class="btn btn-primary">Rechercher</button>
+        </div>
+    </form>
+
     <div class="d-flex align-items-center justify-content-center" style="height: 500px">
 
         <table class="table table-striped">
             <thead>
             <tr>
-                <th scope="col">Id</th>
                 <th scope="col">Date Plannification</th>
                 <th scope="col">Heure Debut</th>
                 <th scope="col">Heure Fin</th>
                 <th scope="col">Salle</th>
                 <th><a href="{{ path('app_plannification_new') }}" class="btn btn-primary">Ajouter Plannification</a></th>
+                <th><a href="{{ path('app_generate_pdf_all') }}" class="btn btn-success">Exporter PDF</a></th>
                 <th scope="col"></th>
 
             </tr>
@@ -41,7 +50,6 @@
             <tbody>
             {% for plannification in plannifications %}
                 <tr>
-                    <td>{{ plannification.id }}</td>
                     <td>{{ plannification.datepl ? plannification.datepl|date('Y-m-d') : '' }}</td>
                     <td>{{ plannification.heuredebutpl ? plannification.heuredebutpl|date('H:i:s') : '' }}</td>
                     <td>{{ plannification.heurefinpl ? plannification.heurefinpl|date('H:i:s') : '' }}</td>

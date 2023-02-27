@@ -5,3 +5,10 @@ pdf:
   path: '/generate-pdf'
   controller: App\Controller\PdfController::generatePdf
 
+app_plannification_index:
+  path: /plannification
+  methods: GET
+  controller: App\Controller\PlannificationController::index
+
+
+

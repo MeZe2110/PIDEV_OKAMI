@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<table style="background-color: rgba(0, 34, 255, 0.03); border-collapse: collapse; margin-top: 200px; width: 70%; font-size: 20px; margin-right: 50px; margin-left: 350px;" class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Date Plannification</th>
+        <th scope="col">Heure Debut</th>
+        <th scope="col">Heure Fin</th>
+        <th scope="col">Salle</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for plannification in plannifications %}
+        <tr>
+            <td>{{ plannification.id }}</td>
+            <td>{{ plannification.datepl ? plannification.datepl|date('Y-m-d') : '' }}</td>
+            <td>{{ plannification.heuredebutpl ? plannification.heuredebutpl|date('H:i:s') : '' }}</td>
+            <td>{{ plannification.heurefinpl ? plannification.heurefinpl|date('H:i:s') : '' }}</td>
+            <td>{{ plannification.salle }}</td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="5">no records found</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</html>

@@ -38,6 +38,24 @@ class PlannificationRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+    public function findBySearch(string $search): array
+    {
+        $entityManager = $this->getEntityManager();
+        $queryBuilder = $entityManager->createQueryBuilder();
+
+        $queryBuilder->select('p')
+            ->from(Plannification::class, 'p')
+            ->join('p.salle', 's')
+            ->where('s.numsa LIKE :search')
+            ->orWhere('p.datepl LIKE :search')
+            ->orWhere('p.heuredebutpl LIKE :search')
+            ->orWhere('p.heurefinpl LIKE :search')
+            ->setParameter('search', '%'.$search.'%');
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+
 
 //    /**
 //     * @return Plannification[] Returns an array of Plannification objects

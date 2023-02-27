@@ -13,11 +13,23 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/plannification')]
 class PlannificationController extends AbstractController
 {
-    #[Route('/', name: 'app_plannification_index', methods: ['GET'])]
-    public function index(PlannificationRepository $plannificationRepository): Response
+    #[Route('/', name: 'app_plannification_index', methods: ['POST'])]
+    public function index(Request $request): Response
     {
+        $search = $request->query->get('search');
+
+        if ($search) {
+            $plannifications = $this->getDoctrine()
+                ->getRepository(Plannification::class)
+                ->findBySearch($search);
+        } else {
+            $plannifications = $this->getDoctrine()
+                ->getRepository(Plannification::class)
+                ->findAll();
+        }
+
         return $this->render('plannification/index.html.twig', [
-            'plannifications' => $plannificationRepository->findAll(),
+            'plannifications' => $plannifications,
         ]);
     }
 

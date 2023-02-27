@@ -6,6 +6,7 @@ use App\Repository\PlannificationRepository;
 use Doctrine\DBAL\Types\Types;
 use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PlannificationRepository::class)]
@@ -15,6 +16,19 @@ class Plannification
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
+
+    #[Assert\IsTrue(message: "Une planification existe déjà pour cette salle et ce créneau horaire")]
+    public function isSalleDisponible(EntityManagerInterface $entityManager): bool
+    {
+        $existingPlannification = $entityManager->getRepository(Plannification::class)->findOneBy([
+            'salle' => $this->getSalle(),
+            'datepl' => $this->getDatepl(),
+            'heuredebutpl' => $this->getHeuredebutpl(),
+            'heurefinpl' => $this->getHeurefinpl(),
+        ]);
+
+        return !$existingPlannification;
+    }
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     #[Assert\NotBlank (message:"Date de planniication requis !")]
@@ -87,4 +101,5 @@ class Plannification
 
         return $this;
     }
+
 }

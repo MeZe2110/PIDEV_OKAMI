@@ -8,6 +8,7 @@ use App\Entity\Plannification;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Dompdf\Options;
 
 class PDFController extends AbstractController
 {
@@ -35,6 +36,29 @@ class PDFController extends AbstractController
         return new Response($dompdf->output(), 200, [
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'inline; filename="plannification.pdf"'
+        ]);
+    }
+    #[Route('/generate-pdf-all', name: 'app_generate_pdf_all')]
+    public function generatePdfAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $plannification = $em->getRepository(Plannification::class)->findAll();
+
+        $html = $this->renderView('pdf/plannificationAll.html.twig', [
+            'plannifications' => $plannification,
+        ]);
+
+        $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'Arial');
+
+        $dompdf = new Dompdf($pdfOptions);
+        $dompdf->loadHtml($html);
+
+        $dompdf->setPaper('A4', 'landscape');
+        $dompdf->render();
+
+        $dompdf->stream("plannification_list.pdf", [
+            "Attachment" => false
         ]);
     }
 }
