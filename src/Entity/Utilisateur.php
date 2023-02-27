@@ -32,7 +32,6 @@ class Utilisateur
     private ?Roleutilisateur $roleut = null;
 
     #[ORM\ManyToMany(targetEntity: Rendezvous::class, mappedBy: 'Utilisateur')]
-    #[ORM\JoinColumn(nullable: true)]
     private Collection $Rendezvous;
 
     public function __construct()

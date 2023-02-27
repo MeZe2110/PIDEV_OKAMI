@@ -91,11 +91,11 @@ class RendezvousController extends AbstractController
 
         $qb = $em->createQueryBuilder();
         $RendezvousAndUtilisateur = $qb
-            ->select('r, Utilisateur')
+            ->select('r')
             ->from(Rendezvous::class, 'r')
-            ->leftJoin('r.Utilisateur', 'Utilisateur')
             ->where('Utilisateur.id = :userId')
             ->setParameter('userId', $userId)
+            ->Join('r.Utilisateur', 'Utilisateur')
             ->getQuery()
             ->getResult();
 

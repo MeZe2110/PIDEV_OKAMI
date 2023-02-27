@@ -1,7 +1,7 @@
 {% extends "Template_Back/base.html.twig" %}
 
 {% block content %}
-    <h1>Rendezvous index</h1>
+    <h1>Liste des Rendez-vous</h1>
 
     <table class="table table-hover" id="rendezvous-table">
     <thead>
@@ -10,7 +10,7 @@
             <th scope="col"> Date du Rendez-vous </th>
             <th scope="col"> Salle </th>
             <th scope="col"> Type </th>
-            <th scope="col"> Liste des Utilisateurs </th>
+            <th scope="col"> Liste des Utilisateurs présents </th>
             <th scope="col"> </th>
         </tr>
     </thead>
@@ -33,15 +33,19 @@
                 {% endif %}
             </td>
             <td> 
-                <button class="btn"> <a href="{{ path('back_rendezvous_edit', {'id': r.id}) }}"> Edit </a> </button> 
+                <button class="btn"> <a href="{{ path('back_rendezvous_edit', {'id': r.id}) }}"> Modifier </a> </button> 
                 {{ include('rendezvous/back/delete_form.html.twig') }}
             </td>
         </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">Aucun Rendez-vous en cours</td>
+            </tr>
         {% endfor %}
     </tbody>
     </table>
 
-    <a href="{{ path('back_rendezvous_new') }}"> Create new </a>
+    <a href="{{ path('back_rendezvous_new') }}"> Planifier un rendez-vous </a>
 
 {% endblock %}
 

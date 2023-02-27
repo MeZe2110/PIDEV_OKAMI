@@ -17,8 +17,7 @@ class RendezvousType
     private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Assert\NotBlank(message:"Must put a type first")]
-    #[Assert\Regex( pattern:'/^[a-z éèàùê&]{3,}$/i', message:'Not a valid type.' )]
+    #[Assert\Regex( pattern:'/^[a-z éèàùê&-_]{3,}$/i', message:'Type invalide, doit contenir au moins 3 caractères.' )]
     private ?string $type = null;
 
     #[ORM\OneToMany(mappedBy: 'Type', targetEntity: Rendezvous::class)]

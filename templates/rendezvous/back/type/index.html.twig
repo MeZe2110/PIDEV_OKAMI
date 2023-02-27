@@ -2,7 +2,7 @@
 
 {% block content %}
 
-    <h1>RendezvousType index</h1>
+    <h1>Liste des Types de Rendez-vous</h1>
 
     <table class="table">
         <thead>
@@ -18,18 +18,18 @@
                 <td>{{ rendezvous_type.id }}</td>
                 <td>{{ rendezvous_type.type }}</td>
                 <td>
-                    <button class="btn"><a href="{{ path('back_rendezvous_type_edit', {'id': rendezvous_type.id}) }}">edit</a> </button>
+                    <button class="btn"><a href="{{ path('back_rendezvous_type_edit', {'id': rendezvous_type.id}) }}">Modifier</a> </button>
                     {{ include('rendezvous/back/type/_delete_form.html.twig') }}
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="3">no records found</td>
+                <td colspan="3">Aucun Type existant</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('back_rendezvous_type_new') }}">Create new</a>
+    <a href="{{ path('back_rendezvous_type_new') }}">Retourner à la liste</a>
 
 {% endblock %}

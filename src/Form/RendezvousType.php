@@ -27,7 +27,7 @@ class RendezvousType extends AbstractType
             ->add('Salle')
             ->add('Type')
             ->add('Save',SubmitType::class, [
-                'label' => 'Save',
+                'label' => 'Enregistrer',
                 'attr' => ['class' => 'btn'],
             ]);
     }

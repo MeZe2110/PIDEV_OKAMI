@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: RendezvousRepository::class)]
-#[UniqueEntity(fields:['daterv', 'Salle'], errorPath: 'Salle', message:"A rendez-vous already exists this day in this room.")]
+#[UniqueEntity(fields:['daterv', 'Salle'], errorPath: 'Salle', message:"Il existe déjà un rendez-vous dans cette salle et à cette date.")]
 class Rendezvous
 {
     #[ORM\Id]
@@ -20,23 +20,21 @@ class Rendezvous
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Assert\NotBlank(message:"Date is required")]
-    #[Assert\GreaterThanOrEqual("today", message:"You cannot have a Rendez-Vous in the past.")]
+    #[Assert\NotBlank(message:"Une date est requise.")]
+    #[Assert\GreaterThanOrEqual("today", message:"Impossible de planifier un Rendez-Vous dans le passé.")]
     private ?\DateTimeInterface $daterv = null;
 
-    #[ORM\ManyToMany(targetEntity: Utilisateur::class, inversedBy: 'Rendezvous')]    
-    #[ORM\JoinColumn(nullable: true)]
-    #[Assert\NotBlank(message:"You must choose a user")]
-    #[Assert\Count(min:2, minMessage:"There must be at  two users to start a rendez-vous.")]
+    #[ORM\ManyToMany(targetEntity: Utilisateur::class, inversedBy: "Rendezvous")]
+    #[Assert\Count(min:2, minMessage:"Il doit y avoir au moins deux personne pour planifier un rendez-vous.")]
     private Collection $Utilisateur;
 
     #[ORM\ManyToOne(inversedBy: 'Rendezvous')]
-    #[ORM\JoinColumn(name: "Salle", referencedColumnName: "id", onDelete: "SET NULL")]
-    #[Assert\NotBlank(message:"A rendez-vous must be set in a room.")]
+    #[ORM\JoinColumn(name: "Salle", referencedColumnName: "id", nullable: true, onDelete: "SET NULL")]
+    #[Assert\NotBlank(message:"Un rendez-vous doit se passer dans une salle.")]
     private ?Salle $Salle = null;
 
     #[ORM\ManyToOne(inversedBy: 'rendezvous')]
-    #[ORM\JoinColumn(name: "Type", referencedColumnName: "id", onDelete: "SET NULL")]
+    #[ORM\JoinColumn(name: "Type", referencedColumnName: "id", nullable: true, onDelete: "SET NULL")]
     private ?RendezvousType $Type = null; 
 
     public function __construct()
