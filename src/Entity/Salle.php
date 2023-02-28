@@ -139,6 +139,6 @@ class Salle
 
     public function __toString()
     {
-        return 'Salle ' . $this->etagesa . $this->numsa;
+        return 'Salle ' . $this->etagesa . ($this->numsa < 10 ? 0 . $this->numsa : $this->numsa) ;
     }
 }

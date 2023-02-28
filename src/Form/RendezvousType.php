@@ -5,19 +5,22 @@ namespace App\Form;
 use App\Entity\Rendezvous;
 use App\Entity\Utilisateur;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormFactory;
-use Symfony\Component\Form\ResolvedFormType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
 class RendezvousType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('daterv')
+            ->add('daterv', DateTimeType::class, [
+
+                'date_widget' => 'single_text',
+                'time_widget' => 'single_text',
+            ])
             ->add('Utilisateur', EntityType::class, [
                 'class' => Utilisateur::class,
                 'expanded' => true,

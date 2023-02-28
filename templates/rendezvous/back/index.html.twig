@@ -18,19 +18,17 @@
         {% for r in RendezvousAndUtilisateur %}
         <tr>
             <td> {{ r.id }} </td>
-            <td> {{ r.daterv|date('d-m-Y') }} </td>
+            <td> {{ r.daterv ? r.daterv|format_datetime('full', 'short', locale='fr') }} </td>
             <td> {{ r.Salle }} </td>
             <td> {{ r.Type }} </td>
             <td>
-                {% if r.Utilisateur is not null and r.Utilisateur|length > 0 %}
-                    <ul>
-                    {% for u in r.Utilisateur %}
-                        <li> {{ u }}</ul>
-                    {% endfor %}
-                    </ul>
+                <ul>
+                {% for u in r.Utilisateur %}
+                    <li> {{ u }}</ul>
                 {% else %}
                     Aucun Utilisateur
-                {% endif %}
+                {% endfor %}
+                </ul>
             </td>
             <td> 
                 <button class="btn"> <a href="{{ path('back_rendezvous_edit', {'id': r.id}) }}"> Modifier </a> </button> 

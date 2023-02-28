@@ -19,7 +19,7 @@ class Rendezvous
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Assert\NotBlank(message:"Une date est requise.")]
     #[Assert\GreaterThanOrEqual("today", message:"Impossible de planifier un Rendez-Vous dans le passé.")]
     private ?\DateTimeInterface $daterv = null;
@@ -35,7 +35,10 @@ class Rendezvous
 
     #[ORM\ManyToOne(inversedBy: 'rendezvous')]
     #[ORM\JoinColumn(name: "Type", referencedColumnName: "id", nullable: true, onDelete: "SET NULL")]
-    private ?RendezvousType $Type = null; 
+    private ?RendezvousType $Type = null;
+
+    #[ORM\Column(type:"boolean", options: ["default" => true])]
+    private ?bool $Rappel = true; 
 
     public function __construct()
     {
@@ -110,5 +113,17 @@ class Rendezvous
     public function __toString()
     {
         return 'Rendez-vous ' . $this->Type . ' le : ' . $this->daterv->format('d-m-Y') . ' en salle ' . $this->Salle;
+    }
+
+    public function isRappel(): ?bool
+    {
+        return $this->Rappel;
+    }
+
+    public function setRappel(bool $Rappel): self
+    {
+        $this->Rappel = $Rappel;
+
+        return $this;
     }
 }
