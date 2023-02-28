@@ -17,7 +17,6 @@ class StockType extends AbstractType
             ->add('nomst')
             ->add('quantites')
             ->add('dateexpirationst', DateType::class, [
-                'label' => 'Choisissez votre date de début',
                 'required' => true,
                 'data' => new \DateTimeImmutable(),
                 'widget' => 'single_text',

@@ -4,6 +4,7 @@
 
 {% block body %}
 
+
 <main id="main" class="main">
     <style>
         table {
@@ -26,11 +27,17 @@
 
      </style>
  <center>
- <h1 style="color:#336699; font-family: Arial, sans-serif; ;">Liste de medicaments</h1>
+ <h1 style="color:#336699; font-family: Arial, sans-serif; ;">Liste des medicaments</h1>
  </center>
  <div> 
     <a href="{{ path('app_stockc_new')}}" class="btn btn-primary">Create new</a>
-
+    <br><br>
+    <form method="GET" action="{{ path('app_stockc_index') }}">
+        <div class="input-group" style="width: 500px">
+            <input type="text" name="search" class="form-control" id="searchInput" placeholder="Entrez votre recherche">
+            <button type="submit" class="btn btn-primary">Rechercher</button>
+        </div>
+    </form>
     <table border="3" class="table">
         <thead>
             <tr>
@@ -53,8 +60,8 @@
                 <td>{{ stock.description }}</td>
                 <td>{{ stock.stockcat }}</td>
                 <td>
-                    <a href="{{ path('app_stockc_show', {'id': stock.id}) }}">show</a>
-                    <a href="{{ path('app_stockc_edit', {'id': stock.id}) }}">edit</a>
+                    <a href="{{ path('app_stockc_edit', {'id': stock.id}) }} "class="btn btn-primary">edit</a>
+                    <br><br>
                     <form method="post" action="{{ path('app_stockc_delete', {'id': stock.id}) }}" >
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ stock.id) }}">
     <button class="btn btn-danger">Delete</button>

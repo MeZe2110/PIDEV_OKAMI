@@ -26,8 +26,7 @@ label {
             </table>
         </div>
     </center>
-    <div class="d-flex justify-content-center">
-        <button class="btn btn-primary mt-3" type="submit">{{ button_success|default('Save') }}</button>
+       <div class="d-grid"> <button class="btn btn-primary mt-3" type="submit">{{ button_success|default('Save') }}</button></div>
     </div>
     {{ form_end(form) }}
 {% endblock %}

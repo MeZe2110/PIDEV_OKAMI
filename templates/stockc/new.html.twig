@@ -2,17 +2,29 @@
 
 
 {% block body %}
-<main id="main" class="main">
+
 <center>
-<br><br>
- <h1 style="color:#336699; font-family: Arial, sans-serif; ;">AJOUTER UN MEDICAMENT</h1>
+<h1 style="color:#336699; font-family: Arial, sans-serif; ;">Ajouter un medicament un medicament</h1>
  </center>
-  <div class="d-flex flex-column align-items-center justify-content-center" style="height: 100vh;margin-top: -50px;"> 
-    
-    <div class="d-flex flex-column align-items-center justify-content-center" style="height: 250px; ">
-      {{ include('stockc/_form.html.twig') }}
-   
+<main id="main" class="main">
+    <table class="table">
+        <tr>
+            <center>
+<h1 style="color:#336699; font-family: Arial, sans-serif; ;">Ajouter un medicament</h1>
+ </center
+            </td>
+        </tr>
+        <tr>
+            <td>
+                {{ include('stockc/_form.html.twig', {'button_label': 'Update'}) }}
+            </td>
+        </tr>
+        
+        
+    </table>
 </main>
+
 {% endblock %}
+
 
 

@@ -40,13 +40,7 @@ class CategoriesController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_categories_show', methods: ['GET'])]
-    public function show(Stockcategories $stockcategory): Response
-    {
-        return $this->render('categories/show.html.twig', [
-            'stockcategory' => $stockcategory,
-        ]);
-    }
+   
 
     #[Route('/{id}/edit', name: 'app_categories_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Stockcategories $stockcategory, StockcategoriesRepository $stockcategoriesRepository): Response

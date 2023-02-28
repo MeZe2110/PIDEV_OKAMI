@@ -44,8 +44,9 @@
                 <td>{{ stockcategory.id }}</td>
                 <td>{{ stockcategory.typecat }}</td>
                 <td>
-                    <a href="{{ path('app_categories_show', {'id': stockcategory.id}) }}">show</a>
-                    <a href="{{ path('app_categories_edit', {'id': stockcategory.id}) }}">edit</a>
+                    
+                    <a href="{{ path('app_categories_edit', {'id': stockcategory.id}) }}"class="btn btn-primary">edit</a>
+                    <br><br>
                     <form method="post" action="{{ path('app_categories_delete', {'id': stockcategory.id}) }}" );">
         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ stockcategory.id) }}">
         <button class="btn btn-danger">Delete</button>
