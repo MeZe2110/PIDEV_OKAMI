@@ -2,13 +2,17 @@
 
 namespace App\Controller;
 
+use App\Entity\Plannification;
 use ContainerJA2Xfg6\getPlannificationControllerService;
 use Dompdf\Dompdf;
-use App\Entity\Plannification;
+use App\Form\PlannificationType;
+use App\Repository\PlannificationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Dompdf\Options;
+use Endroid\QrCode\QrCode;
+
 
 class PDFController extends AbstractController
 {
@@ -41,24 +45,28 @@ class PDFController extends AbstractController
     #[Route('/generate-pdf-all', name: 'app_generate_pdf_all')]
     public function generatePdfAction()
     {
-        $em = $this->getDoctrine()->getManager();
-        $plannification = $em->getRepository(Plannification::class)->findAll();
+        $plannifications = $this->getDoctrine()
+            ->getRepository(Plannification::class)
+            ->findAll();
+        // Créer une instance de Dompdf
+        $dompdf = new Dompdf();
 
+        // Générer le HTML à partir d'un template Twig
         $html = $this->renderView('pdf/plannificationAll.html.twig', [
-            'plannifications' => $plannification,
+            'plannifications' => $plannifications
         ]);
 
-        $pdfOptions = new Options();
-        $pdfOptions->set('defaultFont', 'Arial');
-
-        $dompdf = new Dompdf($pdfOptions);
+        // Charger le HTML dans Dompdf
         $dompdf->loadHtml($html);
 
-        $dompdf->setPaper('A4', 'landscape');
+        // Rendre le PDF
         $dompdf->render();
 
-        $dompdf->stream("plannification_list.pdf", [
-            "Attachment" => false
+        // Renvoyer le PDF au navigateur
+        return new Response($dompdf->output(), 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="plannifications.pdf"'
         ]);
     }
+
 }

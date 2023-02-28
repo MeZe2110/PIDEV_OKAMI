@@ -1,29 +1,69 @@
 <!DOCTYPE html>
 <html>
-<table style="background-color: rgba(0, 34, 255, 0.03); border-collapse: collapse; margin-top: 200px; width: 70%; font-size: 20px; margin-right: 50px; margin-left: 350px;" class="table table-striped">
-    <thead>
-    <tr>
-        <th scope="col">Id</th>
-        <th scope="col">Date Plannification</th>
-        <th scope="col">Heure Debut</th>
-        <th scope="col">Heure Fin</th>
-        <th scope="col">Salle</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for plannification in plannifications %}
+<head>
+    <meta charset="UTF-8">
+    <title>Plannification</title>
+    <style>
+        h1 {
+            text-align: center;
+            margin-top: 50px;
+            margin-bottom: 50px;
+            color: rgb(26, 150, 126);
+        }
+        table {
+            background-color: white;
+            border: 2px solid rgb(26, 150, 126);
+            border-collapse: collapse;
+            width: 70%;
+            margin: 0 auto;
+            background-color: rgba(0, 34, 255, 0.03);
+            border-collapse: collapse;
+            font-size: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid rgb(26, 150, 126);
+        }
+
+        .table-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+<div class="table-container">
+    <h1>Liste Des Plannifications</h1>
+    <table class="table table-striped">
+        <thead>
         <tr>
-            <td>{{ plannification.id }}</td>
-            <td>{{ plannification.datepl ? plannification.datepl|date('Y-m-d') : '' }}</td>
-            <td>{{ plannification.heuredebutpl ? plannification.heuredebutpl|date('H:i:s') : '' }}</td>
-            <td>{{ plannification.heurefinpl ? plannification.heurefinpl|date('H:i:s') : '' }}</td>
-            <td>{{ plannification.salle }}</td>
+            <th scope="col">Id</th>
+            <th scope="col">Date Plannification</th>
+            <th scope="col">Heure Debut</th>
+            <th scope="col">Heure Fin</th>
+            <th scope="col">Salle</th>
         </tr>
-    {% else %}
-        <tr>
-            <td colspan="5">no records found</td>
-        </tr>
-    {% endfor %}
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+        {% for plannification in plannifications %}
+            <tr>
+                <td>{{ plannification.id }}</td>
+                <td>{{ plannification.datepl ? plannification.datepl|date('Y-m-d') : '' }}</td>
+                <td>{{ plannification.heuredebutpl ? plannification.heuredebutpl|date('H:i:s') : '' }}</td>
+                <td>{{ plannification.heurefinpl ? plannification.heurefinpl|date('H:i:s') : '' }}</td>
+                <td>{{ plannification.salle }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+</body>
 </html>
