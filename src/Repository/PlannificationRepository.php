@@ -45,11 +45,8 @@ class PlannificationRepository extends ServiceEntityRepository
 
         $queryBuilder->select('p')
             ->from(Plannification::class, 'p')
-            ->join('p.salle', 's')
+            ->Join('p.salle', 's')
             ->where('s.numsa LIKE :search')
-            ->orWhere('p.datepl LIKE :search')
-            ->orWhere('p.heuredebutpl LIKE :search')
-            ->orWhere('p.heurefinpl LIKE :search')
             ->setParameter('search', '%'.$search.'%');
 
         return $queryBuilder->getQuery()->getResult();

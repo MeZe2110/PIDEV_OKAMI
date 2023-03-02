@@ -9,6 +9,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\SerializerInterface;
 
 #[Route('/salle')]
 class SalleController extends AbstractController
@@ -83,4 +87,24 @@ class SalleController extends AbstractController
 
         return $this->redirectToRoute('app_salle_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    /*#[Route("/AllSalle", name: "list")]
+    public function getSalles(SalleRepository $repo, SerializerInterface $serializer)
+    {
+        $salles = $repo->findAll();
+        //* Nous utilisons la fonction normalize qui transforme le tableau d'objets
+        //* students en  tableau associatif simple.
+        //$sallesNormalises = $normalizer->normalize($salles, 'json', ['groups' => "salles"]);
+
+        // //* Nous utilisons la fonction json_encode pour transformer un tableau associatif en format JSON
+        //$json = json_encode($sallesNormalises);
+
+        $json = $serializer->serialize($salles, 'json', ['groups' => "salles"]);
+
+        //* Nous renvoyons une réponse Http qui prend en paramètre un tableau en format JSON
+        return new Response($json);
+    }*/
+
+
+
 }

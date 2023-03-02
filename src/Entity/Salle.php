@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\SalleRepository;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use http\Message;
@@ -16,23 +17,27 @@ class Salle
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups("salles")]
     private ?int $id = null;
 
     #[ORM\Column]
     #[Assert\NotBlank (message:"Numéro de la salle requis !")]
     #[Assert\Positive(message:"Numéro de la salle doit etre positive !")]
     #[Assert\LessThanOrEqual(value:10, message:"Le numéro de la salle doit être inférieur ou égal à 10")]
+    #[Groups("salles")]
     private ?int $numsa = null;
 
     #[ORM\Column]
     #[Assert\NotBlank (message:"Étage de la salle requis !")]
     #[Assert\GreaterThanOrEqual(value: 0, message:"L'étage de la salle doit être supérieur ou égal à 0")]
     #[Assert\LessThanOrEqual(value:6, message:"L'étage de la salle doit être inférieur ou égal à 6")]
+    #[Groups("salles")]
     private ?int $etagesa = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank (message:"Type de la salle requis !")]
     #[Assert\Choice(choices: ['soin', 'operation'], message: 'Le type de salle doit être "soin" ou "operation".')]
+    #[Groups("salles")]
     private ?string $typesa = null;
 
     #[ORM\OneToMany(mappedBy: 'salle', targetEntity: Plannification::class)]

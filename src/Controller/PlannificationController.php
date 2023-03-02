@@ -95,4 +95,5 @@ class PlannificationController extends AbstractController
 
         return $this->redirectToRoute('app_plannification_index', [], Response::HTTP_SEE_OTHER);
     }
+
 }

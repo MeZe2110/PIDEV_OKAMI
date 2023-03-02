@@ -20,20 +20,13 @@
             font-weight: bold;
             color: blue;
             margin-bottom: 50px;
-            margin-top: 100px;
+            margin-top: 150px;
         }
     </style>
+
     <h1 class="text-center">Plannification Index</h1>
 
-    <form method="GET" action="{{ path('app_plannification_index') }}">
-        <div class="input-group" style="width: 500px">
-            <input type="text" name="search" class="form-control" id="searchInput" placeholder="Entrez votre recherche">
-            <button type="submit" class="btn btn-primary">Rechercher</button>
-        </div>
-    </form>
-
     <div class="d-flex align-items-center justify-content-center" style="height: 500px">
-
         <table class="table table-striped">
             <thead>
             <tr>
@@ -68,4 +61,194 @@
             </tbody>
         </table>
     </div>
+
+    <!--  Statistiques -->
+    {% set nbPlannifications = plannifications|length %}
+    {% set nbPlannificationsSalle0 = 0 %}
+    {% set nbPlannificationsSalle1 = 0 %}
+    {% set nbPlannificationsSalle2 = 0 %}
+    {% set nbPlannificationsSalle3 = 0 %}
+    {% set nbPlannificationsSalle4 = 0 %}
+    {% set nbPlannificationsSalle5 = 0 %}
+    {% set nbPlannificationsSalle6 = 0 %}
+    {% set nbPlannificationsSalle7 = 0 %}
+    {% set nbPlannificationsSalle8 = 0 %}
+    {% set nbPlannificationsSalle9 = 0 %}
+
+    {% for plannification in plannifications %}
+
+        {% if plannification.salle == '0' %}
+            {% set nbPlannificationsSalle0 = nbPlannificationsSalle0 + 1 %}
+        {% elseif plannification.salle == '1' %}
+            {% set nbPlannificationsSalle1 = nbPlannificationsSalle1 + 1 %}
+            {% elseif plannification.salle == '2' %}
+                {% set nbPlannificationsSalle2 = nbPlannificationsSalle2 + 1 %}
+            {% elseif plannification.salle == '3' %}
+                {% set nbPlannificationsSalle3 = nbPlannificationsSalle3 + 1 %}
+                {% elseif plannification.salle == '4' %}
+                    {% set nbPlannificationsSalle4 = nbPlannificationsSalle4 + 1 %}
+                {% elseif plannification.salle == '5' %}
+                    {% set nbPlannificationsSalle5 = nbPlannificationsSalle5 + 1 %}
+                    {% elseif plannification.salle == '6' %}
+                        {% set nbPlannificationsSalle6 = nbPlannificationsSalle6 + 1 %}
+                    {% elseif plannification.salle == '7' %}
+                        {% set nbPlannificationsSalle7 = nbPlannificationsSalle7 + 1 %}
+                        {% elseif plannification.salle == '8' %}
+                            {% set nbPlannificationsSalle8 = nbPlannificationsSalle8 + 1 %}
+                        {% elseif plannification.salle == '9' %}
+                            {% set nbPlannificationsSalle9 = nbPlannificationsSalle9 + 1 %}
+        {% endif %}
+    {% endfor %}
+
+<h1>% Plannifications par Salle</h1>
+    <div class="card">
+    <div class="card-body">
+
+    <!-- Pie Chart -->
+    <div id="pieChart"></div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            new ApexCharts(document.querySelector("#pieChart"), {
+                series: [
+                    {{ nbPlannificationsSalle0 }},
+                    {{ nbPlannificationsSalle1 }},
+                    {{ nbPlannificationsSalle2 }},
+                    {{ nbPlannificationsSalle3 }},
+                    {{ nbPlannificationsSalle4 }},
+                    {{ nbPlannificationsSalle5 }},
+                    {{ nbPlannificationsSalle6 }},
+                    {{ nbPlannificationsSalle7 }},
+                    {{ nbPlannificationsSalle8 }},
+                    {{ nbPlannificationsSalle9 }}
+                ],
+                chart: {
+                    height: 350,
+                    type: 'pie',
+                    toolbar: {
+                        show: true
+                    }
+                },
+                labels: ['Salle 0', 'Salle 1', 'Salle 2', 'Salle 3', 'Salle 4', 'Salle 5', 'Salle 6', 'Salle 7', 'Salle 8', 'Salle 9']
+            }).render();
+        });
+    </script>
+    <!-- End Pie Chart -->
+    </div>
+    </div>
+
+    {% set nbrPlannificationJanvier = 0 %}
+    {% set nbrPlannificationFevrier = 0 %}
+    {% set nbrPlannificationMars = 0 %}
+    {% set nbrPlannificationAvril = 0 %}
+    {% set nbrPlannificationMai = 0 %}
+    {% set nbrPlannificationJuin = 0 %}
+    {% set nbrPlannificationJuillet = 0 %}
+    {% set nbrPlannificationAout = 0 %}
+    {% set nbrPlannificationSeptembre = 0 %}
+    {% set nbrPlannificationOctobre = 0 %}
+    {% set nbrPlannificationNovembre = 0 %}
+    {% set nbrPlannificationDecembre = 0 %}
+
+    {% for plannification in plannifications %}
+        {% set mois = plannification.datepl|date('m') %}
+        {% if mois == '01' %}
+            {% set nbrPlannificationJanvier = nbrPlannificationJanvier + 1 %}
+            {% elseif mois == '02' %}
+            {% set nbrPlannificationFevrier = nbrPlannificationFevrier + 1 %}
+            {% elseif mois == '03' %}
+            {% set nbrPlannificationMars = nbrPlannificationMars + 1 %}
+            {% elseif mois == '04' %}
+            {% set nbrPlannificationAvril = nbrPlannificationAvril + 1 %}
+            {% elseif mois == '05' %}
+            {% set nbrPlannificationMai = nbrPlannificationMai + 1 %}
+            {% elseif mois == '06' %}
+            {% set nbrPlannificationJuin = nbrPlannificationJuin + 1 %}
+            {% elseif mois == '07' %}
+            {% set nbrPlannificationJuillet = nbrPlannificationJuillet + 1 %}
+            {% elseif mois == '08' %}
+            {% set nbrPlannificationAout = nbrPlannificationAout + 1 %}
+            {% elseif mois == '09' %}
+            {% set nbrPlannificationSeptembre = nbrPlannificationSeptembre + 1 %}
+            {% elseif mois == '10' %}
+            {% set nbrPlannificationOctobre = nbrPlannificationOctobre + 1 %}
+            {% elseif mois == '11' %}
+            {% set nbrPlannificationNovembre = nbrPlannificationNovembre + 1 %}
+            {% elseif mois == '12' %}
+            {% set nbrPlannificationDecembre = nbrPlannificationDecembre + 1 %}
+        {% endif %}
+    {% endfor %}
+    <center>
+        <h1>Plannifications Par Mois</h1>
+    <div class="col-lg-6">
+    <div class="card">
+    <div class="card-body">
+    <!-- Bar Chart -->
+    <canvas id="barChart" style="max-height: 400px;"></canvas>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const labels = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre']
+            const data = [
+                {{ nbrPlannificationJanvier }},
+                {{ nbrPlannificationFevrier }},
+                {{ nbrPlannificationMars }},
+                {{ nbrPlannificationAvril }},
+                {{ nbrPlannificationMai }},
+                {{ nbrPlannificationJuin }},
+                {{ nbrPlannificationJuillet }},
+                {{ nbrPlannificationAout }},
+                {{ nbrPlannificationSeptembre }},
+                {{ nbrPlannificationOctobre }},
+                {{ nbrPlannificationNovembre }},
+                {{ nbrPlannificationDecembre }},
+
+            ];
+
+
+            new Chart(document.querySelector('#barChart'), {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Nombre de Plannifications',
+                        data: data,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(255, 159, 64, 0.2)',
+                            'rgba(255, 205, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(201, 203, 207, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgb(255, 99, 132)',
+                            'rgb(255, 159, 64)',
+                            'rgb(255, 205, 86)',
+                            'rgb(75, 192, 192)',
+                            'rgb(54, 162, 235)',
+                            'rgb(153, 102, 255)',
+                            'rgb(201, 203, 207)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+    <!-- End Bar CHart -->
+
+    </div>
+    </div>
+    </div>
+    </center>
+
+
 {% endblock %}

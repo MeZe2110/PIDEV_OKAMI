@@ -24,7 +24,9 @@
 
         <!-- Template Main CSS File -->
         <link href="{{asset('assets/css/style.css')}}" rel="stylesheet">
+        <link href="{{asset('assets/vendor/simple-datatables/style.css')}}" rel="stylesheet">
     {% endblock %}
+
 
     {% block javascripts %}
         <script src="{{asset('assets/vendor/apexcharts/apexcharts.min.js')}}"></script>
@@ -53,9 +55,11 @@
     </div><!-- End Logo -->
 
     <div class="search-bar">
-        <form class="search-form d-flex align-items-center" method="POST" action="#">
-            <input type="text" name="query" placeholder="Search" title="Enter search keyword">
-            <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+        <form method="GET" action="{{ path('app_plannification_index') }}">
+            <div class="input-group" style="width: 500px">
+                <input type="text" name="search" class="form-control" id="search-input" placeholder="Entrez votre recherche">
+                <button type="submit" class="btn btn-primary">Rechercher</button>
+            </div>
         </form>
     </div><!-- End Search Bar -->
 
