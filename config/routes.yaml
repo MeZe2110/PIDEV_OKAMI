@@ -7,8 +7,12 @@ pdf:
 
 app_plannification_index:
   path: /plannification
-  methods: GET
+  methods: [GET, POST]
   controller: App\Controller\PlannificationController::index
+
+app_plannification_generate_qr_code:
+  path: '/plannification/generate-qr-code'
+  controller: App\Controller\PlannificationController::generateQrCodeAction
 
 
 

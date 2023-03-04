@@ -5,15 +5,26 @@ namespace App\Controller;
 use App\Entity\Plannification;
 use App\Form\PlannificationType;
 use App\Repository\PlannificationRepository;
+use App\Services\QRCodeService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Response\QrCodeResponse;
+use Endroid\QrCode\Writer;
+use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelHigh;
+use Endroid\QrCode\Label\Alignment\LabelAlignmentCenter;
+use Endroid\QrCode\Label\Font\NotoSans;
+use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
+use Endroid\QrCode\Writer\PngWriter;
 
 #[Route('/plannification')]
 class PlannificationController extends AbstractController
 {
-    #[Route('/', name: 'app_plannification_index', methods: ['POST'])]
+    #[Route('/', name: 'app_plannification_index', methods: ['GET'])]
     public function index(Request $request): Response
     {
         $search = $request->query->get('search');
@@ -63,8 +74,10 @@ class PlannificationController extends AbstractController
     #[Route('/{id}', name: 'app_plannification_show', methods: ['GET'])]
     public function show(Plannification $plannification): Response
     {
+
+
         return $this->render('plannification/show.html.twig', [
-            'plannification' => $plannification,
+            'plannification' => $plannification
         ]);
     }
 
@@ -95,5 +108,19 @@ class PlannificationController extends AbstractController
 
         return $this->redirectToRoute('app_plannification_index', [], Response::HTTP_SEE_OTHER);
     }
+    /*public function generateQrCode()
+    {
+        $qrCode = new QrCode('Hello, world!');
+        $qrCode->setWriter('png');
+        $qrCodeData = $qrCode->writeString();
+        $response = new Response($qrCodeData);
+        $response->headers->set('Content-Type', $qrCode->getContentType());
+        return $response;
+    }*/
+
+
+
+
+
 
 }

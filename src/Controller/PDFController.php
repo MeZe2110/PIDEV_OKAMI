@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Plannification;
+use App\Services\QRCodeService;
 use ContainerJA2Xfg6\getPlannificationControllerService;
 use Dompdf\Dompdf;
 use App\Form\PlannificationType;
@@ -17,8 +18,9 @@ use Endroid\QrCode\QrCode;
 class PDFController extends AbstractController
 {
     #[Route('/generate-pdf/{id}', name: 'app_generate_pdf')]
-    public function generatePdf($id)
+    public function generatePdf($id,QRCodeService $QRCodeService)
     {
+        $qrCode= $QRCodeService->qrcode($id);
         // Récupérer la plannification à afficher en PDF
         $plannification = $this->getDoctrine()->getRepository(Plannification::class)->find($id);
 
@@ -27,7 +29,8 @@ class PDFController extends AbstractController
 
         // Générer le HTML à partir d'un template Twig
         $html = $this->renderView('pdf/plannification.html.twig', [
-            'plannification' => $plannification
+            'plannification' => $plannification,
+            'qrCode'=>$qrCode
         ]);
 
         // Charger le HTML dans Dompdf

@@ -1,17 +1,18 @@
-$(document).ready(function() {
-    $('#search-input').keyup(function() {
-        var searchQuery = $(this).val();
+$(function() {
+    $('#search-form').submit(function(event) {
+        event.preventDefault();
+
         $.ajax({
-            type: 'GET',
-            url: '/plannification/search',
+            url: '/search',
+            method: 'GET',
             data: {
-                search: searchQuery
+                term: $('#search-term').val()
             },
-            success: function(data) {
-                // Mettre à jour la page avec les résultats de la recherche
+            success: function(response) {
+                $('#search-results').html(response);
             },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.log('Une erreur s\'est produite lors de la recherche:', textStatus, errorThrown);
+            error: function(xhr, status, error) {
+                console.log('Erreur lors de la recherche : ' + error);
             }
         });
     });
