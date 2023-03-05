@@ -15,16 +15,16 @@ class Categoriesequipement
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups("CategoriesEquipement")]
+
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message:"name is required")]
-    #[Groups("CategoriesEquipement")]
+    #[Groups("Equipement")]
     private ?string $nomcate = null;
 
     #[ORM\OneToMany(mappedBy: 'cate', targetEntity: Equipement::class)]
-    #[Groups("CategoriesEquipement")]
+
     private Collection $equipements;
 
     public function __construct()

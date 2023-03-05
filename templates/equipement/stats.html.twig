@@ -1,0 +1,82 @@
+{% extends "Template_Back/base.html.twig" %}
+
+{% block title %}Equipement Stats{% endblock %}
+
+{% block content %}
+    <style>
+        .chart-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        canvas {
+            max-height: 400px;
+            margin: 10px;
+        }
+    </style>
+
+    <h1>Equipement Stats</h1>
+<div class="chart-container">
+    <div>
+    <canvas id="pieChart"></canvas>
+        </div>
+    <div><canvas id="doughnutChart"></canvas></div>
+    <div>
+    <canvas id="barChart" ></canvas>
+    </div>
+</div>
+    {% if counts %}
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                new Chart(document.querySelector('#pieChart'), {
+                    type: 'pie',
+                    data: {
+                        labels: [
+                            'Intact',
+                            'Detruit'
+                        ],
+                        datasets: [{
+                            label: 'Statistics by state',
+                            data: [{{ counts[0]['count'] }}, {{ counts[1]['count'] }}],
+                            backgroundColor: [
+                                'rgb(54, 162, 235)',
+                                'rgb(255, 99, 132)'
+                            ],
+                            hoverOffset: 4
+                        }]
+                    }
+                });
+            });
+        </script>
+    {% endif %}
+    {%  if countsD %}
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            new Chart(document.querySelector('#doughnutChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: [
+                        'Disponible' ,
+                        'Utilisé'
+                    ],
+                    datasets: [{
+                        label: 'Statistique by Disponibility',
+                        data: [{{ countsD[0]['count'] }}, {{ countsD[1]['count'] }}],
+                        backgroundColor: [
+                            'rgb(255, 99, 132)',
+                            'rgb(54, 162, 235)',
+                            'rgb(255, 205, 86)'
+                        ],
+                        hoverOffset: 4
+                    }]
+                }
+            });
+        });
+    </script>
+    {% endif %}
+
+
+{% endblock %}
+
+

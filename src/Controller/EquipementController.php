@@ -16,8 +16,22 @@ class EquipementController extends AbstractController
     #[Route('/', name: 'app_equipement_index', methods: ['GET'])]
     public function index(EquipementRepository $equipementRepository): Response
     {
-        return $this->render('equipement/index.html.twig', [
+
+        return $this->render('equipement/index.html.twig',[ 'equipements' => $equipementRepository->findAll()]);
+    }
+
+    #[Route('/Stats', name: 'app_statistique',methods: ['GET'])]
+    public function statsequipe(EquipementRepository $equipementRepository): Response
+    {
+        $counts = $equipementRepository->countBy('etateq');
+        dump($counts) ;
+        $countsD = $equipementRepository->countByDispo('dispoeq');
+        dump($countsD) ;
+        return $this->render('equipement/stats.html.twig', [
             'equipements' => $equipementRepository->findAll(),
+            'counts' => $counts,
+            'countsD' => $countsD,
+
         ]);
     }
 
@@ -83,4 +97,5 @@ class EquipementController extends AbstractController
 
         return $this->redirectToRoute('app_equipement_index', [], Response::HTTP_SEE_OTHER);
     }
+
 }

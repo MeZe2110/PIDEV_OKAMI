@@ -39,6 +39,27 @@ class EquipementRepository extends ServiceEntityRepository
         }
     }
 
+    public function countBy(): array
+    {
+        return $this->createQueryBuilder('e')
+            ->select('COUNT(e.id) as count, e.etateq')
+            ->groupBy('e.etateq')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function countByDispo(): array
+    {
+        return $this->createQueryBuilder('e')
+            ->select('COUNT(e.id) as count, e.dispoeq')
+            ->groupBy('e.dispoeq')
+            ->getQuery()
+            ->getResult();
+    }
+
+
+
+
 //    /**
 //     * @return Equipement[] Returns an array of Equipement objects
 //     */
