@@ -27,6 +27,7 @@ class PlannificationController extends AbstractController
     #[Route('/', name: 'app_plannification_index', methods: ['GET'])]
     public function index(Request $request): Response
     {
+        $sort = $request->query->get('sort', 'desc');
         $search = $request->query->get('search');
 
         if ($search) {
@@ -36,7 +37,7 @@ class PlannificationController extends AbstractController
         } else {
             $plannifications = $this->getDoctrine()
                 ->getRepository(Plannification::class)
-                ->findAll();
+                ->findBy([], ['datepl' => $sort]);
         }
 
         return $this->render('plannification/index.html.twig', [

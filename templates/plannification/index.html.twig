@@ -4,15 +4,16 @@
 
 {% block body %}
     <style>
+        select{
+            margin-left: 500px;
+        }
 
         table {
             background-color: rgba(0, 34, 255, 0.03);
             border-collapse: collapse;
-            margin-top: 250px;
-            width: 70%;
+            margin-top: 50px;
             font-size: 20px;
-            margin-right: 50px;
-            margin-left: 350px;
+            margin-left: 220px;
         }
         h1{
             text-align: center;
@@ -25,9 +26,15 @@
     </style>
 
     <h1 class="text-center">Plannification Index</h1>
-
-    <div class="d-flex align-items-center justify-content-center" style="height: 500px">
-        <table class="table table-striped">
+    <form class="form-inline my-2 my-lg-0" method="get" style="width: 500px">
+        <select class="form-control" name="sort">
+            <option value="desc" {% if app.request.query.get('sort') == 'desc' %}selected{% endif %}>Trier par date décroissante</option>
+            <option value="asc" {% if app.request.query.get('sort') == 'asc' %}selected{% endif %}>Trier par date croissante</option>
+        </select>
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit" style="margin-left: 700px">Trier</button>
+    </form>
+<center>
+        <table class="table table-striped" style="width: 70%">
             <thead>
             <tr>
                 <th scope="col">Date Plannification</th>
@@ -36,9 +43,12 @@
                 <th scope="col">Salle</th>
                 <th><a href="{{ path('app_plannification_new') }}" class="btn btn-primary">Ajouter Plannification</a></th>
                 <th><a href="{{ path('app_generate_pdf_all') }}" class="btn btn-success">Exporter PDF</a></th>
+                <th>
+                </th>
                 <th scope="col"></th>
 
             </tr>
+
             </thead>
             <tbody>
             {% for plannification in plannifications %}
@@ -60,6 +70,7 @@
             {% endfor %}
             </tbody>
         </table>
+</center>
     </div>
 
     <!--  Statistiques -->
@@ -100,7 +111,7 @@
         {% endif %}
     {% endfor %}
 
-<h1>% Plannifications par Salle</h1>
+<h1>Plannifications par Salle (%)</h1>
     <div class="card">
     <div class="card-body">
 
