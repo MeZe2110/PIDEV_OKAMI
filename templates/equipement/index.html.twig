@@ -3,9 +3,13 @@
 {% block title %}Equipement index{% endblock %}
 
 {% block content %}
+
     <h1>Equipement List</h1>
 
-    <table class="table table-hover">
+    <table  id="results" class="table table-hover">
+        <div>
+            <input type="text" id="search" class="form-control" placeholder="Recherche ">
+        </div>
         <thead>
             <tr>
                 <th>Id</th>
@@ -40,6 +44,25 @@
     </table>
 
     <a href="{{ path('app_equipement_new') }}">Create new</a>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#search').keyup(function() {
+                var value = $(this).val();
+                $.ajax({
+                    url: "{{ path('search') }}",
+                    type: "POST",
+                    data: {value: value},
+                    success: function(data) {
+
+                        $('#results').html(data);
+                        $('#results').css('width', '100%');
+                        $('#results').css('position', 'static');
+                    }
+                });
+            });
+        });
+    </script>
 
 
 {% endblock %}

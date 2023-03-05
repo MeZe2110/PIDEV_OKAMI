@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 #[Route('/equipement')]
 class EquipementController extends AbstractController
@@ -20,8 +21,18 @@ class EquipementController extends AbstractController
         return $this->render('equipement/index.html.twig',[ 'equipements' => $equipementRepository->findAll()]);
     }
 
+    #[Route('/search', name: 'search')]
+    public function search(Request $request, EquipementRepository $repository): Response
+    {
+        $value = $request->request->get('value');
+        $equipement = $repository->searchBynom($value);
+        return $this->render('equipement/search.html.twig', [
+            'equipements' => $equipement
+        ]);
+    }
+
     #[Route('/Stats', name: 'app_statistique',methods: ['GET'])]
-    public function statsequipe(EquipementRepository $equipementRepository): Response
+    public function statsequipe(EquipementRepository $equipementRepository)
     {
         $counts = $equipementRepository->countBy('etateq');
         dump($counts) ;

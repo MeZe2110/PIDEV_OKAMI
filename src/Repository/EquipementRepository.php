@@ -57,6 +57,16 @@ class EquipementRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function searchBynom($value)
+    {
+        return $this->createQueryBuilder('e')
+            ->where('e.nomeq LIKE :value OR e.etateq LIKE :value OR e.dispoeq LIKE :value  ')
+            ->setParameter('value', '%'.$value.'%')
+            ->orderBy('e.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
 
 
 
