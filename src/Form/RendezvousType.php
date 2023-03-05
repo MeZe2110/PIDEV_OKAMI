@@ -7,19 +7,23 @@ use App\Entity\Utilisateur;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type as Type;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 
 class RendezvousType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('daterv', DateTimeType::class, [
-
+            ->add('daterv', Type\DateTimeType::class, [
                 'date_widget' => 'single_text',
                 'time_widget' => 'single_text',
+                'invalid_message' => 'La date est invalide.',
+            ])
+            ->add('endAt', Type\TimeType::class, [
+                
             ])
             ->add('Utilisateur', EntityType::class, [
                 'class' => Utilisateur::class,
@@ -29,10 +33,11 @@ class RendezvousType extends AbstractType
             ])
             ->add('Salle')
             ->add('Type')
-            ->add('Save',SubmitType::class, [
+            ->add('Save', Type\SubmitType::class, [
                 'label' => 'Enregistrer',
                 'attr' => ['class' => 'btn'],
-            ]);
+            ])
+            ->addEventListener(FormEvents::POST_SUBMIT, [$this, 'onPostSubmit']);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -42,5 +47,19 @@ class RendezvousType extends AbstractType
         ]);
     }
 
+    public function onPostSubmit(FormEvent $event)
+    {
+        $data = $event->getData();
+        $daterv = $data->getDaterv();
+        $endTo = $data->getEndAt();
+        
+        if ($endTo instanceof \DateTimeInterface && $daterv instanceof \DateTimeInterface) {
+            $endToDatetime = (clone $daterv)->modify('+' . $endTo->format('H') . ' hours +'. $endTo->format('i') . ' minutes');
+            $data->setEndAt($endToDatetime);
+            $data->setRappel(true);
+            $event->setData($data);
+        }
+
+    }
 
 }

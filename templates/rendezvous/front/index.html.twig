@@ -19,19 +19,21 @@
         </tr>
     </thead>
     <tbody>
-        {% for r in RendezvousAndUtilisateur %}
+        {% for r in rendezvous %}
         <tr>
             <td> {{ r.daterv ? r.daterv|format_datetime('full', 'short', locale='fr') }} </td>
             <td> {{ r.Salle }} </td>
             <td> {{ r.Type }} </td>
             <td>
-                <ul>
-                {% for u in r.Utilisateur %}
-                    <li> {{ u }}</ul>
+                {% if r.Utilisateur is not empty and r.Utilisateur|length > 0  %}
+                <select class="form-select" multiple="true" size="3" disabled>
+                    {% for u in r.Utilisateur %}
+                        <option value="{{ u }}"> {{ u }} </option>
+                    {% endfor %}
+                </select>
                 {% else %}
                     Aucun Utilisateur
-                {% endfor %}
-                </ul>
+                {% endif %}
             </td>
             <td> 
                 <button class="btn"> <a href="{{ path('front_rendezvous_edit', {'id': r.id}) }}"> Modifier </a> </button> 

@@ -6,6 +6,7 @@ use App\Entity\Rendezvous;
 use App\Form\RendezvousType;
 use App\Repository\RendezvousRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,14 +18,10 @@ class RendezvousController extends AbstractController
     #[Route('/back/rendezvous/', name: 'back_rendezvous_index', methods: ['GET'])]
     public function backIndex(RendezvousRepository $rendezvousRepository): Response
     {
-        $RendezvousAndUtilisateur = $rendezvousRepository->createQueryBuilder('r')
-            ->select('r')
-            ->leftJoin('r.Utilisateur', 'Utilisateur')
-            ->getQuery()
-            ->getResult();
-
+        $now = new \DateTime;
         return $this->render('rendezvous/back/index.html.twig', [
-            'RendezvousAndUtilisateur' => $RendezvousAndUtilisateur,
+            'rendezvous' => $rendezvousRepository->getRendezvous($now),
+            'Historique' => $rendezvousRepository->getOldRendezvous($now),
         ]);
     }
 
@@ -84,16 +81,10 @@ class RendezvousController extends AbstractController
     {
         // $userId = $session->get('userId');
         $userId = 2;
-        $RendezvousAndUtilisateur = $rendezvousRepository->createQueryBuilder('r')
-            ->select('r')
-            ->where('Utilisateur.id = :userId')
-            ->setParameter('userId', $userId)
-            ->leftJoin('r.Utilisateur', 'Utilisateur')
-            ->getQuery()
-            ->getResult();
-
+        $now = new \DateTime();
+        
         return $this->render('rendezvous/front/index.html.twig', [
-            'RendezvousAndUtilisateur' => $RendezvousAndUtilisateur,
+            'rendezvous' => $rendezvousRepository->getRendezvousByUser($now, $userId),
         ]);
     }
 
@@ -144,7 +135,24 @@ class RendezvousController extends AbstractController
         return $this->redirectToRoute('front_rendezvous_index', [], Response::HTTP_SEE_OTHER);
     }
 
+    #[Route('back/rendezvous/clear/{param}', name: 'rendezvous_historique', methods: ['GET', 'POST'])]
+    public function clearHistorique(RendezvousRepository $rendezvousRepository, $param = 0)
+    {
+        $date = new \DateTime("-1 months");
 
+        $ids = array_map(function ($rendezvous) {
+            return $rendezvous->getId();
+        }, $rendezvousRepository->getOldRendezvous($date));
+
+        if ($param) {
+            // Get the current date to clear everything
+            $date = new \DateTime();
+        }
+
+        return new JsonResponse(['id' => $ids, 'success' => $rendezvousRepository->clearOldRendezvous($date)]);
+    }
+
+    
 
 
 }

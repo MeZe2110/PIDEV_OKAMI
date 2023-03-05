@@ -19,7 +19,7 @@ class Rendezvous
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, options: ['default' => 'CURRENT_TIMESTAMP'])]
     #[Assert\NotBlank(message:"Une date est requise.")]
     #[Assert\GreaterThanOrEqual("today", message:"Impossible de planifier un Rendez-Vous dans le passé.")]
     private ?\DateTimeInterface $daterv = null;
@@ -38,7 +38,10 @@ class Rendezvous
     private ?RendezvousType $Type = null;
 
     #[ORM\Column(type:"boolean", options: ["default" => true])]
-    private ?bool $Rappel = true; 
+    private ?bool $Rappel = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, options: ['default' => 'CURRENT_TIMESTAMP'])]
+    private ?\DateTimeInterface $endAt =  null; 
 
     public function __construct()
     {
@@ -55,7 +58,7 @@ class Rendezvous
         return $this->daterv;
     }
 
-    public function setDaterv(\DateTimeInterface $daterv): self
+    public function setDaterv(\DateTimeInterface $daterv = null): self
     {
         $this->daterv = $daterv;
 
@@ -110,11 +113,6 @@ class Rendezvous
         return $this;
     }
 
-    public function __toString()
-    {
-        return 'Rendez-vous ' . $this->Type . ' le : ' . $this->daterv->format('d-m-Y') . ' en salle ' . $this->Salle;
-    }
-
     public function isRappel(): ?bool
     {
         return $this->Rappel;
@@ -125,5 +123,42 @@ class Rendezvous
         $this->Rappel = $Rappel;
 
         return $this;
+    }
+
+    public function getEndAt(): ?\DateTimeInterface
+    {
+        return $this->endAt;
+    }
+
+    public function setEndAt(?\DateTimeInterface $endAt): self
+    {
+        $this->endAt = $endAt;
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return 'Rendez-vous ' . $this->Type . ' le : ' . $this->daterv->format('d-m-Y') . ' en salle ' . $this->Salle;
+    }
+
+    public function showDuree()
+    {
+        $hours = (int) $this->daterv->format('H');
+        $minutes = (int) $this->daterv->format('i');
+        $duree_string = "";
+        if ($hours && $minutes) {
+            return $duree_string . $hours . " heures et " . $minutes . " minutes";
+        }
+        else {
+            if ($hours) {
+                $duree_string = $duree_string . $hours . " heures";
+            }
+            if ($minutes) {
+                $duree_string = $duree_string . $minutes . " minutes";
+            }
+        }
+
+        return $duree_string;
     }
 }

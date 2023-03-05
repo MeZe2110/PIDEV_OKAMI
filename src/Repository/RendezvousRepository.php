@@ -39,28 +39,47 @@ class RendezvousRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Rendezvous[] Returns an array of Rendezvous objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('r.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
 
-//    public function findOneBySomeField($value): ?Rendezvous
-//    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+   public function getRendezvous($date): array
+   {
+        return $this->createQueryBuilder('r')
+            ->where('r.daterv > :date')
+            ->setParameter('date', $date)
+            ->getQuery()
+            ->getResult()
+        ;
+   }
+
+   public function getOldRendezvous($date): array
+   {
+        return $this->createQueryBuilder('r')
+            ->where('r.daterv <= :date')
+            ->setParameter('date', $date)
+            ->getQuery()
+            ->getResult();
+        ;
+   }
+
+   public function clearOldRendezvous($date) : array
+   {
+        return $this->createQueryBuilder('r')
+                ->delete()
+                ->where('r.daterv <= :date')
+                ->setParameter('date', $date)
+                ->getQuery()
+                ->execute();
+   }
+
+   public function getRendezvousByUser($date, $userId) : array
+   {
+    return $this->createQueryBuilder('r')
+            ->where('r.daterv > :date')
+            ->andWhere('Utilisateur.id = :userId')
+            ->setParameters(['date' => $date, 'userId' => $userId])
+            ->leftJoin('r.Utilisateur', 'Utilisateur')
+            ->getQuery()
+            ->getResult();
+   }
+
+
 }

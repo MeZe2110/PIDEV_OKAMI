@@ -88,20 +88,28 @@ class RendezvousNotification extends Command
      {
         $rendezvousRepository = $this->entityManager->getRepository(Rendezvous::class);
         $rendezvous = $rendezvousRepository->createQueryBuilder('r')
-             ->where('r.id = 2')
-             ->getQuery()
-             ->getResult();
-    $templateEmail = (new TemplatedEmail())
-                ->from('healthherald.noreply@gmail.com')
-                ->to('ilyesluisnessim.novellaguediche@esprit.tn')
-                ->subject('Rappel: Rendezvous')
-                ->htmlTemplate('emails/rendezvousNotification.html.twig')
-                ->context(['rendezvous' => $rendezvous]);
+            ->where('r.id = 2')
+            ->getQuery()
+            ->getResult();
 
-            $this->mailer->send($templateEmail);
+        $email = (new Email())
+            ->from('HealthHerald.NoReply@gmail.com')
+            ->to('ilyesluisnessim.novellaguediche@esprit.tn')
+            ->subject('Rappel: Rendezvous')
+            ->text("AAAAAAAAAAAAAAAAAA");
 
-            return 0;
-        }
+
+        $templateEmail = (new TemplatedEmail())
+            ->from('healthherald.noreply@gmail.com')
+            ->to('ilyesluisnessim.novellaguediche@esprit.tn')
+            ->subject('Rappel: Rendezvous')
+            ->htmlTemplate('emails/rendezvousNotification.html.twig')
+            ->context(['rendezvous' => $rendezvous]);
+
+        $this->mailer->send($email);
+
+        return 0;
+    }
 
 
 

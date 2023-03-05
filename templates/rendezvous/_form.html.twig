@@ -21,6 +21,11 @@
             <td> {{ form_errors(form.daterv) }} </td>
         </tr>
         <tr>
+            <td> {{ form_label(form.endAt, "Durée : ") }} </td>
+            <td> {{ form_widget(form.endAt) }} </td>
+            <td> {{ form_errors(form.endAt) }} </td>
+        </tr>
+        <tr>
             <td> {{ form_label(form.Utilisateur, "Utilisateur : ") }} </td>
             <td> {{ form_widget(form.Utilisateur) }} </td>
             <td> {{ form_errors(form.Utilisateur) }} </td>

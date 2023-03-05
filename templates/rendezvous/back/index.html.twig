@@ -1,6 +1,40 @@
 {% extends "Template_Back/base.html.twig" %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/core@4.1.0/main.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@4.1.0/main.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@4.1.0/main.min.css">
+{% endblock %}
+
 {% block content %}
+    <style>
+    .hidden {
+        display: none;
+    }
+
+    .show {
+        display: block;
+        margin-top: 0.5em;
+    }   
+
+    .arrow::before {
+        color: #444444;
+        content: '\25B6';
+        display: inline-block;
+        transform: rotate(90deg);
+        margin-right: 0.5em;
+    }
+    .arrow.active::before {
+        color: #444444;
+        content: '\25B6';
+        display: inline-block;
+        transform: rotate(270deg);
+        margin-right: 0.5em;
+    }
+
+
+    </style>
     <h1>Liste des Rendez-vous</h1>
 
     <table class="table table-hover" id="rendezvous-table">
@@ -8,6 +42,7 @@
         <tr>
             <th scope="col"> Id </th>
             <th scope="col"> Date du Rendez-vous </th>
+            <th scope="col"> Durée </th>
             <th scope="col"> Salle </th>
             <th scope="col"> Type </th>
             <th scope="col"> Liste des Utilisateurs présents </th>
@@ -15,20 +50,23 @@
         </tr>
     </thead>
     <tbody>
-        {% for r in RendezvousAndUtilisateur %}
+        {% for r in rendezvous %}
         <tr>
             <td> {{ r.id }} </td>
             <td> {{ r.daterv ? r.daterv|format_datetime('full', 'short', locale='fr') }} </td>
+            <td> {{ r.endAt ? r.showDuree() }} </td>
             <td> {{ r.Salle }} </td>
             <td> {{ r.Type }} </td>
             <td>
-                <ul>
-                {% for u in r.Utilisateur %}
-                    <li> {{ u }}</ul>
+                {% if r.Utilisateur is not empty and r.Utilisateur|length > 0  %}
+                <select class="form-select" multiple="true" size="3" disabled>
+                    {% for u in r.Utilisateur %}
+                        <option value="{{ u }}"> {{ u }} </option>
+                    {% endfor %}
+                </select>
                 {% else %}
                     Aucun Utilisateur
-                {% endfor %}
-                </ul>
+                {% endif %}
             </td>
             <td> 
                 <button class="btn"> <a href="{{ path('back_rendezvous_edit', {'id': r.id}) }}"> Modifier </a> </button> 
@@ -45,10 +83,107 @@
 
     <a href="{{ path('back_rendezvous_new') }}"> Planifier un rendez-vous </a>
 
+    <div class="container" style="margin-top: 3.5em;">
+    <h2 id="historique"> 
+        Historique
+        {# <span class="arrow" id="historique-toggle">&#x25BC;</span> #}
+        <a href="#historique"> <span class="arrow" id="historique-toggle"> </span> </a>
+    </h2>
+    <div class="container hidden" id="historique-wrapper">
+    <table class="table table-hover table-secondary" id="rendezvous-historique">
+    <thead>
+        <tr>
+            <th scope="col"> Id </th>
+            <th scope="col"> Date du Rendez-vous </th>
+            <th scope="col"> Durée </th>
+            <th scope="col"> Salle </th>
+            <th scope="col"> Type </th>
+            <th scope="col"> Liste des Utilisateurs </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for r in Historique %}
+        <tr id="rendezvous-historique-{{r.id}}">
+            <td> {{ r.id }} </td>
+            <td> {{ r.daterv ? r.daterv|format_datetime('full', 'short', locale='fr') }} </td>
+            <td> {{ r.endAt ? date(r.daterv|date_modify('-' ~ r.endAt|date('U') ~ ' seconds'))|date('H:i') }} </td>
+            <td> {{ r.Salle }} </td>
+            <td> {{ r.Type }} </td>
+            <td>
+                {% if r.Utilisateur is not empty and r.Utilisateur|length > 0  %}
+                <select class="form-select" multiple="true" size="3" disabled>
+                    {% for u in r.Utilisateur %}
+                        <option value="{{ u }}"> {{ u }} </option>
+                    {% endfor %}
+                </select>
+                {% else %}
+                    Aucun Utilisateur
+                {% endif %}
+            </td>
+        </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">Aucun Rendez-vous dans l'historique</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+
+        <div class="container" style="margin-top: 1.5em;">
+            <button class="btn" id="clear"> Nettoyer les anciens rendez-vous </button>
+            <div id="message-clear" style="display: inline;"> </div>
+        </div>
+        <div class="container">
+            <button class="btn" id="full-clear"> Nettoyer l'historique </button>
+            <div id="message-full-clear" style="display: inline;"> </div>
+        </div>
+
+    </div>
+    </div>
+
+    <div id="calendar-holder" style="margin-top: 4.5em;"></div>
+
 {% endblock %}
 
 {% block javascript %}
     {{parent()}}
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@4.1.0/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@4.1.0/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@4.1.0/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@4.1.0/main.min.js"></script>
+
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', () => {
+            var calendarEl = document.getElementById('calendar-holder');
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                defaultView: 'dayGridMonth',
+                editable: true,
+                eventSources: [
+                    {
+                        url: "{{ path('fc_load_events') }}",
+                        method: "POST",
+                        extraParams: {
+                            filters: JSON.stringify({})
+                        },
+                        failure: () => {
+                            // alert("There was an error while fetching FullCalendar!");
+                        },
+                    },
+                ],
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay',
+                },
+                plugins: [ 'interaction', 'dayGrid', 'timeGrid' ], // https://fullcalendar.io/docs/plugin-index
+                timeZone: 'UTC',
+            });
+            calendar.render();
+        });
+    </script>
+
+
     <script>
         const rendezvousTable = new simpleDatatables.DataTable('#rendezvous-table', {
             sorting: {
@@ -56,5 +191,63 @@
                 5: false
             }
         });
+
+        const toggleHeading = document.getElementById('historique-toggle');
+        const toggleDiv = document.getElementById('historique-wrapper');
+
+        toggleHeading.addEventListener('click', function() {
+            toggleDiv.classList.toggle('hidden');
+            toggleDiv.classList.toggle('show');
+            toggleHeading.classList.toggle('active');
+            //toggleHeading.textContent = toggleHeading.textContent === '\u25B2' ? '\u25BC' : '\u25B2';
+        });
+
+
+        const clearBtn = document.getElementById('clear');
+        const fullclearBtn = document.getElementById('full-clear');
+
+        const messageClear = document.getElementById('message-clear');
+        const messageFullclear = document.getElementById('message-full-clear');
+        
+        clearBtn.addEventListener('click', function() {
+            fetch('clear/0', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({})
+            })
+            .then(response => response.json())
+            .then(data => {
+                messageClear.innerHTML = data.success ? data.succes + ' rendez-vous nettoyés avec succés' : "Il n'y a rien à supprimé dans l'historique";
+                data['id'].forEach( (id) => {
+                    document.getElementById('rendezvous-historique-' + id).remove();
+                })
+            })
+            .catch(error => {
+                messageClear.innerHTML = 'Une erreur est survenue lors de la suppression';
+            });
+        });
+
+        fullclearBtn.addEventListener('click', function() {
+            fetch('clear/1', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({})
+            })
+            .then(response => response.json())
+            .then(data => {
+                messageFullclear.innerHTML = data.success ? 'Historique nettoyé avec succés' : "Il n'y a rien à supprimé dans l'historique";
+                data['id'].forEach( (id) => {
+                    document.getElementById('rendezvous-historique-' + id).remove();
+                })
+            })
+            .catch(error => {
+                messageFullclear.innerHTML = 'Une erreur est survenue lors de la suppression';
+            });
+        });
+
     </script>
 {% endblock %}
