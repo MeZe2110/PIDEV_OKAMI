@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>medicaments</title>
+    <style>
+        h1 {
+            text-align: center;
+            margin-top: 50px;
+            margin-bottom: 50px;
+            color: rgb(26, 109, 150);
+        }
+        table {
+            background-color: white;
+            border: 2px solid rgb(26, 94, 150);
+            border-collapse: collapse;
+            width: 70%;
+            margin: 0 auto;
+            background-color: rgba(0, 34, 255, 0.03);
+            border-collapse: collapse;
+            font-size: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid rgb(26, 131, 150);
+        }
+
+        .table-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+    
+
+     
+    </style>
+</head>
+<body>
+<div class="table-container">
+    <h1>Liste Des medicaments</h1>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">nom de medicaments</th>
+            <th scope="col">quantitess</th>
+            <th scope="col">date-dexpiration</th>
+            <th scope="col">description</th>
+            <th scope="col">categories</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for stock in stocks %}
+            <tr>
+                <td>{{ stock.id }}</td>
+                <td>{{ stock.nomst ? stock.nomst}}</td>
+                <td>{{ stock.quantites ? stock.quantites }}</td>
+                <td>{{ stock.dateexpirationst ? stock.dateexpirationst|date('Y-m-d') : ''}}</td>
+                <td>{{ stock.description }}</td>
+                <td>{{ stock.stockcat }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

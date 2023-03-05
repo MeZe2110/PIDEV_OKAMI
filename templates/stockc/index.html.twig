@@ -26,18 +26,91 @@
         }
 
      </style>
+     
  <center>
  <h1 style="color:#336699; font-family: Arial, sans-serif; ;">Liste des medicaments</h1>
  </center>
- <div> 
+ <div>
+
+<div class="album py-5 bg-light">
+        <div class="container">
+
+         <h4>Chercher Votre Medicament !!</h4>
+
+            <div class="sidebar-search">
+
+                <div class="input-group custom-search-form">
+
+                    <input type="text" id="search" class="form-control" placeholder="Search here">
+                </div>
+                <!-- /input-group -->
+            </div>
+            <ul class="nav" id="side-menu">
+                <li>
+                    
+                    <ul class="nav nav-second-level" id="entitiesNav">
+                    </ul>
+                </li>
+            </ul><br><br><br><br>
+
+            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+            <script type="text/javascript">
+                jQuery(document).ready(function() {
+                    var searchRequest = null;
+                    $("#search").keyup(function() {
+                        var minlength = 1;
+                        var that = this;
+                        var value = $(this).val();
+                        var entitySelector = $("#entitiesNav").html('');
+                        if (value.length >= minlength ) {
+                            if (searchRequest != null)
+                                searchRequest.abort();
+                            searchRequest = $.ajax({
+                                type: "GET",
+                                url: "{{ path('search') }}",
+                                data: {
+                                    'q' : value
+                                },
+                                dataType: "text",
+                                success: function(msg){
+                                    //we need to check if the value is the same
+                                    if (value===$(that).val()) {
+                                        var result = JSON.parse(msg);
+                                        $.each(result, function(key, arr) {
+                                            $.each(arr, function(id, value) {
+                                                if (key === 'stocks') {
+                                                    if (id !== 'error') {
+                                                        console.log(value[1]);
+                                                        entitySelector.append('<li><b>' + value[1] + '</b> <a href="/fe/'+id+'">voir ici'+'</a></li>');
+
+                                                    } else {
+                                                        entitySelector.append('<li class="errorLi">'+value+'</li>');
+                                                    }
+                                                }
+                                            });
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    });
+                });
+            </script>
+
+
+
+
+
+    <a href="{{ path('app_generate_pdf_all')}}" class="btn btn-outline-dark">Exporter PDF</a>
+    <br><br> 
     <a href="{{ path('app_stockc_new')}}" class="btn btn-primary">Create new</a>
     <br><br>
-    <form method="GET" action="{{ path('app_stockc_index') }}">
-        <div class="input-group" style="width: 500px">
-            <input type="text" name="search" class="form-control" id="searchInput" placeholder="Entrez votre recherche">
-            <button type="submit" class="btn btn-primary">Rechercher</button>
-        </div>
-    </form>
+      <td>
+        {{ form_row(form.stockcat, {'label': 'Stock Category', 'attr': {'class': 'small mb-1'}}) }}
+        
+    </td>
+</tr>
     <table border="3" class="table">
         <thead>
             <tr>
@@ -55,8 +128,25 @@
             <tr>
                 <td>{{ stock.id }}</td>
                 <td>{{ stock.nomst }}</td>
-                <td>{{ stock.quantites }}</td>
-                <td>{{ stock.dateexpirationst ? stock.dateexpirationst|date('Y-m-d') : '' }}</td>
+                <td>{{ stock.quantites }}<br>
+                {% if stock.quantites < 10 %}
+                 <script>alert("Attention! Le stock pour {{ stock.nomst }} est faible. Quantité actuelle: {{ stock.quantites }}")</script>
+                 <div style="background-color: #FFC0CB; border: 1px solid #FF69B4; padding: 10px; text-align: center;">
+                    <span style="font-weight: bold; color: red">Attention! la quantite pour {{ stock.nomst }} est bientot expiré.</span>
+                    </div>
+                {% endif %}
+                </td>
+                <td>{{ stock.dateexpirationst ? stock.dateexpirationst|date('Y-m-d') : '' }}<br>
+                {% if stock.isExpired() %}
+                   <div style="background-color: #FFC0CB; border: 1px solid #FF69B4; padding: 10px; text-align: center;">
+                    <span style="font-weight: bold; color: red">Attention! la date pour {{ stock.nomst }} est expiré.</span>
+                    </div>
+                    <script>alert("Attention! La date pour {{ stock.nomst }} est expiré.")</script>
+                    </div>
+                {% endif %}
+                </td>
+                
+
                 <td>{{ stock.description }}</td>
                 <td>{{ stock.stockcat }}</td>
                 <td>
@@ -68,6 +158,7 @@
 </form>
                 </td>
             </tr>
+            
         {% else %}
             <tr>
                 <td colspan="6">no records found</td>
@@ -75,6 +166,85 @@
         {% endfor %}
         </tbody>
     </table>
+    
+
+    {% set stock_length = stocks|length %}
+{% set nbPcat1 = 0 %}
+{% set nbPcat2 = 0 %}
+{% set nbPcat3 = 0 %}
+{% set nbPcat4 = 0 %}
+{% set nbPcat5 = 0 %}
+{% set nbPcat6 = 0 %}
+{% set nbPcat7 = 0 %}
+{% set nbPcat8 = 0 %}
+{% set nbPcat9 = 0 %}
+{% set nbPcat10 = 0 %}
+ 
+{% for stock in stocks %}
+    {% if stock.stockcat == 'Antiagrégant plaquettaire' %}
+        {% set nbPcat1 = nbPcat1 + 1 %}
+    {% elseif stock.stockcat == 'Anti-ulcéreux' %}	
+        {% set nbPcat2 = nbPcat2 + 1 %}
+        {% elseif stock.stockcat == 'Hypolipémiant' %}
+        {% set nbPcat3 = nbPcat3 + 1 %}
+        {% elseif stock.stockcat == 'Hypoglycémiant oral' %}
+        {% set nbPcat4 = nbPcat4 + 1 %}
+        {% elseif stock.stockcat == 'Hypoglycémiant injectable' %}
+        {% set nbPcat5 = nbPcat5 + 1 %}
+        {% elseif stock.stockcat == 'Hormone thyroïdienne' %}
+        {% set nbPcat6 = nbPcat6 + 1 %}
+        {% elseif stock.stockcat == ' Hypnotique' %}
+        {% set nbPcat7 = nbPcat7 + 1 %}
+        {% elseif stock.stockcat == 'Céphalosporine' %}
+        {% set nbPcat8 = nbPcat8 + 1 %}
+        {% elseif stock.stockcat == 'Antipyrétique' %}
+        {% set nbPcat9 = nbPcat9 + 1 %}
+        {% elseif stock.stockcat == 'Analgésique' %}
+        {% set nbPcat = nbPcat10 + 1 %}
+
+        {% endif %}
+{% endfor %}
+
+<div class="card">
+    <div class="card-body">
+        <h5> Chart</h5>
+
+        <!-- Pie Chart -->
+        <div id="pieChart"></div>
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                new ApexCharts(document.querySelector("#pieChart"), {
+                    series: [
+                        {{ nbPcat1 }},
+                        {{ nbPcat2 }},
+                        {{ nbPcat3 }},
+                        {{ nbPcat4 }},
+                        {{ nbPcat5 }},
+                        {{ nbPcat6 }},
+                        {{ nbPcat7 }},
+                        {{ nbPcat8 }},
+                        {{ nbPcat9 }},
+                        {{ nbPcat10 }} 
+                    ],
+                    chart: {
+                        height: 350,
+                        type: 'pie',
+                        toolbar: {
+                            show: true
+                        }
+                    },
+                    labels: ['Antiagrégant plaquettaire','Anti-ulcéreux','Hypolipémiant','Hypoglycémiant oral','Hypoglycémiant injectable','Hormone thyroïdienne','Hypnotique','Céphalosporine','Antipyrétique','Analgésique']
+                }).render();
+            });
+        </script>
+        <!-- End Pie Chart -->
+    </div>
+</div>
+
+
+
  </div>
-</main> 
+</main>
+
+
 {% endblock %}

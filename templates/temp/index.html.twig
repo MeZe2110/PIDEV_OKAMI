@@ -1,20 +1,34 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello TempController!{% endblock %}
+
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+{% set stock_counts = {} %}
+{% for stock in stocks %}
+    {% set stock_cat = stock.stockcat %}
+    {% if stock_cat not in stock_counts %}
+        {% set stock_counts = stock_counts|merge({ stock_cat: 1 }) %}
+    {% else %}
+        {% set stock_counts = stock_counts|merge({ stock_cat: stock_counts[stock_cat]+1 }) %}
+    {% endif %}
+{% endfor %}
+<!-- Pie Chart -->
+<div id="pieChart"></div>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        new ApexCharts(document.querySelector("#pieChart"), {
+            series: {{ stock_counts|json_encode()|raw }},
+            chart: {
+                height: 350,
+                type: 'pie',
+                toolbar: {
+                    show: true
+                }
+            },
+            labels: {{ stock_counts|keys|json_encode()|raw }}
+        }).render();
+    });
+</script>
+<!-- End Pie Chart -->
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Users/MEHDI/Desktop/pidev_okamii/src/Controller/TempController.php'|file_link(0) }}">src/Controller/TempController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Users/MEHDI/Desktop/pidev_okamii/templates/temp/index.html.twig'|file_link(0) }}">templates/temp/index.html.twig</a></code></li>
-    </ul>
-</div>
 {% endblock %}

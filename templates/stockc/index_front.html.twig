@@ -27,6 +27,12 @@
      </style>
 <center>
 <h1 style="color:#336699; font-family: Arial, sans-serif; ;">Liste de medicaments</h1>
+<form method="GET" action="{{ path('app_stockc') }}">
+        <div class="input-group" style="width: 500px">
+            <input type="text" name="search" class="form-control" id="searchInput" placeholder="Entrez votre recherche">
+            <button type="submit" class="btn btn-primary">Rechercher</button>
+        </div>
+    </form>
  </center>
  <div> 
     
@@ -48,7 +54,11 @@
                 <td>{{ stock.id }}</td>
                 <td>{{ stock.nomst }}</td>
                 <td>{{ stock.quantites }}</td>
-                <td>{{ stock.dateexpirationst ? stock.dateexpirationst|date('Y-m-d') : '' }}</td>
+                <td>{{ stock.dateexpirationst ? stock.dateexpirationst|date('Y-m-d') : '' }}<br>
+                {% if stock.isExpired() %}
+                   <span class="text-danger">{{ stock.nomst }} est expiré !</span>
+                {% endif %}
+                </td>
                 <td>{{ stock.description }}</td>
                 <td>{{ stock.stockcat }}</td>
              

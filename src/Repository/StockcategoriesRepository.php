@@ -39,6 +39,10 @@ class StockcategoriesRepository extends ServiceEntityRepository
         }
     }
 
+
+   
+
+
 //    /**
 //     * @return Stockcategories[] Returns an array of Stockcategories objects
 //     */
