@@ -26,6 +26,14 @@
     </style>
 
     <h1 class="text-center">Plannification Index</h1>
+    <center>
+        <div class="search-bar" style="margin-left: 640px">
+            <form class="search-form d-flex align-items-center" method="GET" action="{{ path('app_plannification_index') }}">
+                <input type="text" name="search" id="search-input" placeholder="Entrez votre recherche">
+                <button type="submit" class="btn-primary">Chercher</button>
+            </form>
+        </div>
+    </center>
     <form class="form-inline my-2 my-lg-0" method="get" style="width: 500px">
         <select class="form-control" name="sort">
             <option value="desc" {% if app.request.query.get('sort') == 'desc' %}selected{% endif %}>Trier par date décroissante</option>

@@ -23,6 +23,12 @@
         }
     </style>
     <h1 class="text-center">Salle Index</h1>
+    <div class="search-bar" style="margin-left: 640px">
+        <form class="search-form d-flex align-items-center" method="GET" action="{{ path('app_salle_index') }}">
+            <input type="text" name="search" id="search-input" placeholder="Entrez votre recherche">
+            <button type="submit" class="btn-primary">Chercher</button>
+        </form>
+    </div>
     <div class="d-flex align-items-center justify-content-center" style="height: 500px">
 
         <table class="table table-striped">
@@ -57,5 +63,46 @@
             {% endfor %}
             </tbody>
         </table>
+    </div>
+
+    <!--  Statistiques -->
+    {% set nbSalleSoin = 0 %}
+    {% set nbSalleOperation = 0 %}
+
+    {% for salle in salles %}
+
+        {% if salle.typesa == 'soin' %}
+            {% set nbSalleSoin = nbSalleSoin + 1 %}
+        {% elseif salle.typesa == 'operation' %}
+            {% set nbSalleOperation = nbSalleOperation + 1 %}
+        {% endif %}
+    {% endfor %}
+
+    <h1>Salle Par Type (%)</h1>
+    <div class="card">
+        <div class="card-body">
+
+            <!-- Pie Chart -->
+            <div id="pieChart"></div>
+            <script>
+                document.addEventListener("DOMContentLoaded", () => {
+                    new ApexCharts(document.querySelector("#pieChart"), {
+                        series: [
+                            {{ nbSalleSoin }},
+                            {{ nbSalleOperation }}
+                        ],
+                        chart: {
+                            height: 350,
+                            type: 'pie',
+                            toolbar: {
+                                show: true
+                            }
+                        },
+                        labels: ['Soin', 'Operation']
+                    }).render();
+                });
+            </script>
+            <!-- End Pie Chart -->
+        </div>
     </div>
 {% endblock %}

@@ -18,10 +18,19 @@ use Symfony\Component\Serializer\SerializerInterface;
 class SalleController extends AbstractController
 {
     #[Route('/', name: 'app_salle_index', methods: ['GET'])]
-    public function index(SalleRepository $salleRepository): Response
+    public function index(Request $request): Response
     {
+        $search = $request->query->get('search');
+        if ($search) {
+            $salles = $this->getDoctrine()
+                ->getRepository(Salle::class)
+                ->findBySearch($search);
+        } else {
+            $salles = $this->getDoctrine()
+                ->getRepository(Salle::class)->findAll();
+        }
         return $this->render('salle/index.html.twig', [
-            'salles' => $salleRepository->findAll(),
+            'salles' => $salles,
         ]);
     }
 
@@ -88,22 +97,7 @@ class SalleController extends AbstractController
         return $this->redirectToRoute('app_salle_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    /*#[Route("/AllSalle", name: "list")]
-    public function getSalles(SalleRepository $repo, SerializerInterface $serializer)
-    {
-        $salles = $repo->findAll();
-        //* Nous utilisons la fonction normalize qui transforme le tableau d'objets
-        //* students en  tableau associatif simple.
-        //$sallesNormalises = $normalizer->normalize($salles, 'json', ['groups' => "salles"]);
 
-        // //* Nous utilisons la fonction json_encode pour transformer un tableau associatif en format JSON
-        //$json = json_encode($sallesNormalises);
-
-        $json = $serializer->serialize($salles, 'json', ['groups' => "salles"]);
-
-        //* Nous renvoyons une réponse Http qui prend en paramètre un tableau en format JSON
-        return new Response($json);
-    }*/
 
 
 
