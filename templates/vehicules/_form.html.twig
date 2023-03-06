@@ -17,7 +17,8 @@ label {
     <div class="col-md-80 col-lg-80">
     
           {{ form_start(form,{'attr': {'novalidate': 'novalidate '}}) }}
-            
+         
+     
           <div class="form-floating mb-3">
             {{ form_widget(form.nomvh, {'attr': {'class': 'form-control', 'placeholder': 'Nom du medicament'}}) }}
             {{ form_errors(form.nomvh) }}
@@ -51,10 +52,15 @@ label {
               {{ form_errors(form.imagesvh) }}
               {{ form_label(form.imagesvh, "image du vehicule", {'label_attr': {'class': 'small mb-1'}}) }}
             </div>
+            <div class="form-floating mb-3">
+              {{ form_widget(form.date ) }}
+              {{ form_errors(form.date) }}
+              {{ form_label(form.date ) }}
+            </div>
             <div class="mt-4 mb-0">
               <div class="d-grid"><button class="btn btn-primary btn-block" type="submit">{{ button_success|default('Sauvegarder') }}</button></div>
                <a href="{{ path('app_vehicules_index') }}"" class="btn btn-secondary mx-0"style="margin-top: 20px;margin-left:200px">Retour à la liste</a>
-  </div>
+            </div>
             </div>
           {{ form_end(form) }}
         </div>

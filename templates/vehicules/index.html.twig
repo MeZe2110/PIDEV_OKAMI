@@ -3,6 +3,9 @@
 {% block title %}Vehicules index{% endblock %}
 
 {% block body %}
+
+<div class="center" style="height:  1800px;"> 
+
 <style>
         table {
             margin: 50px auto;
@@ -23,11 +26,79 @@
         }
 
      </style>
-
+   
 
 <div><h1>Vehicules index</h1></div>
-<div class="d-flex align-items-center justify-content-center" style="height: 1500px;"> 
-                                  
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="page-header">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                </ol>
+            </nav>
+        </div>
+    <div class="row ">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <div style="display: flex">
+                        <div class="col-md-5">
+                        </div>
+                        <form method="post" class="forms-sample" style="margin-left: -42px" >
+                            <div class="form-group col-md-4" style="margin-right: 500px;">
+
+                                <div class="form-check">
+                                    <label class="form-check-label" style="width: 92px;margin-left: -2px;margin-right: 10px;">
+                                        <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios1" value="nomvh">Nom</label>
+                                </div>
+                              <div class="form-check">
+                                    <label class="form-check-label" style="width: 92px;margin-left: -2px;margin-right: 10px;">
+                                        <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios1" value="id">id</label>
+                                </div>
+                              <div class="form-check">
+                                    <label class="form-check-label" style="width: 92px;margin-left: -2px;margin-right: 10px;">
+                                        <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios1" value="dispovh">dispo</label>
+                                </div>
+                            
+                                </div>
+
+                                <button type="Submit" class="btn btn-success btn-fw" style="margin: auto; ">Sort</button>
+                            </div>
+                        </form>
+
+                    </div>
+
+                    <ul class="navbar-nav w-100" style="margin-top: 18px;">
+                        <li class="nav-item w-100">
+                            <form name="Search-method" id="Search-method"method="post" class="forms-sample" style="margin-left: 300px;">
+                                <div class="form-group col-md-5">
+                                    <label style="margin-top: 11px;margin-left: 10px;margin-right: 14px;padding-bottom: 7px;;">Option Recherche</label>
+                                    <select name="optionsearch" class="js-example-basic-single" style="width: 200px;height: 38px; color: white; background-color: #191c24; border-radius: 4px;text-align: center;border: 2px solid #0090e7;margin-right: 15px;">
+                                        <option value="">Choisi un Critére</option>
+                                        <option value="nomvh">Nom vehicule</option>
+                                        <input name="Search" type="text" class="form-control" placeholder="Search Events" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-sm btn-primary" type="Submit">Search</button>
+                                    </select>
+                             
+                                <div class="form-group col-md-7">
+                                    <div class="input-group">
+                                       
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </li>
+                    </ul>
+        </div>
+                                <div><form method="GET" style="
+    margin-left: 293px;
+"action="{{ path('app_cal') }} ">
+    <button class="btn btn-success">SHOW Calendar</button>
+</form></div>
+ <div class="d-flex align-items-center justify-content-center" style="height:  1800px;"> 
+
+
    <table class="table" style="
     
     margin-left: 310px;
@@ -43,8 +114,9 @@
                 <th>Etat </th>
                 <th>Description </th>
                 <th>categorie </th>
+                  <th>date</th>
                 <th>actions</th>
-                
+              
                
                 <th>
                 
@@ -68,7 +140,8 @@
                 <td>{{ vehicule.dispovh ? 'Yes' : 'No' }}</td>
                 <td>{{ vehicule.etatvh }}</td>
                 <td>{{ vehicule.descvh }}</td>
-                 <td>{{ vehicule.catv }}</td>
+                 <td>{{ vehicule.catv }}</td> 
+                 <td><p> {{ vehicule.date|date("Y-m-d H:i:s") }}</p></td>
                 <td>
                     <a href="{{ path('app_vehicules_show', {'id': vehicule.id}) }} "><button class="btn btn-primary">show</button></a>
                     <a href="{{ path('update_post', {'id': vehicule.id}) }}"><button class="btn btn-primary">Editer</button></a>
@@ -97,7 +170,56 @@
         </tbody>
     </table>
 
-   
+      <div>
+ {{ knp_pagination_render(vehicules) }}
+</div>
              
     </div>
+    </div>
+    {% set vehicules_length = vehicules|length %}
+{% set nbPcat1 = 0 %}
+{% set nbPcat2 = 0 %}
+{% set nbPcat3 = 0 %}
+{% set nbPcat4 = 0 %}
+{% for vehicule in vehicules %}
+    {% if vehicule.catv == 'Vehicule de catégorie A (ASSU)' %}
+        {% set nbPcat1 = nbPcat1 + 1 %}
+    {% elseif vehicule.catv == 'Véhicule de catégorie B (VSAB)' %}	
+        {% set nbPcat2 = nbPcat2 + 1 %}
+        {% elseif vehicule.catv == 'Véhicule de catégorie C (Ambulance)' %}
+        {% set nbPcat3 = nbPcat3 + 1 %}
+        {% elseif vehicule.catv == 'khaled' %}
+        {% set nbPcat3 = nbPcat4 + 1 %}
+        {% endif %}
+{% endfor %}
+
+<div class="card">
+    <div class="card-body">
+        <h5>Pie Chart</h5>
+
+        <!-- Pie Chart -->
+        <div id="pieChart"></div>
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                new ApexCharts(document.querySelector("#pieChart"), {
+                    series: [
+                        {{ nbPcat1 }},
+                        {{ nbPcat2 }},
+                        {{ nbPcat3 }},
+                        {{ nbPcat4 }}
+                    ],
+                    chart: {
+                        height: 350,
+                        type: 'pie',
+                        toolbar: {
+                            show: true
+                        }
+                    },
+                    labels: ['CAT 0', 'CAT 1', 'CAT 2']
+                }).render();
+            });
+        </script>
+        <!-- End Pie Chart -->
+    </div>
+</div>
 {% endblock %}

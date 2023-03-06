@@ -65,4 +65,48 @@ class VehiculesRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+public function SortBynomvh(){
+    return $this->createQueryBuilder('e')
+        ->orderBy('e.nomvh','ASC')
+        ->getQuery()
+        ->getResult()
+        ;
+}
+     public function SortBydispovh() {
+        return $this->createQueryBuilder('d')
+            ->where('d.dispovh = :dispovh')
+            ->setParameter('dispovh', '1')
+             ->getQuery()
+            ->getResult();
+    }
+ public function findBynomvh( $nomvh)
+{
+    return $this-> createQueryBuilder('e')
+        ->andWhere('e.nomvh LIKE :nomvh')
+        ->setParameter('nomvh','%' .$nomvh. '%')
+        ->getQuery()
+        ->execute();
+}
+public function findBydescvh( $descvh)
+{
+    return $this-> createQueryBuilder('a')
+        ->andWhere('a.descvh LIKE :descvh')
+        ->setParameter('descvh','%' .$descvh. '%')
+        ->getQuery()
+        ->execute();
+}
+
+public function findEntitiesByString($str){
+    return $this->getEntityManager()
+        ->createQuery(
+            'SELECT p
+            FROM App:vehicules p
+            WHERE p.nomvh LIKE :str'
+            
+        )
+        ->setParameter('str', '%'.$str.'%')
+        ->getResult();
+}
+
+
 }

@@ -1,28 +1,133 @@
 {% extends 'front.html.twig' %}
 
 {% block body %}
-<div  >
-    <br/>
-	<div class="row justify-content-left">
-                        <div class="col-5 col-md-5 col-lg-5">
-                            <form class="card card-sm">
-                                <div class="card-body row no-gutters align-items-center">
-                                    
-                                    <!--end of col-->
-                                    <div class="col">
-                                        <input class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search vehicules or keywords">
+
+   
+	<div class="album py-5 bg-light">
+        <div class="container">
+       
+            <h4>Search A stock !!</h4>
+
+            <div class="sidebar-search">
+                <div class="input-group custom-search-form">
+                    <input type="text" id="search" class="form-control" placeholder="Search here">
+                </div>
+            </div>
+
+            <ul class="nav" id="side-menu">
+                <li>
+                    <a href="#"> Entities<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level" id="entitiesNav">
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var searchRequest = null;
+            $("#search").keyup(function() {
+                var minlength = 1;
+                var that = this;
+                var value = $(this).val();
+                var entitySelector = $("#entitiesNav");
+                entitySelector.empty();
+                if (value.length >= minlength ) {
+                    if (searchRequest != null) {
+                        searchRequest.abort();
+                    }
+                    searchRequest = $.ajax({
+                        type: "GET",
+                        url: "{{ path('search') }}",
+                        data: {
+                            'q' : value
+                        },
+                        dataType: "json",
+                        success: function(result){
+                            if (value===$(that).val()) {
+                                if (result.error) {
+                                    entitySelector.append('<li class="errorLi">'+result.error+'</li>');
+                                } else {
+                                    $.each(result, function(index, value) {
+                                        entitySelector.append('<li><b>' + value.name + '</b>  <br>' + value.etat +'</br><a href="/vehicules/front/'+value.id+' ">voir ici</a></li><img src="/assert2/img/'+value.image+'" style="width: 100px; height: 100px"/>'+'</a></li>');
+
+                                    });
+                                }
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+ 
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="page-header">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                </ol>
+            </nav>
+        </div>
+    <div class="row ">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <div style="display: flex">
+                        <div class="col-md-5">
+                        </div>
+                        <form method="post" class="forms-sample" style="margin-left: -42px" >
+                            <div class="form-group col-md-4" style="margin-right: 500px;">
+
+                                <div class="form-check">
+                                    <label class="form-check-label" style="width: 92px;margin-left: -2px;margin-right: 10px;">
+                                        <input type="checkbox" class="form-check-input" name="optionsRadios" id="optionsRadios[]" value="nomvh">Nom</label>
+                                </div>
+                              <div class="form-check">
+                                    <label class="form-check-label" style="width: 92px;margin-left: -2px;margin-right: 10px;">
+                                        <input type="checkbox" class="form-check-input" name="optionsRadios" id="optionsRadios[]" value="dispovh">dispo</label>
+                                </div>
+                              <div class="form-check">
+                                    <label class="form-check-label" style="width: 92px;margin-left: -2px;margin-right: 10px;">
+                                        <input type="checkbox" class="form-check-input" name="optionsRadios" id="optionsRadios[]" value="dispovh">dispo</label>
+                                </div>
+                            
+                                </div>
+                               
+                                <button type="Submit" class="btn btn-success btn-fw" style="margin: auto; ">Sort</button>
+                                                           
+                            </div>
+                        </form>
+
+                    </div>
+
+                    <ul class="navbar-nav w-100" style="margin-top: 18px;">
+                        <li class="nav-item w-100">
+                            <form name="Search-method" id="Search-method"method="post" class="forms-sample" style="margin-left: 300px;">
+                                <div class="form-group col-md-5">
+                                    <label style="margin-top: 11px;margin-left: 10px;margin-right: 14px;padding-bottom: 7px;;">Option Recherche</label>
+                                    <select name="optionsearch" class="js-example-basic-single" style="width: 200px;height: 38px; color: white; background-color: #191c24; border-radius: 4px;text-align: center;border: 2px solid #0090e7;margin-right: 15px;">
+                                        <option value="">Choisi un Critére</option>
+                                        <option value="nomvh">Nom vehicule</option>
+                                        <option value="descvh">description vehicule</option>
+                                        <input name="Search" type="text" class="form-control" placeholder="Search Events" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                        
+                                        <div class="input-group-append">
+                                            <button class="btn btn-sm btn-primary" type="Submit">Search</button>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-7">
+                                    <div class="input-group">
+                                       
+                                        </div>
                                     </div>
-                                    <!--end of col-->
-                                    <div class="col-auto">
-                                        <button class="btn btn-lg btn-outline-success" type="submit">Search</button>
-                                    </div>
-                                    <!--end of col-->
                                 </div>
                             </form>
-                        </div>
-                        <!--end of col-->
-                    </div>
-</div>
+                        </li>
+                    </ul>
 <BR>
  <div class="container-fluid">
     <div class="row">
@@ -52,7 +157,7 @@
                     </div>
                 <!--2nd card-->
                  
-
+ 
             </div>
         </div>
         {% endfor %}
@@ -60,14 +165,35 @@
 
     </div>
 </div>
-<div class="container" style="margin-left: -10px;">
-  <ul class="pagination">
-    <li class="page-item "><a class="page-link" href="#">Previous</a></li>
-    <li class="page-item "><a class="page-link" href="#">1</a></li>
-    <li class="page-item "><a class="page-link" href="#">2</a></li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
-    <li class="page-item"><a class="page-link" href="#">Next</a></li>
-  </ul>
+ <style>
+    .pagination-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+        font-size: 1.2rem;
+    }
+    
+
+    .pagination-ellipsis {
+        margin: 0 5px;
+        font-size: 1.5rem;
+    }
+    
+    @media screen and (max-width: 768px) {
+        .pagination-link {
+            padding: 5px;
+            font-size: 1rem;
+        }
+        
+        .pagination-ellipsis {
+            font-size: 1.2rem;
+        }
+    }
+</style>
+
+<div class="pagination-container pagination-link pagination-ellipsis">
+    {{ knp_pagination_render(vehicules) }}
 </div>
 <!-- about section -->
 <br>
