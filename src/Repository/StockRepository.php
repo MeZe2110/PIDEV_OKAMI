@@ -38,23 +38,7 @@ class StockRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
-    public function findBySearch(string $search): array
-    {
-        $entityManager = $this->getEntityManager();
-        $queryBuilder = $entityManager->createQueryBuilder();
-
-        $queryBuilder->select('s')
-        ->from(Stock::class, 's')
-        ->leftJoin('s.stockcat', 'c') // Joindre la table "Categorie" avec l'alias "c"
-        ->where('s.nomst LIKE :search')
-        ->orWhere('c.typecat LIKE :search') // Utiliser le champ "nom_categorie" de la table "Categorie"
-        ->orwhere('s.quantites LIKE :search')
-        ->orwhere('s.dateexpirationst LIKE :search')
-        ->setParameter('search', '%'.$search.'%');
-
-
-        return $queryBuilder->getQuery()->getResult();
-    }
+    
 
     public function findEntitiesByString($str){
         return $this->getEntityManager()
@@ -98,17 +82,8 @@ class StockRepository extends ServiceEntityRepository
         }
     }
 
+   
     
-    public function findEntitieByString($str){
-        return $this->getEntityManager()
-            ->createQuery(
-                'SELECT p
-                FROM App:Stock p
-                WHERE p.stockcat LIKE :str'
-            )
-            ->setParameter('str', '%'.$str.'%')
-            ->getResult();
-    }
     
 
 

@@ -3,32 +3,14 @@
 
 
 {% block body %}
-{% set stock_counts = {} %}
-{% for stock in stocks %}
-    {% set stock_cat = stock.stockcat %}
-    {% if stock_cat not in stock_counts %}
-        {% set stock_counts = stock_counts|merge({ stock_cat: 1 }) %}
-    {% else %}
-        {% set stock_counts = stock_counts|merge({ stock_cat: stock_counts[stock_cat]+1 }) %}
-    {% endif %}
-{% endfor %}
-<!-- Pie Chart -->
-<div id="pieChart"></div>
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        new ApexCharts(document.querySelector("#pieChart"), {
-            series: {{ stock_counts|json_encode()|raw }},
-            chart: {
-                height: 350,
-                type: 'pie',
-                toolbar: {
-                    show: true
-                }
-            },
-            labels: {{ stock_counts|keys|json_encode()|raw }}
-        }).render();
-    });
-</script>
-<!-- End Pie Chart -->
+
+
+
+
+
+    
+
+
+
 
 {% endblock %}

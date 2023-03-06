@@ -13,13 +13,22 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/categories')]
 class CategoriesController extends AbstractController
 {
+    
     #[Route('/', name: 'app_categories_index', methods: ['GET'])]
-    public function index(StockcategoriesRepository $stockcategoriesRepository): Response
+    public function index(StockcategoriesRepository $stockcategoriesRepository, Request $request): Response
     {
+        $search = $request->query->get('search');
+        if ($search) {
+            $stockcategories = $stockcategoriesRepository->findBySearch($search);
+        } else {
+            $stockcategories = $stockcategoriesRepository->findAll();
+        }
         return $this->render('categories/index.html.twig', [
-            'stockcategories' => $stockcategoriesRepository->findAll(),
+            'stockcategories' => $stockcategories,
         ]);
     }
+    
+    
 
     #[Route('/new', name: 'app_categories_new', methods: ['GET', 'POST'])]
     public function new(Request $request, StockcategoriesRepository $stockcategoriesRepository): Response
@@ -69,4 +78,7 @@ class CategoriesController extends AbstractController
 
         return $this->redirectToRoute('app_categories_index', [], Response::HTTP_SEE_OTHER);
     }
+
+
+    
 }

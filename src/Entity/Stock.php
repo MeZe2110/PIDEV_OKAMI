@@ -47,7 +47,8 @@ class Stock
     #[Assert\Positive(message:"quantite doit etre positive !")]
     #[Groups("Stock")]
     private ?int $quantites = null;
-
+    
+    
 
     public function getId(): ?int
     {

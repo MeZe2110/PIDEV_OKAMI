@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+
     <meta charset="UTF-8">
     <title>medicaments</title>
     <style>
@@ -57,8 +58,20 @@
             <tr>
                 <td>{{ stock.id }}</td>
                 <td>{{ stock.nomst ? stock.nomst}}</td>
-                <td>{{ stock.quantites ? stock.quantites }}</td>
-                <td>{{ stock.dateexpirationst ? stock.dateexpirationst|date('Y-m-d') : ''}}</td>
+                <td>{{ stock.quantites ? stock.quantites }}
+                 {% if stock.quantites < 10 %}
+                 <div style="background-color: #FFC0CB; border: 1px solid #FF69B4; padding: 10px; text-align: center;">
+                    <span style="font-weight: bold; color: red">Attention! la quantite pour {{ stock.nomst }} est bientot expiré.</span>
+                    </div>
+                {% endif %}
+                </td>
+                <td>{{ stock.dateexpirationst ? stock.dateexpirationst|date('Y-m-d') : ''}}
+                {% if stock.isExpired() %}
+                   <div style="background-color: #FFC0CB; border: 1px solid #FF69B4; padding: 10px; text-align: center;">
+                    <span style="font-weight: bold; color: red">Attention! la date pour {{ stock.nomst }} est expiré.</span>
+                    </div>  
+                {% endif %}
+                </td>
                 <td>{{ stock.description }}</td>
                 <td>{{ stock.stockcat }}</td>
             </tr>
@@ -70,5 +83,6 @@
         </tbody>
     </table>
 </div>
+
 </body>
 </html>

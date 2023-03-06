@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Stock;
 use App\Form\StockType;
 use App\Repository\StockRepository;
+use App\Repository\StockcategoriesRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,45 +18,15 @@ use PHPMailer\PHPMailer\PHPMailer;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle;
-
+use App\Service\AjoutNotificationService;
 
 
 class StockcController extends AbstractController
 {
-    #[Route('/test', name: 'app_sindex', methods: ['GET', 'POST'])]  
- 
-    public function indexnotif(Request $request, MailerInterface $mailer, EntityManagerInterface $entityManager): Response
-    {
-        // ...
-        $dateexpirationst = $entityManager->getRepository(Stock::class)->findExpired();
-        // Pour chaque stock expiré, envoyer une notification par e-mail
-        foreach ($dateexpirationst as $stock) {
-            $to = 'aminebalti532@gmail.com';                            // Adresse e-mail du destinataire
-            $subject = 'Le stock '.$stock->getNomst().' est expiré !'; // Sujet du message
-            $body = 'Le stock '.$stock->getNomst().' est expiré !';   // Corps du message
-
-            try {
-                // Envoyer le message
-                $email = (new Email())
-                    ->from('balti.mohamedamine@esprit.tn')
-                    ->to($to)
-                    ->subject($subject)
-                    ->text($body);
-                $mailer->send($email);
-            } catch (Exception $e) {
-                // Gérer les erreurs
-                echo "Erreur : " . $e->getMessage();
-            }
-        
-        }
-
-        return new Response('Notification envoyée !');
-        // ...
-    }
    
 
     #[Route('/f', name: 'app_stockc', methods: ['GET'])]
-    public function index_front(Request $request): Response
+    public function index_front(Request $request,StockcategoriesRepository $StockcategoriesRepository,StockRepository $stockRepository): Response
     {
         $search = $request->query->get('search');
         if ($search) {
@@ -67,37 +38,87 @@ class StockcController extends AbstractController
                 ->getRepository(stock::class)
                 ->findBy([], ['nomst' => 'ASC']);
         }
+        
         return $this->render('stockc/index_front.html.twig', [
             'stocks' => $stocks,
+            'categories' => $StockcategoriesRepository->findAll(),
+            
         ]);
     }
 
+#[Route('/filtrer-front', name:'app_medicament_filtrer_front', methods: ['POST'])]
+public function filtrerFront(StockcategoriesRepository $StockcategoriesRepository, Request $request)
+{                
+    $selectedValue = $request->request->get('category');
+
+    $stocks = $this->getDoctrine()
+        ->getRepository(Stock::class)
+        ->createQueryBuilder('m')
+        ->where('m.stockcat = :query')
+        ->setParameter('query', $selectedValue)
+        ->getQuery()
+        ->getResult();
+    
+    return $this->render('stockc/index_front.html.twig', [
+        'stocks' => $stocks,
+        'categories' => $StockcategoriesRepository->findAll(),
+    ]);
+   }
+
+   #[Route('/front/{id}', name: 'app_stock_showfront' )]
+            public function showfront($id)
+            {   
+                $entityManageree=$this->getDoctrine()->getManager();
+                $stock = $entityManageree->getRepository(Stock::class)->find($id);
+                return $this->render('stockc/show_front.html.twig', [
+                    'id' => $stock->getId(),
+                    'nom' => $stock->getNomst(),
+                    'quantite' => $stock->getQuantites(),
+                    'dateexpiration' => $stock->getDateexpirationst(),
+                    'descripion' => $stock->getdescription(),
+                    'categories' => $stock->getStockcat(),
+                ]);
+            }
+
+
+
     #[Route('/s', name: 'app_stockc_index', methods: ['GET'])]
-    public function index(Request $request): Response
+    public function index(Request $request,StockcategoriesRepository $StockcategoriesRepository,StockRepository $stockRepository ,AjoutNotificationService $notificationService): Response
    {
     $entityManager = $this->getDoctrine()->getManager();
-    
-    // create a new Stock object
-    $stock = new Stock();
-    
-    $form = $this->createForm(StockType::class, $stock);
-
-    // handle the form submission
-    $form->handleRequest($request);
-    if ($form->isSubmitted() && $form->isValid()) {
-        // save the updated stockc
-        $entityManager->persist($stock);
-        $entityManager->flush();
-    }
-
     $stocks = $entityManager->getRepository(Stock::class)
-        ->findEntitieByString($stock);
-
+        ->findBy([], ['nomst' => 'ASC']);
+    $stock = $entityManager->getRepository(Stock::class)->findAll();
+    foreach ($stocks as $stock) {   
+     if ($stock->getQuantites() < 10) {
+            $notificationService->sendEmailIfnew($stock);
+        }
+    }
     return $this->render('stockc/index.html.twig', [
         'stocks' => $stocks,
-        'form' => $form->createView(),
+        
+        'categories' => $StockcategoriesRepository->findAll(),
     ]);
+    
  }
+
+ #[Route('/filtrer', name:'app_medicament_filtrer', methods: ['POST'])]
+ public function filtrer(StockcategoriesRepository $StockcategoriesRepository,Request $request){
+                    
+     $selectedValue = $request->request->get('category');
+                    
+     $stocks=$this->getDoctrine()
+     ->getRepository(Stock::class)
+     ->createQueryBuilder('m')
+     ->where('m.stockcat = :query')
+     ->setParameter('query', $selectedValue)
+     ->getQuery()
+     ->getResult();
+     return $this->render('stockc/index.html.twig', [
+     'stocks' => $stocks,
+     'categories' => $StockcategoriesRepository->findAll(),
+        ]);
+    }
 
 
     #[Route('/new', name: 'app_stockc_new', methods: ['GET', 'POST'])]
@@ -159,7 +180,7 @@ class StockcController extends AbstractController
                 $requestString = $request->get('q');
                 $stocks = $em->getRepository(Stock::class)->findEntitiesByString($requestString);
                 if (!$stocks) {
-                    $result['stocks']['error'] = "stock not found 🙁";
+                    $result['stocks']['error'] = "Medicament Not Found 🙁";
                 } else {
                          $result['stocks'] = $this->getRealEntities($stocks);
                        }
@@ -188,7 +209,12 @@ class StockcController extends AbstractController
                     'categories' => $stock->getStockcat(),
                 ]);
             }
+
+
+            
         
+        
+            
                    
             
            

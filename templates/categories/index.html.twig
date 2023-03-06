@@ -28,6 +28,13 @@
  <center>
  <h1 style="color:#336699; font-family: Arial, sans-serif; ;">Liste des Categories</h1>
  </center>
+        <form action="{{ path('app_categories_index') }}" >
+        <div class="form-group">
+            <label for="search">Rechercher :</label>
+            <input type="text" name="search" id="search" value="{{ app.request.query.get('search') }}" class="form-control" placeholder="Entrez un mot-clé...">
+        </div>
+        <button type="submit" class="btn btn-primary">Rechercher</button>
+    </form><br><br>
     <a href="{{ path('app_categories_new') }}"class="btn btn-primary">Create new</a>
  
     <table border="6" class="table">

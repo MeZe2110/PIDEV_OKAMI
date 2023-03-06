@@ -1,0 +1,78 @@
+{% extends 'front.html.twig' %}
+
+
+
+
+
+{% block body %}
+ <main id="main" class="main">
+    <style>
+        table {
+            margin: 50px auto;
+            width: 80%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        th {
+            color:blue ;
+            
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+     </style>
+     
+ <center>
+ <h1 style="color:#336699; font-family: Arial, sans-serif; ;"> votre medicament</h1>
+ </center>
+
+   
+ 
+   <table class="table" >
+   
+        <tbody>
+            <tr>
+                <th>ID</th>
+                <td>{{ id  }}</td>
+            </tr>
+            <tr>
+                <th>nom de medicament</th>
+                <td>{{ nom  }}</td>
+            </tr>
+            <tr>
+                <th>quantite</th>
+                <td>{{ quantite }}</td>
+            </tr>
+            
+            <tr>
+                <th>dateexpiration </th>
+                <td>{{ dateexpiration |date('Y-m-d')  }}
+            </tr>
+            <tr>
+                <th>descripion</th>
+                <td>{{ descripion }}</td>
+            </tr>
+             <tr>
+                <th>categories</th>
+                <td>{{ categories }}</td>
+            </tr>
+            
+            
+            
+       
+         
+
+   
+  </table>
+   
+</div>
+</main>
+   
+    
+</div>
+{% endblock %}
