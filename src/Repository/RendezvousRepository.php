@@ -72,14 +72,54 @@ class RendezvousRepository extends ServiceEntityRepository
 
    public function getRendezvousByUser($date, $userId) : array
    {
-    return $this->createQueryBuilder('r')
-            ->where('r.daterv > :date')
-            ->andWhere('Utilisateur.id = :userId')
-            ->setParameters(['date' => $date, 'userId' => $userId])
-            ->leftJoin('r.Utilisateur', 'Utilisateur')
-            ->getQuery()
-            ->getResult();
+        return $this->createQueryBuilder('r')
+                ->where('r.daterv > :date')
+                ->andWhere('Utilisateur.id = :userId')
+                ->setParameters(['date' => $date, 'userId' => $userId])
+                ->leftJoin('r.Utilisateur', 'Utilisateur')
+                ->getQuery()
+                ->getResult();
    }
 
+   public function searchRendezvousByUser($value) : array
+   {
+        return $this->createQueryBuilder('r')
+                ->leftJoin('r.Utilisateur', 'u')
+                ->leftJoin('r.Type', 't')
+                ->leftJoin('r.Salle', 's')
+                ->where('CONCAT(u.nomut, \' \', u.prenomut) LIKE :value')
+                ->orWhere('CONCAT(\'Salle \', s.etagesa, \'0\', s.numsa) LIKE :value')
+                ->orWhere('CONCAT(\'Salle \', s.etagesa, s.numsa) LIKE :value')
+                ->orWhere('t.type LIKE :value')
+                ->setParameter('value', '%'.$value.'%')
+                ->orderBy('u.id', 'ASC')
+                ->getQuery()
+                ->getResult();
+   }
 
+   public function statsRendezvous($start, $end) : array
+   {
+
+        return $this->createQueryBuilder('r')
+                ->where('r.daterv BETWEEN :start AND :end')
+                ->setParameters(['start' => $start, 'end' => $end])
+                ->getQuery()
+                ->getResult();
+   }
+
+   // Function to get the 3 users that went to the most rendez-vous
+   // Function that compare the number of rendezvous of all months for a year
+
+   public function statsRendezvousUser() : array
+   {
+        return $this->createQueryBuilder('r')
+                ->leftJoin('r.Utilisateur', 'u')
+                
+                ->getQuery()
+                ->getResult();
+   }
+
+   // I have two entities "rendezvous" and "user" with a ManyToMany relationship
+   // From the rendezvousRepository, I wish to create a Query that returns the User with the highest number of rendez-vous
+   // From the rendezvousRepository, I wish to create a Query that returns the number of rendez-vous per month over a year.
 }

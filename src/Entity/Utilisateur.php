@@ -34,9 +34,13 @@ class Utilisateur
     #[ORM\ManyToMany(targetEntity: Rendezvous::class, mappedBy: 'Utilisateur')]
     private Collection $Rendezvous;
 
+    #[ORM\OneToMany(mappedBy: 'User', targetEntity: Historique::class)]
+    private Collection $historique;
+
     public function __construct()
     {
         $this->Rendezvous = new ArrayCollection();
+        $this->historique = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -134,5 +138,35 @@ class Utilisateur
     public function __toString()
     {
         return $this->nomut . ' ' . $this->prenomut;
+    }
+
+    /**
+     * @return Collection<int, Historique>
+     */
+    public function getHistorique(): Collection
+    {
+        return $this->historique;
+    }
+
+    public function addHistorique(Historique $historique): self
+    {
+        if (!$this->historique->contains($historique)) {
+            $this->historique->add($historique);
+            $historique->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHistorique(Historique $historique): self
+    {
+        if ($this->historique->removeElement($historique)) {
+            // set the owning side to null (unless already changed)
+            if ($historique->getUser() === $this) {
+                $historique->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }

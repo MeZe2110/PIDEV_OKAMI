@@ -1,12 +1,5 @@
 {% extends "Template_Back/base.html.twig" %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/core@4.1.0/main.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@4.1.0/main.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@4.1.0/main.min.css">
-{% endblock %}
-
 {% block content %}
     <style>
     .hidden {
@@ -32,9 +25,12 @@
         transform: rotate(270deg);
         margin-right: 0.5em;
     }
-
-
     </style>
+
+    <div>
+        <input type="text" id="search-input" class="form-control" placeholder="Recherche par utilisateur">
+    </div>
+
     <h1>Liste des Rendez-vous</h1>
 
     <table class="table table-hover" id="rendezvous-table">
@@ -141,48 +137,10 @@
     </div>
     </div>
 
-    <div id="calendar-holder" style="margin-top: 4.5em;"></div>
-
 {% endblock %}
 
 {% block javascript %}
     {{parent()}}
-    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@4.1.0/main.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@4.1.0/main.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@4.1.0/main.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@4.1.0/main.min.js"></script>
-
-    <script type="text/javascript">
-        document.addEventListener('DOMContentLoaded', () => {
-            var calendarEl = document.getElementById('calendar-holder');
-
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                defaultView: 'dayGridMonth',
-                editable: true,
-                eventSources: [
-                    {
-                        url: "{{ path('fc_load_events') }}",
-                        method: "POST",
-                        extraParams: {
-                            filters: JSON.stringify({})
-                        },
-                        failure: () => {
-                            // alert("There was an error while fetching FullCalendar!");
-                        },
-                    },
-                ],
-                header: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay',
-                },
-                plugins: [ 'interaction', 'dayGrid', 'timeGrid' ], // https://fullcalendar.io/docs/plugin-index
-                timeZone: 'UTC',
-            });
-            calendar.render();
-        });
-    </script>
-
 
     <script>
         const rendezvousTable = new simpleDatatables.DataTable('#rendezvous-table', {
@@ -246,6 +204,25 @@
             })
             .catch(error => {
                 messageFullclear.innerHTML = 'Une erreur est survenue lors de la suppression';
+            });
+        });
+
+        $(document).ready(function() {
+            var delay = 300; // delay in milliseconds
+            var timer = null;
+            $('#search-input').keyup(function() {
+                clearTimeout(timer);
+                var value = $(this).val();
+                timer = setTimeout(function() {
+                    $.ajax({
+                        url: "{{ path('rendezvous_search') }}",
+                        type: "POST",
+                        data: {value: value},
+                        success: function(data) {
+                            $('#rendezvous-table').html(data);
+                        }
+                    });
+                }, delay);
             });
         });
 

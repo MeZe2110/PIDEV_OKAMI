@@ -21,7 +21,7 @@ class Rendezvous
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, options: ['default' => 'CURRENT_TIMESTAMP'])]
     #[Assert\NotBlank(message:"Une date est requise.")]
-    #[Assert\GreaterThanOrEqual("today", message:"Impossible de planifier un Rendez-Vous dans le passé.")]
+    #[Assert\GreaterThanOrEqual("now", message:"Impossible de planifier un Rendez-Vous dans le passé.")]
     private ?\DateTimeInterface $daterv = null;
 
     #[ORM\ManyToMany(targetEntity: Utilisateur::class, inversedBy: "Rendezvous")]
@@ -41,6 +41,7 @@ class Rendezvous
     private ?bool $Rappel = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, options: ['default' => 'CURRENT_TIMESTAMP'])]
+    #[Assert\GreaterThanOrEqual("1970-01-01 00:00:00.0 +10 minutes", message:"Un rendez-vous doit faire au moins 10min")]
     private ?\DateTimeInterface $endAt =  null; 
 
     public function __construct()
