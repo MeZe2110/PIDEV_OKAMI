@@ -27,7 +27,7 @@ class Utilisateur
 
     #[ORM\ManyToOne(inversedBy: 'utilisateurs')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?roleutilisateur $roleut = null;
+    private ?Roleutilisateur $roleut = null;
 
     public function getId(): ?int
     {
@@ -92,5 +92,9 @@ class Utilisateur
         $this->roleut = $roleut;
 
         return $this;
+    }
+    public function __toString()
+    {
+        return $this->nomut . ' ' . $this->prenomut;
     }
 }

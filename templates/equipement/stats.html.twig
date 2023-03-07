@@ -17,13 +17,23 @@
     </style>
 
     <h1>Equipement Stats</h1>
-<div class="chart-container">
-    <div>
-    <canvas id="pieChart"></canvas>
+
+<div class="row">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Etat Equipement</h5>
+                    <div><canvas id="pieChart"></canvas></div>
         </div>
+            </div>
+        </div>
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Equipement Disponibilité</h5>
     <div><canvas id="doughnutChart"></canvas></div>
-    <div>
-    <canvas id="barChart" ></canvas>
+            </div>
+        </div>
     </div>
 </div>
     {% if counts %}
