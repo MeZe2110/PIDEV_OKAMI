@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use DateTime;
 
 
 
@@ -185,6 +186,33 @@ class RendezvousController extends AbstractController
     {
         return $this->render('rendezvous/_search.html.twig', [
             'rendezvous' => $rendezvousRepository->searchRendezvousByUser($request->request->get('value')),
+        ]);
+    }
+
+
+    #[Route('back/rendezvous/stats', name: 'back_rendezvous_statistique', methods: ['GET'])]
+    public function statsRendezvous(Request $request, RendezvousRepository $rendezvousRepository) : Response
+    {
+        $year = $request->request->get('year') ? $request->request->get('year') : (new DateTime())->format('Y');
+        $countUser = $rendezvousRepository->statsRendezvousUser();
+        $countRdv = $rendezvousRepository->statsRendezvous(new DateTime($year . '-01-01'), new DateTime($year . '-12-31'));
+        return $this->render('rendezvous/back/stats.html.twig', [
+            'countUser' => $countUser,
+            'month' => array_column($countRdv, 'month'),
+            'rdv' => array_column($countRdv, 'rdv'),
+            'year' => $year,
+        ]);
+    }
+
+    #[Route('back/rendezvous/substats', name: 'back_rendezvous_substatistique', methods: ['POST'])]
+    public function substatsRendezvous(Request $request, RendezvousRepository $rendezvousRepository) : Response
+    {
+        $year = $request->request->get('year') ? $request->request->get('year') : (new DateTime())->format('Y');
+        $countRdv = $rendezvousRepository->statsRendezvous(new DateTime($year . '-01-01'), new DateTime($year . '-12-31'));
+        return $this->render('rendezvous/back/substats.html.twig', [
+            'month' => array_column($countRdv, 'month'),
+            'rdv' => array_column($countRdv, 'rdv'),
+            'year' => $year,
         ]);
     }
 

@@ -9,6 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: RendezvousRepository::class)]
 #[UniqueEntity(fields:['daterv', 'Salle'], errorPath: 'Salle', message:"Il existe déjà un rendez-vous dans cette salle et à cette date.")]
@@ -17,31 +18,38 @@ class Rendezvous
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups("rendezvous")]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, options: ['default' => 'CURRENT_TIMESTAMP'])]
     #[Assert\NotBlank(message:"Une date est requise.")]
     #[Assert\GreaterThanOrEqual("now", message:"Impossible de planifier un Rendez-Vous dans le passé.")]
+    #[Groups("rendezvous")]
     private ?\DateTimeInterface $daterv = null;
 
     #[ORM\ManyToMany(targetEntity: Utilisateur::class, inversedBy: "Rendezvous")]
     #[Assert\Count(min:2, minMessage:"Il doit y avoir au moins deux personne pour planifier un rendez-vous.")]
+    #[Groups("rendezvous")]
     private Collection $Utilisateur;
 
     #[ORM\ManyToOne(inversedBy: 'Rendezvous')]
     #[ORM\JoinColumn(name: "Salle", referencedColumnName: "id", nullable: true, onDelete: "SET NULL")]
     #[Assert\NotBlank(message:"Un rendez-vous doit se passer dans une salle.")]
+    #[Groups("rendezvous")]
     private ?Salle $Salle = null;
 
     #[ORM\ManyToOne(inversedBy: 'rendezvous')]
     #[ORM\JoinColumn(name: "Type", referencedColumnName: "id", nullable: true, onDelete: "SET NULL")]
+    #[Groups("rendezvous")]
     private ?RendezvousType $Type = null;
 
     #[ORM\Column(type:"boolean", options: ["default" => true])]
+    #[Groups("rendezvous")]
     private ?bool $Rappel = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, options: ['default' => 'CURRENT_TIMESTAMP'])]
     #[Assert\GreaterThanOrEqual("1970-01-01 00:00:00.0 +10 minutes", message:"Un rendez-vous doit faire au moins 10min")]
+    #[Groups("rendezvous")]
     private ?\DateTimeInterface $endAt =  null; 
 
     public function __construct()

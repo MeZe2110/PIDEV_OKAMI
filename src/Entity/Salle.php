@@ -6,6 +6,7 @@ use App\Repository\SalleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: SalleRepository::class)]
 class Salle
@@ -13,21 +14,27 @@ class Salle
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(["salle", "rendezvous"])]
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Groups(["salle", "rendezvous"])]
     private ?int $numsa = null;
 
     #[ORM\Column]
+    #[Groups(["salle", "rendezvous"])]
     private ?int $etagesa = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(["salle", "rendezvous"])]
     private ?string $typesa = null;
 
     #[ORM\OneToMany(mappedBy: 'salle', targetEntity: Plannification::class)]
+    #[Groups("salle")]
     private Collection $plannificationsalle;
 
     #[ORM\OneToMany(mappedBy: 'Salle', targetEntity: Rendezvous::class, orphanRemoval: true)]
+    #[Groups("salle")]
     private Collection $Rendezvous;
 
     public function __construct()

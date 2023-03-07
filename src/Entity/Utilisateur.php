@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\UtilisateurRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -13,28 +14,36 @@ class Utilisateur
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(["utilisateur", "rendezvous", "historique"])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(["utilisateur", "rendezvous", "historique"])]
     private ?string $nomut = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(["utilisateur", "rendezvous", "historique"])]
     private ?string $prenomut = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("utilisateur")]
     private ?string $emailut = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("utilisateur")]
     private ?string $mdput = null;
 
     #[ORM\ManyToOne(inversedBy: 'utilisateurs')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups("utilisateur")]
     private ?Roleutilisateur $roleut = null;
 
     #[ORM\ManyToMany(targetEntity: Rendezvous::class, mappedBy: 'Utilisateur')]
+    #[Groups("utilisateur")]
     private Collection $Rendezvous;
 
     #[ORM\OneToMany(mappedBy: 'User', targetEntity: Historique::class)]
+    #[Groups("utilisateur")]
     private Collection $historique;
 
     public function __construct()
