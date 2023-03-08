@@ -1,0 +1,30 @@
+
+
+    <table id="results" class="table table-hover">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Nom Équipement</th>
+            <th>Etat Equipement</th>
+            <th>Disponibilité Equipement</th>
+            <th>Categorie Equipement</th>
+            <th>actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for equipement in equipements %}
+            <tr>
+                <td>{{ equipement.id }}</td>
+                <td>{{ equipement.nomeq }}</td>
+                <td>{{ equipement.etateq ? 'Intact' : 'Detruit' }}</td>
+                <td>{{ equipement.dispoeq ? 'Disponible' : 'Utilisé' }}</td>
+                <td>{{ equipement.cate }}</td>
+                <td>
+                    <a href="{{ path('app_equipement_edit', {'id': equipement.id}) }}">edit</a>
+                    {{ include('equipement/_delete_form.html.twig') }}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+

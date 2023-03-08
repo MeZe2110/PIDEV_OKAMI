@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\RendezvousRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -20,7 +18,7 @@ class Rendezvous
     #[ORM\Column]
     #[Groups("rendezvous")]
     private ?int $id = null;
-
+   
     #[ORM\Column(type: Types::DATETIME_MUTABLE, options: ['default' => 'CURRENT_TIMESTAMP'])]
     #[Assert\NotBlank(message:"Une date est requise.")]
     #[Assert\GreaterThanOrEqual("now", message:"Impossible de planifier un Rendez-Vous dans le passé.")]
@@ -73,6 +71,7 @@ class Rendezvous
 
         return $this;
     }
+
 
     /**
      * @return Collection<int, Utilisateur>
@@ -170,4 +169,5 @@ class Rendezvous
 
         return $duree_string;
     }
+
 }

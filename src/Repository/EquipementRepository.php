@@ -39,6 +39,63 @@ class EquipementRepository extends ServiceEntityRepository
         }
     }
 
+    public function countBy(): array
+    {
+        return $this->createQueryBuilder('e')
+            ->select('COUNT(e.id) as count, e.etateq')
+            ->groupBy('e.etateq')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function countByDispo(): array
+    {
+        return $this->createQueryBuilder('e')
+            ->select('COUNT(e.id) as count, e.dispoeq')
+            ->groupBy('e.dispoeq')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function searchBynom($value)
+    {
+        return $this->createQueryBuilder('e')
+            ->where('e.nomeq LIKE :value OR e.etateq LIKE :value OR e.dispoeq LIKE :value  ')
+            ->setParameter('value', '%'.$value.'%')
+            ->orderBy('e.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllOrderedByNomeq($order)
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT e
+            FROM App\Entity\Equipement e
+            ORDER BY e.nomeq '.$order
+        );
+
+
+        return $query->getResult();
+    }
+    public function findAllOrderedByEtateq($order)
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT e
+            FROM App\Entity\Equipement e
+            ORDER BY e.etateq '.$order
+        );
+
+
+        return $query->getResult();
+    }
+
+
+
 //    /**
 //     * @return Equipement[] Returns an array of Equipement objects
 //     */

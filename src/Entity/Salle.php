@@ -29,6 +29,7 @@ class Salle
     #[Groups(["salle", "rendezvous"])]
     private ?string $typesa = null;
 
+
     #[ORM\OneToMany(mappedBy: 'salle', targetEntity: Plannification::class)]
     #[Groups("salle")]
     private Collection $plannificationsalle;
@@ -36,11 +37,9 @@ class Salle
     #[ORM\OneToMany(mappedBy: 'Salle', targetEntity: Rendezvous::class, orphanRemoval: true)]
     #[Groups("salle")]
     private Collection $Rendezvous;
-
     public function __construct()
     {
         $this->plannificationsalle = new ArrayCollection();
-        $this->Rendezvous = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -85,14 +84,14 @@ class Salle
     }
 
     /**
-     * @return Collection<int, Plannification>
+     * @return Collection<int, plannification>
      */
     public function getPlannificationsalle(): Collection
     {
         return $this->plannificationsalle;
     }
 
-    public function addPlannificationsalle(Plannification $plannificationsalle): self
+    public function addPlannificationsalle(plannification $plannificationsalle): self
     {
         if (!$this->plannificationsalle->contains($plannificationsalle)) {
             $this->plannificationsalle->add($plannificationsalle);
@@ -102,7 +101,7 @@ class Salle
         return $this;
     }
 
-    public function removePlannificationsalle(Plannification $plannificationsalle): self
+    public function removePlannificationsalle(plannification $plannificationsalle): self
     {
         if ($this->plannificationsalle->removeElement($plannificationsalle)) {
             // set the owning side to null (unless already changed)
@@ -148,4 +147,5 @@ class Salle
     {
         return 'Salle ' . $this->etagesa . ($this->numsa < 10 ? 0 . $this->numsa : $this->numsa) ;
     }
+
 }

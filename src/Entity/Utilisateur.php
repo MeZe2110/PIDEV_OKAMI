@@ -4,8 +4,6 @@ namespace App\Entity;
 
 use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\UtilisateurRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
@@ -37,6 +35,7 @@ class Utilisateur
     #[ORM\JoinColumn(nullable: false)]
     #[Groups("utilisateur")]
     private ?Roleutilisateur $roleut = null;
+
 
     #[ORM\ManyToMany(targetEntity: Rendezvous::class, mappedBy: 'Utilisateur')]
     #[Groups("utilisateur")]
@@ -105,45 +104,17 @@ class Utilisateur
         return $this;
     }
 
-    public function getRoleut(): ?Roleutilisateur
+    public function getRoleut(): ?roleutilisateur
     {
         return $this->roleut;
     }
 
-    public function setRoleut(?Roleutilisateur $roleut): self
+    public function setRoleut(?roleutilisateur $roleut): self
     {
         $this->roleut = $roleut;
 
         return $this;
     }
-
-    /**
-     * @return Collection<int, Rendezvous>
-     */
-    public function getRendezvous(): Collection
-    {
-        return $this->Rendezvous;
-    }
-
-    public function addRendezvou(Rendezvous $rendezvou): self
-    {
-        if (!$this->Rendezvous->contains($rendezvou)) {
-            $this->Rendezvous->add($rendezvou);
-            $rendezvou->addUtilisateur($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRendezvou(Rendezvous $rendezvou): self
-    {
-        if ($this->Rendezvous->removeElement($rendezvou)) {
-            $rendezvou->removeUtilisateur($this);
-        }
-
-        return $this;
-    }
-
     public function __toString()
     {
         return $this->nomut . ' ' . $this->prenomut;
