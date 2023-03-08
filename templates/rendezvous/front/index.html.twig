@@ -1,0 +1,55 @@
+{% extends "Template_Front/base.html.twig" %}
+
+  {% block title %} Rendez-Vous {% endblock %}
+
+  {% block content %}
+  {# <section class="contact_section layout_padding" style="background-image: url('https://media.discordapp.net/attachments/802118030100135936/1077610051486892173/Vergil_Smile.jpg'); background-repeat: no-repeat;background-size: 100% 100%;"> #}
+  <section class="contact_section layout_padding" style="background: cadetblue;">
+    <div class="container" style="max-width: 80%;">
+      <h1>Liste des Rendez-vous</h1>
+
+    <table class="table table-hover" id="rendezvous-table">
+    <thead>
+        <tr>
+            <th scope="col"> Date du Rendez-vous </th>
+            <th scope="col"> Salle </th>
+            <th scope="col"> Type </th>
+            <th scope="col"> Personnes présentes </th>
+            <th scope="col"> </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for r in rendezvous %}
+        <tr>
+            <td> {{ r.daterv ? r.daterv|format_datetime('full', 'short', locale='fr') }} </td>
+            <td> {{ r.Salle }} </td>
+            <td> {{ r.Type }} </td>
+            <td>
+                {% if r.Utilisateur is not empty and r.Utilisateur|length > 0  %}
+                <select class="form-select" multiple="true" size="3" disabled>
+                    {% for u in r.Utilisateur %}
+                        <option value="{{ u }}"> {{ u }} </option>
+                    {% endfor %}
+                </select>
+                {% else %}
+                    Aucun Utilisateur
+                {% endif %}
+            </td>
+            <td> 
+                <button class="btn"> <a href="{{ path('front_rendezvous_edit', {'id': r.id}) }}"> Modifier </a> </button> 
+                {{ include('rendezvous/front/delete_form.html.twig') }}
+            </td>
+        </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">Aucun Rendez-vous en cours</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+
+    <a href="{{ path('front_rendezvous_new') }}"> Planifier un rendez-vous </a>
+    </div>
+  </section>
+  <!-- end contact section -->
+  {% endblock %}

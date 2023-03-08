@@ -1,0 +1,11 @@
+{% extends "Template_Back/base.html.twig" %}
+
+{% block content %}
+
+    <h1>Créer un Type de Rendez-vous</h1>
+
+    {{ include('rendezvous/back/type/_form.html.twig') }}
+
+    <a href="{{ path('back_rendezvous_type_index') }}">Retourner à la liste</a>
+    
+{% endblock %}

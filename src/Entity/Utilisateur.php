@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\UtilisateurRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -11,23 +12,44 @@ class Utilisateur
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(["utilisateur", "rendezvous", "historique"])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(["utilisateur", "rendezvous", "historique"])]
     private ?string $nomut = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(["utilisateur", "rendezvous", "historique"])]
     private ?string $prenomut = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("utilisateur")]
     private ?string $emailut = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("utilisateur")]
     private ?string $mdput = null;
 
     #[ORM\ManyToOne(inversedBy: 'utilisateurs')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups("utilisateur")]
     private ?Roleutilisateur $roleut = null;
+
+
+    #[ORM\ManyToMany(targetEntity: Rendezvous::class, mappedBy: 'Utilisateur')]
+    #[Groups("utilisateur")]
+    private Collection $Rendezvous;
+
+    #[ORM\OneToMany(mappedBy: 'User', targetEntity: Historique::class)]
+    #[Groups("utilisateur")]
+    private Collection $historique;
+
+    public function __construct()
+    {
+        $this->Rendezvous = new ArrayCollection();
+        $this->historique = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -96,5 +118,35 @@ class Utilisateur
     public function __toString()
     {
         return $this->nomut . ' ' . $this->prenomut;
+    }
+
+    /**
+     * @return Collection<int, Historique>
+     */
+    public function getHistorique(): Collection
+    {
+        return $this->historique;
+    }
+
+    public function addHistorique(Historique $historique): self
+    {
+        if (!$this->historique->contains($historique)) {
+            $this->historique->add($historique);
+            $historique->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHistorique(Historique $historique): self
+    {
+        if ($this->historique->removeElement($historique)) {
+            // set the owning side to null (unless already changed)
+            if ($historique->getUser() === $this) {
+                $historique->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }

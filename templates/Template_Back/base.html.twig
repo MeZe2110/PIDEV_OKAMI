@@ -1,5 +1,5 @@
- <!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="fr">
 
 {% block head %}
 <head>
@@ -284,6 +284,49 @@
       </li><!-- End Dashboard Nav -->
 
       <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-journal-text"></i><span>Forms</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="{{ path('back_forms') }}">
+              <i class="bi bi-circle"></i><span>Form Elements</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End Forms Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#rendez-vous-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-layout-text-window-reverse"></i><span>Rendez-Vous</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="rendez-vous-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="{{ path('back_rendezvous_index') }}">
+              <i class="bi bi-circle"></i><span>Rendez-Vous</span>
+            </a>
+          </li>
+          <li>
+            <a href="{{ path('back_rendezvous_type_index') }}">
+              <i class="bi bi-circle"></i><span>Type</span>
+            </a>
+          </li>
+          <li>
+            <a href="{{ path('back_rendezvous_calendar') }}">
+              <i class="bi bi-circle"></i><span>Calendrier</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- Rendezvous Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{{ path('back_historique_index') }}">
+          <i class="bi bi-file-earmark"></i>
+          <span>Historique</span>
+        </a>
+      </li><!-- End Historique Nav -->
+
+      <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
           <i class="bi bi-layout-text-window-reverse"></i><span>Categories</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
@@ -304,8 +347,48 @@
             </a>
           </li>
 
-        </ul>
-      </li><!-- End Tables Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{{ path('back_faq') }}">
+          <i class="bi bi-question-circle"></i>
+          <span>F.A.Q</span>
+        </a>
+      </li><!-- End F.A.Q Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{{ path('back_contact') }}">
+          <i class="bi bi-envelope"></i>
+          <span>Contact</span>
+        </a>
+      </li><!-- End Contact Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{{ path('back_register') }}">
+          <i class="bi bi-card-list"></i>
+          <span>Register</span>
+        </a>
+      </li><!-- End Register Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{{ path('back_login') }}">
+          <i class="bi bi-box-arrow-in-right"></i>
+          <span>Login</span>
+        </a>
+      </li><!-- End Login Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{{ path('back_error404') }}">
+          <i class="bi bi-dash-circle"></i>
+          <span>Error 404</span>
+        </a>
+      </li><!-- End Error 404 Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{{ path('back_blank') }}">
+          <i class="bi bi-file-earmark"></i>
+          <span>Blank</span>
+        </a>
+      </li><!-- End Blank Page Nav -->
 
     </ul>
 
@@ -320,10 +403,12 @@
   {% block footer %}
   <footer id="footer" class="footer">
     <div class="copyright">
+
       &copy; Copyright <strong><span>SEPHIROTH</span></strong>. All Rights Reserved
     </div>
     <div class="credits">
       Designed by <a href="https://www.youtube.com/watch?v=24rwZ3pzX68">Roboute Guilliman</a>
+
     </div>
   </footer>
   <!-- End Footer -->
@@ -341,6 +426,7 @@
   <script src="{{asset('Template_Back/vendor/simple-datatables/simple-datatables.js')}}"></script>
   <script src="{{asset('Template_Back/vendor/tinymce/tinymce.min.js')}}"></script>
   <script src="{{asset('Template_Back/vendor/php-email-form/validate.js')}}"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" </script>
 
   <!-- Template Main JS File -->
   <script src="{{asset('Template_Back/js/main.js')}}"></script>

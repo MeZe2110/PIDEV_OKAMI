@@ -1,0 +1,46 @@
+<style>
+.rendezvous-checkbox label {
+    margin-bottom: 0.5em;
+    margin-top: 0.5em;
+    margin-right: 0.5em;
+    display: flex;
+}
+.rendezvous-checkbox input[type="checkbox"] {
+    height: 15px;
+    width: auto;
+    margin-top: 0.3em;
+    margin-right: 0.5em;
+    float: left;
+}
+</style>
+<table class="table">
+{{ form_start(form, {'attr': {'novalidate': 'novalidate'}} ) }}
+        <tr>
+            <td> {{ form_label(form.daterv, "Date du Rendez-vous : ") }} </td>
+            <td> {{ form_widget(form.daterv) }} </td>
+            <td> {{ form_errors(form.daterv) }} </td>
+        </tr>
+        <tr>
+            <td> {{ form_label(form.endAt, "Durée : ") }} </td>
+            <td> {{ form_widget(form.endAt) }} </td>
+            <td> {{ form_errors(form.endAt) }} </td>
+        </tr>
+        <tr>
+            <td> {{ form_label(form.Utilisateur, "Utilisateur : ") }} </td>
+            <td> {{ form_widget(form.Utilisateur) }} </td>
+            <td> {{ form_errors(form.Utilisateur) }} </td>
+        </tr>
+        <tr>
+            <td> {{ form_label(form.Salle, "Salle : ") }} </td>
+            <td> {{ form_widget(form.Salle) }} </td>
+            <td> {{ form_errors(form.Salle) }} </td>
+        </tr>
+        <tr>
+            <td> {{ form_label(form.Type, "Type : ") }} </td>
+            <td> {{ form_widget(form.Type) }} </td>
+            <td> {{ form_errors(form.Type) }} </td>
+        </tr>
+    </table>
+    {{ form_widget(form.Save) }}
+{{ form_end(form) }}
+</table>

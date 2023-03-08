@@ -39,28 +39,91 @@ class RendezvousRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Rendezvous[] Returns an array of Rendezvous objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('r.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
 
-//    public function findOneBySomeField($value): ?Rendezvous
-//    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+   public function getRendezvous($date): array
+   {
+        return $this->createQueryBuilder('r')
+            ->where('r.daterv > :date')
+            ->setParameter('date', $date)
+            ->getQuery()
+            ->getResult()
+        ;
+   }
+
+   public function getOldRendezvous($date): array
+   {
+        return $this->createQueryBuilder('r')
+            ->where('r.daterv <= :date')
+            ->setParameter('date', $date)
+            ->getQuery()
+            ->getResult();
+        ;
+   }
+
+   public function clearOldRendezvous($date) : array
+   {
+        return $this->createQueryBuilder('r')
+            ->delete()
+            ->where('r.daterv <= :date')
+            ->setParameter('date', $date)
+            ->getQuery()
+            ->execute()
+        ;
+   }
+
+   public function getRendezvousByUser($date, $userId) : array
+   {
+        return $this->createQueryBuilder('r')
+            ->where('r.daterv > :date')
+            ->andWhere('Utilisateur.id = :userId')
+            ->setParameters(['date' => $date, 'userId' => $userId])
+            ->leftJoin('r.Utilisateur', 'Utilisateur')
+            ->getQuery()
+            ->getResult()
+        ;
+   }
+
+   public function searchRendezvousByUser($value) : array
+   {
+        return $this->createQueryBuilder('r')
+            ->leftJoin('r.Utilisateur', 'u')
+            ->leftJoin('r.Type', 't')
+            ->leftJoin('r.Salle', 's')
+            ->where('CONCAT(u.nomut, \' \', u.prenomut) LIKE :value')
+            ->orWhere('CONCAT(\'Salle \', s.etagesa, \'0\', s.numsa) LIKE :value')
+            ->orWhere('CONCAT(\'Salle \', s.etagesa, s.numsa) LIKE :value')
+            ->orWhere('t.type LIKE :value')
+            ->setParameter('value', '%'.$value.'%')
+            ->orderBy('u.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+   }
+
+   public function statsRendezvous($start, $end) : array
+   {
+        return $this->createQueryBuilder('r')
+            ->select('MONTH(r.daterv) as month, COUNT(r.id) AS rdv')
+            ->where('r.daterv BETWEEN :start AND :end')
+            ->setParameters(['start'=> $start, 'end'=> $end])
+            ->groupBy('month')
+            ->orderBy('month', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+   }
+
+   public function statsRendezvousUser() : array
+   {
+        return $this->createQueryBuilder('r')
+            ->select('CONCAT(u.nomut, \' \', u.prenomut), COUNT(r) AS rdv')
+            ->leftJoin('r.Utilisateur', 'u')
+            ->groupBy('u.id')
+            ->orderBy('rdv', 'DESC')
+            ->setMaxResults(5)
+            ->getQuery()
+            ->getResult()
+        ;
+   }
+
 }
