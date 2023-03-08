@@ -1,0 +1,27 @@
+{% extends "Template_Front/base.html.twig" %}
+
+  {% block title %} Rendez-Vous {% endblock %}
+
+  {% block content %}
+  <section class="contact_section layout_padding">
+    <div class="container">
+      <div class="heading_container">
+        <h2>
+          Planifier un Rendez-Vous
+        </h2>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form_container contact-form">
+            {{ include('rendezvous/_form.html.twig') }}
+            <a href="{{ path('front_rendezvous_index') }}">Retourner à la liste</a>
+          </div>
+        </div>
+        {# <div class="col-md-6" style="background-image: url('https://media.discordapp.net/attachments/802118030100135936/1077642953553608826/Sotha_Sus.jpg?width=486&amp;height=473'); background-repeat: no-repeat;background-size: 100% 100%;"> #}
+        <div class="col-md-6" style="background: bottom;">
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- end contact section -->
+  {% endblock %}

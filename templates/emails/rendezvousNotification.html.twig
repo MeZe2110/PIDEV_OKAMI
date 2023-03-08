@@ -1,0 +1,37 @@
+{% extends "Template_Back/base.html.twig" %}
+
+  {% block body %}
+<body>
+  <main>
+    <div class="container">
+
+      <section class="section error-404 min-vh-100 d-flex flex-column align-items-center justify-content-center">
+        
+        {% for r in rendezvous %}
+          <h1>Vous avez un rendez-vous prévu dans moins d'un jour.</h1>
+          
+          <h2>Prévu le {{ r.daterv ? r.daterv|format_datetime('full', 'short', locale='fr') }} </h2>
+          <h2>de type {{ r.Type }} </h2>
+          <h2>en salle {{ r.Salle }} </h2>
+
+          <h2> Avec :
+              <ul>
+              {% for u in r.Utilisateur %}
+                  <li> {{ u }}</ul>
+              {% else %}
+                  Aucun Utilisateur
+              {% endfor %}
+              </ul>
+          <h2>
+
+        {% else %}
+          Erreur, Aucun rendez-vous trouvé.
+        {% endfor %}
+
+
+        <img src="{{asset('Template_Back/img/not-found.svg')}}" class="img-fluid py-5" alt="Page Not Found">
+      </section>
+    </div>
+  </main><!-- End #main -->
+</body>
+  {% endblock %}

@@ -1,0 +1,44 @@
+
+    <table class="table table-hover" id="rendezvous-table">
+    <thead>
+        <tr>
+            <th scope="col"> Id </th>
+            <th scope="col"> Date du Rendez-vous </th>
+            <th scope="col"> Durée </th>
+            <th scope="col"> Salle </th>
+            <th scope="col"> Type </th>
+            <th scope="col"> Liste des Utilisateurs présents </th>
+            <th scope="col"> </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for r in rendezvous %}
+        <tr>
+            <td> {{ r.id }} </td>
+            <td> {{ r.daterv ? r.daterv|format_datetime('full', 'short', locale='fr') }} </td>
+            <td> {{ r.endAt ? r.showDuree() }} </td>
+            <td> {{ r.Salle }} </td>
+            <td> {{ r.Type }} </td>
+            <td>
+                {% if r.Utilisateur is not empty and r.Utilisateur|length > 0  %}
+                <select class="form-select" multiple="true" size="3" disabled>
+                    {% for u in r.Utilisateur %}
+                        <option value="{{ u }}"> {{ u }} </option>
+                    {% endfor %}
+                </select>
+                {% else %}
+                    Aucun Utilisateur
+                {% endif %}
+            </td>
+            <td> 
+                <button class="btn"> <a href="{{ path('back_rendezvous_edit', {'id': r.id}) }}"> Modifier </a> </button> 
+                {{ include('rendezvous/back/delete_form.html.twig') }}
+            </td>
+        </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">Aucun Rendez-vous en cours</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    </table>

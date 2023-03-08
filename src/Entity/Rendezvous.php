@@ -8,34 +8,49 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: RendezvousRepository::class)]
+#[UniqueEntity(fields:['daterv', 'Salle'], errorPath: 'Salle', message:"Il existe déjà un rendez-vous dans cette salle et à cette date.")]
 class Rendezvous
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups("rendezvous")]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Assert\NotBlank(message:"Date is required")]
-    #[Assert\GreaterThanOrEqual("today", message:"You cannot have a Rendez-Vous in the past.")]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, options: ['default' => 'CURRENT_TIMESTAMP'])]
+    #[Assert\NotBlank(message:"Une date est requise.")]
+    #[Assert\GreaterThanOrEqual("now", message:"Impossible de planifier un Rendez-Vous dans le passé.")]
+    #[Groups("rendezvous")]
     private ?\DateTimeInterface $daterv = null;
 
-
-    #[ORM\ManyToMany(targetEntity: Utilisateur::class, inversedBy: 'Rendezvous')]
-    #[Assert\NotBlank(message:"You must choose a user")]
-    #[Assert\Count(min:2, minMessage:"There must be at  two users to start a rendez-vous.")]
+    #[ORM\ManyToMany(targetEntity: Utilisateur::class, inversedBy: "Rendezvous")]
+    #[Assert\Count(min:2, minMessage:"Il doit y avoir au moins deux personne pour planifier un rendez-vous.")]
+    #[Groups("rendezvous")]
     private Collection $Utilisateur;
 
     #[ORM\ManyToOne(inversedBy: 'Rendezvous')]
-    #[Assert\NotBlank(message:"A rendez-vous must be set in a room.")]
+    #[ORM\JoinColumn(name: "Salle", referencedColumnName: "id", nullable: true, onDelete: "SET NULL")]
+    #[Assert\NotBlank(message:"Un rendez-vous doit se passer dans une salle.")]
+    #[Groups("rendezvous")]
     private ?Salle $Salle = null;
 
     #[ORM\ManyToOne(inversedBy: 'rendezvous')]
-    private ?RendezvousType $Type = null; 
+    #[ORM\JoinColumn(name: "Type", referencedColumnName: "id", nullable: true, onDelete: "SET NULL")]
+    #[Groups("rendezvous")]
+    private ?RendezvousType $Type = null;
 
-    // #[Assert\Unique(fields:['daterv', 'Salle'], message:"A rendez-vous already exists this day in this room.")]
+    #[ORM\Column(type:"boolean", options: ["default" => true])]
+    #[Groups("rendezvous")]
+    private ?bool $Rappel = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, options: ['default' => 'CURRENT_TIMESTAMP'])]
+    #[Assert\GreaterThanOrEqual("1970-01-01 00:00:00.0 +10 minutes", message:"Un rendez-vous doit faire au moins 10min")]
+    #[Groups("rendezvous")]
+    private ?\DateTimeInterface $endAt =  null; 
 
     public function __construct()
     {
@@ -52,7 +67,7 @@ class Rendezvous
         return $this->daterv;
     }
 
-    public function setDaterv(\DateTimeInterface $daterv): self
+    public function setDaterv(\DateTimeInterface $daterv = null): self
     {
         $this->daterv = $daterv;
 
@@ -105,5 +120,54 @@ class Rendezvous
         $this->Type = $Type;
 
         return $this;
+    }
+
+    public function isRappel(): ?bool
+    {
+        return $this->Rappel;
+    }
+
+    public function setRappel(bool $Rappel): self
+    {
+        $this->Rappel = $Rappel;
+
+        return $this;
+    }
+
+    public function getEndAt(): ?\DateTimeInterface
+    {
+        return $this->endAt;
+    }
+
+    public function setEndAt(?\DateTimeInterface $endAt): self
+    {
+        $this->endAt = $endAt;
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return 'Rendez-vous ' . $this->Type . ' le : ' . $this->daterv->format('d-m-Y') . ' en salle ' . $this->Salle;
+    }
+
+    public function showDuree()
+    {
+        $hours = (int) $this->daterv->format('H');
+        $minutes = (int) $this->daterv->format('i');
+        $duree_string = "";
+        if ($hours && $minutes) {
+            return $duree_string . $hours . " heures et " . $minutes . " minutes";
+        }
+        else {
+            if ($hours) {
+                $duree_string = $duree_string . $hours . " heures";
+            }
+            if ($minutes) {
+                $duree_string = $duree_string . $minutes . " minutes";
+            }
+        }
+
+        return $duree_string;
     }
 }

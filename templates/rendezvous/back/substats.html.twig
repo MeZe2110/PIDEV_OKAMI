@@ -1,0 +1,54 @@
+
+              <canvas id="barChart" style="max-height: 400px; display: block; box-sizing: border-box; height: 359px; width: 719px;" width="719" height="359"></canvas>
+              <script>
+                
+                  new Chart(document.querySelector('#barChart'), {
+                    type: 'bar',
+                    data: {
+                      labels: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+                      datasets: [{
+                        label: 'Année {{year}}',
+                        data: [{% set j = 0 %}{% for i in 1..12 %}{% if j < month|length %}{% if i==month[j] %}{{rdv[j]}},{% set j = j + 1 %}{% else %}0,{% endif %}{% else %}0,{% endif %}{% endfor %}],     
+                        backgroundColor: [
+                          'rgba(255, 80, 80, 0.2)',
+                          'rgba(255, 153, 0, 0.2)',
+                          'rgba(153, 255, 51, 0.2)',
+                          'rgba(75, 192, 192, 0.2)',
+                          'rgba(54, 162, 235, 0.2)',
+                          'rgba(153, 102, 255, 0.2)',
+                          'rgba(255, 80, 80, 0.2)',
+                          'rgba(255, 153, 0, 0.2)',
+                          'rgba(153, 255, 51, 0.2)',
+                          'rgba(75, 192, 192, 0.2)',
+                          'rgba(54, 162, 235, 0.2)',
+                          'rgba(153, 102, 255, 0.2)',
+                        ],
+                        borderColor: [
+                          'rgb(255, 99, 132)',
+                          'rgb(255, 159, 64)',
+                          'rgb(255, 205, 86)',
+                          'rgb(75, 192, 192)',
+                          'rgb(54, 162, 235)',
+                          'rgb(153, 102, 255)',
+                          'rgb(255, 99, 132)',
+                          'rgb(255, 159, 64)',
+                          'rgb(255, 205, 86)',
+                          'rgb(75, 192, 192)',
+                          'rgb(54, 162, 235)',
+                          'rgb(153, 102, 255)',
+                        ],
+                        borderWidth: 1
+                      }]
+                    },
+                    options: {
+                      scales: {
+                        y: {
+                          beginAtZero: true
+                        }
+                      }
+                    }
+                  });
+                </script>
+
+            </div>
+          </div>

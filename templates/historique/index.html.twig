@@ -1,0 +1,36 @@
+{% extends "Template_Back/base.html.twig" %}
+
+{% block content %}
+
+    <h1>Historique</h1>
+
+    <table class="table table-hover" id="historique-table">
+        <thead>
+            <tr>
+                <th scope="col"> Id </th>
+                <th scope="col"> Description </th>
+                <th scope="col"> Date </th>
+                <th scope="col"> Utilisateur </th>
+                <th scope="col"> </th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for historique in historiques %}
+            <tr>
+                <td>{{ historique.id }}</td>
+                <td>{{ historique.description }}</td>
+                <td>{{ historique.date ? historique.date|format_datetime('full', 'short', locale='fr') }}</td>
+                <td>{{ historique.User }}</td>
+                <td>
+                    {{ include('historique/delete_form.html.twig') }}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">Aucun Historique</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
