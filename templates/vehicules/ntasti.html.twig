@@ -1,0 +1,51 @@
+{% extends 'Template_Front/base.html.twig' %}
+
+
+{% block title %}Vehicules{% endblock %}
+
+{% block content %}
+
+
+   {% for vehicules in vehicules %}
+
+                                <div class="col-xs-10 col-sm-10 col-md-10 col-lg-8">
+                                    <div class="featured-box">
+                                        <figure>
+                                            <div class="homes-tag featured">Vehicules</div>
+                                            <div class="homes-tag rent"><i class="lni-heart"></i>  </div>
+
+                                            <a href="{{ path('app_vehicules_index',{'id': vehicules.id}) }}"><img class="img-fluid" src="{{ asset('uploads/post/' ) }}" alt=""></a>
+                                        </figure>
+                                        <div class="content-wrapper">
+                                            <div class="feature-content">
+                                                <h4><a href="{{ path('app_vehicules_index',{'id': vehicules.id}) }}">{{ vehicules.id }}</a></h4>
+                                                <p class="listing-tagline">{{ vehicules.descvh  }}</p>
+                                                <div class="meta-tag">
+                                                     
+                                                    
+                                                     
+                                                </div>
+                                            </div>
+                                            <div class="listing-bottom clearfix">
+                                                <div class="btn-group">
+
+                                                       <a href="{{ path('app_vehicules_edit',{'id': vehicules.id}) }}"><button type="button" class="btn btn-sm btn-outline-primary">View</button></a>
+
+                                                </div> 
+                                        
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+
+                    {% endblock %}
+
+
+
+
+
+                 

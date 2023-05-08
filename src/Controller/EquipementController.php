@@ -7,7 +7,7 @@ use App\Entity\Equipement;
 use App\Entity\Historique;
 use App\Form\EquipementType;
 use App\Repository\EquipementRepository;
-use App\Repository\UtilisateurRepository;
+use App\Repository\UserRepository;
 use App\Repository\HistoriqueRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,7 +32,7 @@ class EquipementController extends AbstractController
         return $this->render('equipement/index.html.twig',[ 'equipements' => $equipementRepository->findAll()]);
     }
 
-    #[Route('/search', name: 'search')]
+    #[Route('/search', name: 'searche')]
     public function search(Request $request, EquipementRepository $repository): Response
     {
         $value = $request->request->get('value');
@@ -55,7 +55,7 @@ class EquipementController extends AbstractController
         ]);
     }
 
-    #[Route('/Stats', name: 'app_statistique',methods: ['GET'])]
+    #[Route('/Stats', name: 'app_equipement_statistique',methods: ['GET'])]
     public function statsequipe(EquipementRepository $equipementRepository)
     {
         $counts = $equipementRepository->countBy('etateq');
@@ -79,7 +79,7 @@ class EquipementController extends AbstractController
     }
 
     #[Route('/new', name: 'app_equipement_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EquipementRepository $equipementRepository,HistoriqueRepository $historiqueRepository, UtilisateurRepository $userRepository): Response
+    public function new(Request $request, EquipementRepository $equipementRepository,HistoriqueRepository $historiqueRepository, UserRepository $userRepository): Response
     {
         $userId = 1;
         $equipement = new Equipement();
@@ -109,7 +109,7 @@ class EquipementController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_equipement_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Equipement $equipement, EquipementRepository $equipementRepository,HistoriqueRepository $historiqueRepository, UtilisateurRepository $userRepository): Response
+    public function edit(Request $request, Equipement $equipement, EquipementRepository $equipementRepository,HistoriqueRepository $historiqueRepository, UserRepository $userRepository): Response
     {
         $userId = 1;
         $form = $this->createForm(EquipementType::class, $equipement);
@@ -130,7 +130,7 @@ class EquipementController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_equipement_delete', methods: ['POST'])]
-    public function delete(Request $request, Equipement $equipement, EquipementRepository $equipementRepository,HistoriqueRepository $historiqueRepository, UtilisateurRepository $userRepository): Response
+    public function delete(Request $request, Equipement $equipement, EquipementRepository $equipementRepository,HistoriqueRepository $historiqueRepository, UserRepository $userRepository): Response
     {
         $userId = 1;
         $id = $equipement->getNomeq();

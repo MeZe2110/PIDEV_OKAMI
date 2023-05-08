@@ -1,0 +1,44 @@
+
+
+<table class="table">
+{{form_start (form,{'attr': {'novalidate': 'novalidate '}} ) }}
+<tr>
+<td> {{ form_label( form.email, "email : ") }} </td>
+<td> {{ form_widget(form.email) }} </td>
+<td> {{ form_errors(form.email) }} </td>
+</tr>
+<tr>
+
+<td> {{ form_label(form.password, "password : ") }} </td>
+<td> {{ form_widget(form.password) }} </td>
+<td> {{ form_errors(form.password) }} </td>
+</tr>
+<tr>
+<td> {{ form_label(form.nom, "nom : ") }} </td>
+<td> {{ form_widget(form.nom) }} </td>
+<td> {{ form_errors(form.nom) }} </td>
+</tr>
+<tr>
+<td> {{ form_label(form.prenom, "prenom: ") }} </td>
+<td> {{ form_widget(form.prenom) }} </td>
+<td> {{ form_errors(form.prenom) }} </td>
+</tr>
+<tr>
+<td> {{ form_label(form.phone_number, "Numéro de téléphone :  ") }} </td>
+<td> {{ form_widget(form.phone_number) }} </td>
+<td> {{ form_errors(form.phone_number) }} </td>
+</tr>
+<tr>
+<td> {{ form_label(form.role, "role :  ") }} </td>
+<td> {{ form_widget(form.role) }} </td>
+<td> {{ form_errors(form.role) }} </td>
+</tr>
+</table>
+ <div class="col-sm-10">
+      {{ form_widget(form.Save) }}
+     </div>
+
+                 
+{{ form_end(form) }}
+
+    

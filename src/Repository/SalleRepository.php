@@ -39,6 +39,19 @@ class SalleRepository extends ServiceEntityRepository
         }
     }
 
+    public function findBySearch(string $search): array
+    {
+        $entityManager = $this->getEntityManager();
+        $queryBuilder = $entityManager->createQueryBuilder();
+
+        $queryBuilder->select('s')
+            ->from(Salle::class, 's')
+            ->where('s.numsa LIKE :search')
+            ->setParameter('search', '%'.$search.'%');
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
 //    /**
 //     * @return Salle[] Returns an array of Salle objects
 //     */

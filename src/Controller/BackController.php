@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\HistoriqueRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -9,9 +10,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class BackController extends AbstractController
 {
     #[Route('/back_index', name: 'back_index')]
-    public function index(): Response
+    public function index(HistoriqueRepository $historiqueRepository): Response
     {
-        return $this->render('Template_Back/base.html.twig');
+        return $this->render('Template_Back/index.html.twig', [
+            'historique' => $historiqueRepository->findAll(),
+        ]);
     }
 
     #[Route('/back_profile', name: 'back_profile')]

@@ -1,0 +1,52 @@
+{% extends 'Template_Back/base.html.twig' %}
+
+{% block title %}Plannification{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        table{
+            background-color: rgba(0, 34, 255, 0.03);
+            border-collapse: collapse;
+            margin-top: 200px;
+            width: 50%;
+            font-size: 20px;
+            margin-right: 50px;
+            margin-left: 400px;
+
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+
+    <div class="d-flex align-items-center justify-content-center" style="height: 500px">
+        <table class="table table-striped">
+            <tbody>
+            <th><h3>Informations de la salle :</h3></th>
+            <tr>
+                <th>Id</th>
+                <td>{{ salle.id }}</td>
+            </tr>
+            <tr>
+                <th>Numéro</th>
+                <td>{{ salle.numsa }}</td>
+            </tr>
+            <tr>
+                <th>Etage</th>
+                <td>{{ salle.etagesa }}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{ salle.typesa }}</td>
+            </tr>
+            <tr>
+                <th><a href="{{ path('app_salle_index') }}" class="btn btn-primary">Retour à la liste</a></th>
+
+                <td><a href="{{ path('app_salle_edit', {'id': salle.id}) }}" class="btn btn-warning">Modifier</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

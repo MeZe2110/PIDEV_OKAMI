@@ -75,9 +75,9 @@ class RendezvousRepository extends ServiceEntityRepository
    {
         return $this->createQueryBuilder('r')
             ->where('r.daterv > :date')
-            ->andWhere('Utilisateur.id = :userId')
+            ->andWhere('User.id = :userId')
             ->setParameters(['date' => $date, 'userId' => $userId])
-            ->leftJoin('r.Utilisateur', 'Utilisateur')
+            ->leftJoin('r.User', 'User')
             ->getQuery()
             ->getResult()
         ;
@@ -86,10 +86,10 @@ class RendezvousRepository extends ServiceEntityRepository
    public function searchRendezvousByUser($value) : array
    {
         return $this->createQueryBuilder('r')
-            ->leftJoin('r.Utilisateur', 'u')
+            ->leftJoin('r.User', 'u')
             ->leftJoin('r.Type', 't')
             ->leftJoin('r.Salle', 's')
-            ->where('CONCAT(u.nomut, \' \', u.prenomut) LIKE :value')
+            ->where('CONCAT(u.nom, \' \', u.prenom) LIKE :value')
             ->orWhere('CONCAT(\'Salle \', s.etagesa, \'0\', s.numsa) LIKE :value')
             ->orWhere('CONCAT(\'Salle \', s.etagesa, s.numsa) LIKE :value')
             ->orWhere('t.type LIKE :value')
@@ -116,8 +116,8 @@ class RendezvousRepository extends ServiceEntityRepository
    public function statsRendezvousUser() : array
    {
         return $this->createQueryBuilder('r')
-            ->select('CONCAT(u.nomut, \' \', u.prenomut), COUNT(r) AS rdv')
-            ->leftJoin('r.Utilisateur', 'u')
+            ->select('CONCAT(u.nom, \' \', u.prenom), COUNT(r) AS rdv')
+            ->leftJoin('r.User', 'u')
             ->groupBy('u.id')
             ->orderBy('rdv', 'DESC')
             ->setMaxResults(5)

@@ -39,6 +39,21 @@ class StockcategoriesRepository extends ServiceEntityRepository
         }
     }
 
+    public function findBySearch(string $search): array
+ {
+    $entityManager = $this->getEntityManager();
+    $queryBuilder = $entityManager->createQueryBuilder();
+
+    $queryBuilder->select('s')
+        ->from(Stockcategories::class, 's')
+        ->where($queryBuilder->expr()->like('s.typecat', $queryBuilder->expr()->literal($search . '%')));
+
+    $query = $queryBuilder->getQuery();
+    return $query->getResult();
+ }
+
+
+
 //    /**
 //     * @return Stockcategories[] Returns an array of Stockcategories objects
 //     */

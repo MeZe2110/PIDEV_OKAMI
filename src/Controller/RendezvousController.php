@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Historique;
 use App\Entity\Rendezvous;
 use App\Form\RendezvousType;
-use App\Repository\UtilisateurRepository;
+use App\Repository\UserRepository;
 use App\Repository\HistoriqueRepository;
 use App\Repository\RendezvousRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,7 +31,7 @@ class RendezvousController extends AbstractController
     }
 
     #[Route('/back/rendezvous/new', name: 'back_rendezvous_new', methods: ['GET', 'POST'])]
-    public function backNew(Request $request, RendezvousRepository $rendezvousRepository, HistoriqueRepository $historiqueRepository, UtilisateurRepository $userRepository): Response
+    public function backNew(Request $request, RendezvousRepository $rendezvousRepository, HistoriqueRepository $historiqueRepository, UserRepository $userRepository): Response
     {
         $userId = 2;
 
@@ -52,7 +52,7 @@ class RendezvousController extends AbstractController
     }
 
     #[Route('back/rendezvous/edit/{id}', name: 'back_rendezvous_edit', methods: ['GET', 'POST'])]
-    public function backEdit(Request $request, Rendezvous $rendezvous, RendezvousRepository $rendezvousRepository, HistoriqueRepository $historiqueRepository, UtilisateurRepository $userRepository): Response
+    public function backEdit(Request $request, Rendezvous $rendezvous, RendezvousRepository $rendezvousRepository, HistoriqueRepository $historiqueRepository, UserRepository $userRepository): Response
     {
         $userId = 2;
         $form = $this->createForm(RendezvousType::class, $rendezvous);
@@ -72,7 +72,7 @@ class RendezvousController extends AbstractController
     }
 
     #[Route('back/rendezvous/delete/{id}', name: 'back_rendezvous_delete', methods: ['POST'])]
-    public function backDelete(Request $request, Rendezvous $rendezvous, RendezvousRepository $rendezvousRepository, HistoriqueRepository $historiqueRepository, UtilisateurRepository $userRepository): Response
+    public function backDelete(Request $request, Rendezvous $rendezvous, RendezvousRepository $rendezvousRepository, HistoriqueRepository $historiqueRepository, UserRepository $userRepository): Response
     {
         $userId = 2;
         if ($this->isCsrfTokenValid('delete'.$rendezvous->getId(), $request->request->get('_token'))) {
@@ -102,7 +102,7 @@ class RendezvousController extends AbstractController
     }
 
     #[Route('/rendezvous/new', name: 'front_rendezvous_new', methods: ['GET', 'POST'])]
-    public function frontNew(Request $request, RendezvousRepository $rendezvousRepository, HistoriqueRepository $historiqueRepository, UtilisateurRepository $userRepository): Response
+    public function frontNew(Request $request, RendezvousRepository $rendezvousRepository, HistoriqueRepository $historiqueRepository, UserRepository $userRepository): Response
     {
         $userId = 2;
         $rendezvous = new Rendezvous();
@@ -123,7 +123,7 @@ class RendezvousController extends AbstractController
     }
 
     #[Route('rendezvous/edit/{id}', name: 'front_rendezvous_edit', methods: ['GET', 'POST'])]
-    public function frontEdit(Request $request, Rendezvous $rendezvous, RendezvousRepository $rendezvousRepository, HistoriqueRepository $historiqueRepository, UtilisateurRepository $userRepository): Response
+    public function frontEdit(Request $request, Rendezvous $rendezvous, RendezvousRepository $rendezvousRepository, HistoriqueRepository $historiqueRepository, UserRepository $userRepository): Response
     {
         $userId = 2;
         $form = $this->createForm(RendezvousType::class, $rendezvous);
@@ -143,7 +143,7 @@ class RendezvousController extends AbstractController
     }
 
     #[Route('rendezvous/delete/{id}', name: 'front_rendezvous_delete', methods: ['POST'])]
-    public function frontDelete(Request $request, Rendezvous $rendezvous, RendezvousRepository $rendezvousRepository, HistoriqueRepository $historiqueRepository, UtilisateurRepository $userRepository): Response
+    public function frontDelete(Request $request, Rendezvous $rendezvous, RendezvousRepository $rendezvousRepository, HistoriqueRepository $historiqueRepository, UserRepository $userRepository): Response
     {
         $userId = 2;
         if ($this->isCsrfTokenValid('delete'.$rendezvous->getId(), $request->request->get('_token'))) {

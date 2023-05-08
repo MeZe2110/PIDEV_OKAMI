@@ -5,7 +5,9 @@ namespace App\Entity;
 use App\Repository\StockcategoriesRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: StockcategoriesRepository::class)]
 class Stockcategories
@@ -13,9 +15,12 @@ class Stockcategories
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    
     private ?int $id = null;
-
+   
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank (message: "Name is required") ]
+    #[Groups("Stock")]
     private ?string $typecat = null;
 
     #[ORM\OneToMany(mappedBy: 'stockcat', targetEntity: Stock::class)]
@@ -25,7 +30,12 @@ class Stockcategories
     {
         $this->stocks = new ArrayCollection();
     }
-
+    
+    public function __toString()
+    {
+        return $this->typecat;
+    }
+    
     public function getId(): ?int
     {
         return $this->id;
@@ -50,7 +60,7 @@ class Stockcategories
     {
         return $this->stocks;
     }
-
+    
     public function addStock(Stock $stock): self
     {
         if (!$this->stocks->contains($stock)) {

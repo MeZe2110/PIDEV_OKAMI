@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>stock</title>
+    <style>
+        h1 {
+            text-align: center;
+            margin-top: 50px;
+            margin-bottom: 50px;
+            color: rgb(26, 150, 126);
+        }
+
+        table {
+            background-color: white;
+            border: 2px solid rgb(26, 150, 126);
+            border-collapse: collapse;
+            width: 70%;
+            margin: 0 auto;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid rgb(26, 150, 126);
+        }
+    </style>
+</head>
+<body>
+<h1>Plannification {{ stock.id }}</h1>
+<table class="table table-striped">
+    <tbody>
+    <tr>
+        <th>Id</th>
+        <td>{{ stock.id }}</td>
+    </tr>
+    <tr>
+        <th>quantites</th>
+        <td>{{ stock.nomst ? stock.nomst }}</td>
+    </tr>
+    <tr>
+        <th>Heure Debut</th>
+        <td>{{ stock.quantites ? stock.quantites }}</td>
+    </tr>
+    <tr>
+        <th>Heure Fin</th>
+        <td>{{ stock.dateexpirationst ? stock.dateexpirationst|date('Y-m-d') : ''  }}</td>
+    </tr>
+    <tr>
+        <th>Heure Fin</th>
+        <td>{{ stock.description ? stock.description  }}</td>
+    </tr>
+    
+    
+    <tr>
+        <th>Etage</th>
+        <td>{{ stock.stockcat }}</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

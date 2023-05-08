@@ -1,0 +1,181 @@
+{% extends 'Template_Back/base.html.twig' %}
+
+
+
+{% block content %}
+
+
+    <style>
+        table {
+            margin: 50px auto;
+            width: 80%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        th {
+            color:blue ;
+            
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+     </style>
+     
+ <center>
+ <h1 style="color:#336699; font-family: Arial, sans-serif; ;">Liste des medicaments</h1>
+ </center>
+ <div>
+
+<div class="album py-5 bg-light">
+        <div class="container">
+
+         <h4>Chercher Votre Medicament </h4>
+
+            <div class="sidebar-search">
+
+                <div class="input-group custom-search-form">
+
+                    <input type="text" id="search" class="form-control" placeholder="Search here">
+                </div>
+                <!-- /input-group -->
+            </div>
+            <ul class="nav" id="side-menu">
+                <li>
+                    
+                    <ul class="nav nav-second-level" id="entitiesNav">
+                    </ul>
+                </li>
+            </ul><br><br><br><br>
+
+            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+            <script type="text/javascript">
+                jQuery(document).ready(function() {
+                    var searchRequest = null;
+                    $("#search").keyup(function() {
+                        var minlength = 1;
+                        var that = this;
+                        var value = $(this).val();
+                        var entitySelector = $("#entitiesNav").html('');
+                        if (value.length >= minlength ) {
+                            if (searchRequest != null)
+                                searchRequest.abort();
+                            searchRequest = $.ajax({
+                                type: "GET",
+                                url: "{{ path('search') }}",
+                                data: {
+                                    'q' : value
+                                },
+                                dataType: "text",
+                                success: function(msg){
+                                    //we need to check if the value is the same
+                                    if (value===$(that).val()) {
+                                        var result = JSON.parse(msg);
+                                        $.each(result, function(key, arr) {
+                                            $.each(arr, function(id, value) {
+                                                if (key === 'stocks') {
+                                                    if (id !== 'error') {
+                                                        console.log(value[1]);
+                                                        entitySelector.append('<li><b>' + value[1] + '</b> <a href="/fe/'+id+'">voir ici'+'</a></li>');
+
+                                                    } else {
+                                                        entitySelector.append('<li class="errorLi">'+value+'</li>');
+                                                    }
+                                                }
+                                            });
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    });
+                });
+            </script>
+
+    
+
+    
+
+    <a href="{{ path('app_generate_pdf_all')}}" class="btn btn-outline-dark">Exporter PDF</a>
+    <br><br> 
+    <a href="{{ path('app_stockc_new')}}" class="btn btn-primary">Create new</a>
+    <br><br>
+     
+ <form action="{{ path('app_medicament_filtrer') }}" method="post"  >
+    <label for="category"><h5>Filtrer Par Catégorie :</h5></label>
+    <select name="category" id="category">
+        {% for category in categories %}
+            <option value="{{ category.id }}">{{ category.typecat }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit" class="btn btn-outline-dark">Filtrer</button>
+
+
+</tr>
+    <table border="3" class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nomst</th>
+                <th>Quantites</th>
+                <th>Dateexpirationst</th>
+                <th>Description</th>
+                <th>Categories</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for stock in stocks %}
+            <tr>
+                <td>{{ stock.id }}</td>
+                <td>{{ stock.nomst }}</td>
+                <td>{{ stock.quantites }}<br>
+                {% if stock.quantites < 10 %}
+                 <script>alert("Attention! Le stock pour {{ stock.nomst }} est faible. Quantité actuelle: {{ stock.quantites }}")</script>
+                 <div style="background-color: #FFC0CB; border: 1px solid #FF69B4; padding: 10px; text-align: center;">
+                    <span style="font-weight: bold; color: red">Attention! la quantite pour {{ stock.nomst }} est bientot expiré.</span>
+                    </div>
+                {% endif %}
+                </td>
+                <td>{{ stock.dateexpirationst ? stock.dateexpirationst|date('Y-m-d') : '' }}<br>
+                {% if stock.isExpired() %}
+                   <div style="background-color: #FFC0CB; border: 1px solid #FF69B4; padding: 10px; text-align: center;">
+                    <span style="font-weight: bold; color: red">Attention! la date pour {{ stock.nomst }} est expiré.</span>
+                    </div>
+                    <script>alert("Attention! La date pour {{ stock.nomst }} est expiré.")</script>
+                    </div>
+                {% endif %}
+                </td>
+                
+
+                <td>{{ stock.description }}</td>
+                <td>{{ stock.stockcat }}</td>
+                <td>
+                    <a href="{{ path('app_stockc_edit', {'id': stock.id}) }} "class="btn btn-primary">edit</a>
+                    <br><br>
+                    <form method="post" action="{{ path('app_stockc_delete', {'id': stock.id}) }}" >
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ stock.id) }}">
+    <button class="btn btn-danger">Delete</button>
+</form>
+                </td>
+            </tr>
+            
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+</div>
+
+
+
+{% endblock %}

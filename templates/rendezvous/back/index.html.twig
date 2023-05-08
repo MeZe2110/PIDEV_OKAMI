@@ -1,5 +1,7 @@
 {% extends "Template_Back/base.html.twig" %}
 
+{% block title %} Rendez-vous {% endblock %}
+
 {% block content %}
     <style>
     .hidden {
@@ -54,9 +56,9 @@
             <td> {{ r.Salle }} </td>
             <td> {{ r.Type }} </td>
             <td>
-                {% if r.Utilisateur is not empty and r.Utilisateur|length > 0  %}
+                {% if r.User is not empty and r.User|length > 0  %}
                 <select class="form-select" multiple="true" size="3" disabled>
-                    {% for u in r.Utilisateur %}
+                    {% for u in r.User %}
                         <option value="{{ u }}"> {{ u }} </option>
                     {% endfor %}
                 </select>
@@ -106,9 +108,9 @@
             <td> {{ r.Salle }} </td>
             <td> {{ r.Type }} </td>
             <td>
-                {% if r.Utilisateur is not empty and r.Utilisateur|length > 0  %}
+                {% if r.User is not empty and r.User|length > 0  %}
                 <select class="form-select" multiple="true" size="3" disabled>
-                    {% for u in r.Utilisateur %}
+                    {% for u in r.User %}
                         <option value="{{ u }}"> {{ u }} </option>
                     {% endfor %}
                 </select>

@@ -1,0 +1,115 @@
+{% extends 'Template_Back/base.html.twig' %}
+
+{% block title %}Categoriesvehicules index{% endblock %}
+
+{% block content %}
+<style>
+        table {
+            margin: 50px auto;
+            width: 80%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        th {
+            color:blue ;
+            
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+     </style>
+
+<div> <h1>Categoriesvehicules index</h1></div >
+<div class="d-flex align-items-center justify-content-center"> 
+
+    
+      
+  <table class="table">
+
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Typecatv</th>
+                <th>actions</th>
+              <th>  <form method="post" action="{{ path('app_categoriesvehicules_new') }} ">
+    <button class="btn btn-success">create new</button>
+</form></th>
+                 
+            </tr>
+        </thead>
+        <tbody>
+        {% for categoriesvehicules in categoriesvehicules %}
+            <tr>
+                <td>{{ categoriesvehicules.id }}</td>
+                <td>{{ categoriesvehicules.typecatv }}</td>
+                <td>
+<form method="post" action="{{ path('app_categoriesvehicules_delete', {'id': categoriesvehicules.id}) }}">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ categoriesvehicules.id) }}">
+    <button class="btn btn-danger">Delete</button>
+</form>
+                    <a href="{{ path('app_categoriesvehicules_edit', {'id': categoriesvehicules.id}) }}"><button class="btn btn-primary">Editer</button></a>
+                     
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    </div>
+   {% set categoriesvehicules_length = categoriesvehicules|length %}
+{% set nbPlannificationsSalle0 = 0 %}
+{% set nbPlannificationsSalle1 = 0 %}
+{% set nbPlannificationsSalle2 = 0 %}
+{% set nbPlannificationsSalle3 = 0 %}
+{% for vehicule in categoriesvehicules %}
+    {% if vehicule.id == '1' %}
+        {% set nbPlannificationsSalle0 = nbPlannificationsSalle0 + 1 %}
+    {% elseif vehicule.id == '2' %}
+        {% set nbPlannificationsSalle1 = nbPlannificationsSalle1 + 1 %}
+         {% elseif vehicule.id == '4' %}
+        {% set nbPlannificationsSalle2 = nbPlannificationsSalle2 + 1 %}
+           {% elseif vehicule.id == '26' %}
+        {% set nbPlannificationsSalle3 = nbPlannificationsSalle3 + 1 %}
+    {% endif %}
+    
+{% endfor %}
+
+<div class="card">
+    <div class="card-body">
+        <h5>Pie Chart</h5>
+
+        <!-- Pie Chart -->
+        <div id="pieChart"></div>
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                new ApexCharts(document.querySelector("#pieChart"), {
+                    series: [
+                        {{ nbPlannificationsSalle0 }},
+                        {{ nbPlannificationsSalle1 }},
+                        {{ nbPlannificationsSalle2 }},
+                        {{ nbPlannificationsSalle3 }}
+                    ],
+                    chart: {
+                        height: 350,
+                        type: 'pie',
+                        toolbar: {
+                            show: true
+                        }
+                    },
+                    labels: ['Salle 0', 'Salle 1','salle','aaa']
+                }).render();
+            });
+        </script>
+        <!-- End Pie Chart -->
+    </div>
+</div>
+{% endblock %}

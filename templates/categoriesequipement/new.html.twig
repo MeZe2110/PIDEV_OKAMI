@@ -1,11 +1,11 @@
-{% extends 'base.html.twig' %}
+{% extends 'Template_Back/base.html.twig' %}
 
-{% block title %}New Categoriesequipement{% endblock %}
+{% block title %}Categories d'equipement{% endblock %}
 
-{% block body %}
-    <h1>Create new Categoriesequipement</h1>
+{% block content %}
+    <h1>Créer une Categories d'equipement</h1>
 
     {{ include('categoriesequipement/_form.html.twig') }}
 
-    <a href="{{ path('app_categoriesequipement_index') }}">back to list</a>
+    <a href="{{ path('app_categoriesequipement_index') }}">Retourner à la liste</a>
 {% endblock %}

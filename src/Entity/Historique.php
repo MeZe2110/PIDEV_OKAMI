@@ -3,11 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\HistoriqueRepository;
-use App\Repository\UtilisateurRepository;
-use Doctrine\DBAL\Types\Types;
-use Symfony\Component\Serializer\Annotation\Groups;
-use Doctrine\ORM\Mapping as ORM;
+use App\Repository\UserRepository;
 use DateTime;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: HistoriqueRepository::class)]
 class Historique
@@ -15,19 +14,15 @@ class Historique
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups("historique")]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups("historique")]
     private ?string $description = null;
 
     #[ORM\ManyToOne(inversedBy: 'historique')]
-    #[Groups("historique")]
-    private ?Utilisateur $User = null;
+    private ?User $User = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, options: ['default' => 'CURRENT_TIMESTAMP'])]
-    #[Groups("historique")]
     private ?\DateTimeInterface $date = null;
 
     public function getId(): ?int
@@ -47,12 +42,12 @@ class Historique
         return $this;
     }
 
-    public function getUser(): ?Utilisateur
+    public function getUser(): ?User
     {
         return $this->User;
     }
 
-    public function setUser(?Utilisateur $User): self
+    public function setUser(?User $User): self
     {
         $this->User = $User;
 
@@ -71,7 +66,7 @@ class Historique
         return $this;
     }
 
-    public function createHistorique($description, $userId, UtilisateurRepository $userRepository) : self
+    public function createHistorique($description, $userId, UserRepository $userRepository) : self
     {
         $this->setDescription($description);
         $this->setUser($userRepository->findOneBy(['id' => $userId]));

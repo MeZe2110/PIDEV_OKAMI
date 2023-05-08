@@ -1,0 +1,154 @@
+{% extends "Template_Front/base.html.twig" %}
+
+{% block title %} Stock {% endblock %}
+
+{% block content %}
+
+  <style>
+        table {
+            margin: 50px auto;
+            width: 80%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        th {
+            color:blue ;
+            
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+     </style>
+
+
+
+<center>
+<h1 style="color:#336699; font-family: Arial, sans-serif; ;">Liste de medicaments</h1>
+<div class="album py-5 bg-light">
+        <div class="container">
+
+         <h4>Chercher Votre Medicament !!</h4>
+
+            <div class="sidebar-search">
+
+                <div class="input-group custom-search-form">
+
+                    <input type="text" id="search" class="form-control" placeholder="Search here">
+                </div>
+                <!-- /input-group -->
+            </div>
+            <ul class="nav" id="side-menu">
+                <li>
+                    
+                    <ul class="nav nav-second-level" id="entitiesNav">
+                    </ul>
+                </li>
+            </ul><br><br><br><br>
+
+            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+            <script type="text/javascript">
+                jQuery(document).ready(function() {
+                    var searchRequest = null;
+                    $("#search").keyup(function() {
+                        var minlength = 1;
+                        var that = this;
+                        var value = $(this).val();
+                        var entitySelector = $("#entitiesNav").html('');
+                        if (value.length >= minlength ) {
+                            if (searchRequest != null)
+                                searchRequest.abort();
+                            searchRequest = $.ajax({
+                                type: "GET",
+                                url: "{{ path('search') }}",
+                                data: {
+                                    'q' : value
+                                },
+                                dataType: "text",
+                                success: function(msg){
+                                    //we need to check if the value is the same
+                                    if (value===$(that).val()) {
+                                        var result = JSON.parse(msg);
+                                        $.each(result, function(key, arr) {
+                                            $.each(arr, function(id, value) {
+                                                if (key === 'stocks') {
+                                                    if (id !== 'error') {
+                                                        console.log(value[1]);
+                                                        entitySelector.append('<li><b>' + value[1] + '</b> <a href="/front/'+id+'">voir ici'+'</a></li>');
+
+                                                    } else {
+                                                        entitySelector.append('<li class="errorLi">'+value+'</li>');
+                                                    }
+                                                }
+                                            });
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    });
+                });
+            </script>
+ </center>
+ <div> 
+    <a href="{{ path('app_generate_pdf_all')}}" class="btn btn-outline-dark">Exporter PDF</a>
+    
+     <form action="{{ path('app_medicament_filtrer_front') }}" method="post">
+    <label for="category"><h5>Filtrer Par Catégorie :</h5></label>
+    <select name="category" id="category">
+        {% for category in categories %}
+            <option value="{{ category.id }}">{{ category.typecat }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit" class="btn btn-outline-dark">Filtrer</button>
+    <table border="3" class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nomst</th>
+                <th>Quantites</th>
+                <th>Dateexpirationst</th>
+                <th>Description</th>
+                <th>Categories</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+        {% for stock in stocks %}
+            <tr>
+                <td>{{ stock.id }}</td>
+                <td>{{ stock.nomst }}</td>
+                <td>{{ stock.quantites }}
+                {% if stock.quantites < 10 %}
+                 <div style="background-color: #FFC0CB; border: 1px solid #FF69B4; padding: 10px; text-align: center;">
+                    <span style="font-weight: bold; color: red">Attention! la quantite pour {{ stock.nomst }} est bientot expiré.</span>
+                    </div>
+                {% endif %}
+                </td>
+                <td>{{ stock.dateexpirationst ? stock.dateexpirationst|date('Y-m-d') : '' }}<br>
+                {% if stock.isExpired() %}
+                  <div style="background-color: #FFC0CB; border: 1px solid #FF69B4; padding: 10px; text-align: center;">
+                    <span style="font-weight: bold; color: red">Attention!  {{ stock.nomst }} est expiré !</span>
+                {% endif %}
+                </td>
+                <td>{{ stock.description }}</td>
+                <td>{{ stock.stockcat }}</td>
+             
+</form>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+ </div>
+
+
+{% endblock %}

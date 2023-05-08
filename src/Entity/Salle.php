@@ -3,10 +3,11 @@
 namespace App\Entity;
 
 use App\Repository\SalleRepository;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: SalleRepository::class)]
 class Salle
@@ -14,32 +15,41 @@ class Salle
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(["salle", "rendezvous"])]
+    #[Groups(["salles", "rendezvous"])]
     private ?int $id = null;
 
     #[ORM\Column]
-    #[Groups(["salle", "rendezvous"])]
+    #[Assert\NotBlank (message:"Numéro de la salle requis !")]
+    #[Assert\Positive(message:"Numéro de la salle doit etre positive !")]
+    #[Assert\LessThanOrEqual(value:10, message:"Le numéro de la salle doit être inférieur ou égal à 10")]
+    #[Groups(["salles", "rendezvous"])]
     private ?int $numsa = null;
 
     #[ORM\Column]
-    #[Groups(["salle", "rendezvous"])]
+    #[Assert\NotBlank (message:"Étage de la salle requis !")]
+    #[Assert\GreaterThanOrEqual(value: 0, message:"L'étage de la salle doit être supérieur ou égal à 0")]
+    #[Assert\LessThanOrEqual(value:6, message:"L'étage de la salle doit être inférieur ou égal à 6")]
+    #[Groups(["salles", "rendezvous"])]
     private ?int $etagesa = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(["salle", "rendezvous"])]
+    #[Assert\NotBlank (message:"Type de la salle requis !")]
+    #[Assert\Choice(choices: ['soin', 'operation'], message: 'Le type de salle doit être "soin" ou "operation".')]
+    #[Groups(["salles", "rendezvous"])]
     private ?string $typesa = null;
 
-
     #[ORM\OneToMany(mappedBy: 'salle', targetEntity: Plannification::class)]
-    #[Groups("salle")]
+    #[Groups("salles")]
     private Collection $plannificationsalle;
 
     #[ORM\OneToMany(mappedBy: 'Salle', targetEntity: Rendezvous::class, orphanRemoval: true)]
-    #[Groups("salle")]
+    #[Groups("salles")]
     private Collection $Rendezvous;
+
     public function __construct()
     {
         $this->plannificationsalle = new ArrayCollection();
+        $this->Rendezvous = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -84,14 +94,14 @@ class Salle
     }
 
     /**
-     * @return Collection<int, plannification>
+     * @return Collection<int, Plannification>
      */
     public function getPlannificationsalle(): Collection
     {
         return $this->plannificationsalle;
     }
 
-    public function addPlannificationsalle(plannification $plannificationsalle): self
+    public function addPlannificationsalle(Plannification $plannificationsalle): self
     {
         if (!$this->plannificationsalle->contains($plannificationsalle)) {
             $this->plannificationsalle->add($plannificationsalle);
@@ -101,7 +111,7 @@ class Salle
         return $this;
     }
 
-    public function removePlannificationsalle(plannification $plannificationsalle): self
+    public function removePlannificationsalle(Plannification $plannificationsalle): self
     {
         if ($this->plannificationsalle->removeElement($plannificationsalle)) {
             // set the owning side to null (unless already changed)
@@ -147,5 +157,4 @@ class Salle
     {
         return 'Salle ' . $this->etagesa . ($this->numsa < 10 ? 0 . $this->numsa : $this->numsa) ;
     }
-
 }

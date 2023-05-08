@@ -1,5 +1,7 @@
 {% extends "Template_Back/base.html.twig" %}
 
+{% block title %} Type rendez-vous {% endblock %}
+
 {% block content %}
 
     <h1>Liste des Types de Rendez-vous</h1>
@@ -30,6 +32,6 @@
         </tbody>
     </table>
 
-    <a href="{{ path('back_rendezvous_type_new') }}">Retourner à la liste</a>
+    <a href="{{ path('back_rendezvous_type_new') }}">Ajouter un nouveau Type</a>
 
 {% endblock %}

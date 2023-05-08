@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Historique;
-use App\Form\HistoriqueType;
 use App\Repository\HistoriqueRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

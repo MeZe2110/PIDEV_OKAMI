@@ -30,6 +30,7 @@ class Equipement
     private ?bool $dispoeq = null;
 
     #[ORM\ManyToOne(inversedBy: 'equipements')]
+    #[ORM\JoinColumn(name: "Categoriesequipement", referencedColumnName: "id", nullable: false, onDelete: "CASCADE")]
     #[Assert\NotBlank(message:"category is required")]
     #[Groups("Equipement")]
     private ?Categoriesequipement $cate = null;

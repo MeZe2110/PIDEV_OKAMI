@@ -1,0 +1,37 @@
+{% extends 'Template_Back/base.html.twig' %}
+
+{% block title %}Roleuser index{% endblock %}
+
+{% block content %}
+<center>
+    <h1>Roleuser index</h1>
+   <div class="d-flex align-items-center justify-content-center" style="height: 250px;"> </div>
+    <table class="table"  style="width:80PX">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Role</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for roleuser in roleusers %}
+            <tr>
+                <td>{{ roleuser.id }}</td>
+                <td>{{ roleuser.role }}</td>
+                <td>
+                    <a href="{{ path('app_roleuser_show', {'id': roleuser.id}) }}" class="btn btn-warning">show</a>
+                    <a href="{{ path('app_roleuser_edit', {'id': roleuser.id}) }}"class="btn btn-danger">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_roleuser_new') }}" class="btn btn-success btn-icon-split">Create new</a>
+    </center>
+{% endblock %}

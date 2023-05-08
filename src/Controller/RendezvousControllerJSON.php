@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Historique;
 use App\Entity\Rendezvous;
 use App\Form\RendezvousType;
-use App\Repository\UtilisateurRepository;
+use App\Repository\UserRepository;
 use App\Repository\HistoriqueRepository;
 use App\Repository\RendezvousRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -29,7 +29,7 @@ class RendezvousControllerJSON extends AbstractController
     }
 
     #[Route('/back/rendezvousJSON/new', name: 'rendezvousJSON_new', methods: ['GET', 'POST'])]
-    public function backNew(Request $request, RendezvousRepository $rendezvousRepository, HistoriqueRepository $historiqueRepository, UtilisateurRepository $userRepository, SerializerInterface $serializer): Response
+    public function backNew(Request $request, RendezvousRepository $rendezvousRepository, HistoriqueRepository $historiqueRepository, UserRepository $userRepository, SerializerInterface $serializer): Response
     {
         $userId = 2;
 
@@ -38,7 +38,7 @@ class RendezvousControllerJSON extends AbstractController
         $rendezvous->setEndAt($request->get('endAt'));
         $rendezvous->setSalle($request->get('salle'));
         $rendezvous->setType($request->get('type'));
-        $rendezvous->addUtilisateur($request->get('utilisateur'));
+        $rendezvous->addUser($request->get('User'));
         $rendezvous->setRappel(true);
 
         $rendezvousRepository->save($rendezvous, true);
@@ -48,7 +48,7 @@ class RendezvousControllerJSON extends AbstractController
     }
 
     #[Route('back/rendezvousJSON/edit/{id}', name: 'rendezvousJSON_edit', methods: ['GET', 'POST'])]
-    public function backEdit($id, Request $request, Rendezvous $rendezvous, RendezvousRepository $rendezvousRepository, HistoriqueRepository $historiqueRepository, UtilisateurRepository $userRepository, SerializerInterface $serializer): Response
+    public function backEdit($id, Request $request, Rendezvous $rendezvous, RendezvousRepository $rendezvousRepository, HistoriqueRepository $historiqueRepository, UserRepository $userRepository, SerializerInterface $serializer): Response
     {
         $userId = 2;
         
@@ -57,7 +57,7 @@ class RendezvousControllerJSON extends AbstractController
         $rendezvous->setEndAt($request->get('endAt'));
         $rendezvous->setSalle($request->get('salle'));
         $rendezvous->setType($request->get('type'));
-        $rendezvous->addUtilisateur($request->get('utilisateur'));
+        $rendezvous->addUser($request->get('User'));
 
         $rendezvousRepository->save($rendezvous, true);
         $historique = new Historique();
@@ -67,7 +67,7 @@ class RendezvousControllerJSON extends AbstractController
     }
 
     #[Route('back/rendezvousJSON/delete/{id}', name: 'rendezvousJSON_delete', methods: ['POST'])]
-    public function backDelete(Rendezvous $rendezvous, RendezvousRepository $rendezvousRepository, HistoriqueRepository $historiqueRepository, UtilisateurRepository $userRepository, SerializerInterface $serializer): Response
+    public function backDelete(Rendezvous $rendezvous, RendezvousRepository $rendezvousRepository, HistoriqueRepository $historiqueRepository, UserRepository $userRepository, SerializerInterface $serializer): Response
     {
         $userId = 2;
 

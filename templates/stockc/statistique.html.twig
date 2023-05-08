@@ -1,0 +1,92 @@
+{% extends 'Template_Back/base.html.twig' %}
+
+
+
+{% block content %}
+
+    
+
+    {% set stock_length = stocks|length %}
+{% set nbPcat1 = 0 %}
+{% set nbPcat2 = 0 %}
+{% set nbPcat3 = 0 %}
+{% set nbPcat4 = 0 %}
+{% set nbPcat5 = 0 %}
+{% set nbPcat6 = 0 %}
+{% set nbPcat7 = 0 %}
+{% set nbPcat8 = 0 %}
+{% set nbPcat9 = 0 %}
+{% set nbPcat10 = 0 %}
+ 
+{% for stock in stocks %}
+    {% if stock.stockcat == 'Antiagrégant plaquettaire' %}
+        {% set nbPcat1 = nbPcat1 + 1 %}
+    {% elseif stock.stockcat == 'Anti-ulcéreux' %}	
+        {% set nbPcat2 = nbPcat2 + 1 %}
+        {% elseif stock.stockcat == 'Hypolipémiant' %}
+        {% set nbPcat3 = nbPcat3 + 1 %}
+        {% elseif stock.stockcat == 'Hypoglycémiant oral' %}
+        {% set nbPcat4 = nbPcat4 + 1 %}
+        {% elseif stock.stockcat == 'Hypoglycémiant injectable' %}
+        {% set nbPcat5 = nbPcat5 + 1 %}
+        {% elseif stock.stockcat == 'Hormone thyroïdienne' %}
+        {% set nbPcat6 = nbPcat6 + 1 %}
+        {% elseif stock.stockcat == ' Hypnotique' %}
+        {% set nbPcat7 = nbPcat7 + 1 %}
+        {% elseif stock.stockcat == 'Céphalosporine' %}
+        {% set nbPcat8 = nbPcat8 + 1 %}
+        {% elseif stock.stockcat == 'Antipyrétique' %}
+        {% set nbPcat9 = nbPcat9 + 1 %}
+        {% elseif stock.stockcat == 'Analgésique' %}
+        {% set nbPcat = nbPcat10 + 1 %}
+
+        {% endif %}
+{% endfor %}
+
+
+    
+        <h3> <span class="blue-grey">Chart Graphique</span> </h3>
+
+        <style>
+        .blue-grey {
+            color: #607d8b;
+            text-decoration: underline;
+            font-weight: bold;
+        }
+        </style>
+     
+
+        <!-- Pie Chart -->
+        <div id="pieChart"></div>
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                new ApexCharts(document.querySelector("#pieChart"), {
+                    series: [
+                        {{ nbPcat1 }},
+                        {{ nbPcat2 }},
+                        {{ nbPcat3 }},
+                        {{ nbPcat4 }},
+                        {{ nbPcat5 }},
+                        {{ nbPcat6 }},
+                        {{ nbPcat7 }},
+                        {{ nbPcat8 }},
+                        {{ nbPcat9 }},
+                        {{ nbPcat10 }} 
+                    ],
+                    chart: {
+                        height: 350,
+                        type: 'pie',
+                        toolbar: {
+                            show: true
+                        }
+                    },
+                    labels: ['Antiagrégant plaquettaire','Anti-ulcéreux','Hypolipémiant','Hypoglycémiant oral','Hypoglycémiant injectable','Hormone thyroïdienne','Hypnotique','Céphalosporine','Antipyrétique','Analgésique']
+                }).render();
+            });
+        </script>
+        <!-- End Pie Chart -->
+    </div>
+</div>
+
+
+{% endblock %}

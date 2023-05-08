@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Rendezvous;
-use App\Entity\Utilisateur;
+use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -25,8 +25,8 @@ class RendezvousType extends AbstractType
             ->add('endAt', Type\TimeType::class, [
                 
             ])
-            ->add('Utilisateur', EntityType::class, [
-                'class' => Utilisateur::class,
+            ->add('User', EntityType::class, [
+                'class' => User::class,
                 'expanded' => true,
                 'multiple' => true,
                 'attr' => ['class' => 'rendezvous-checkbox'],

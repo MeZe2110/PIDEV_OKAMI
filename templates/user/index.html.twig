@@ -1,0 +1,232 @@
+{% extends 'Template_Back/base.html.twig' %}
+
+{% block title %}Utilisateur index{% endblock %}
+
+{% block content %}
+<center>
+<h1>user index</h1>
+
+<div class="d-flex align-items-center justify-content-center" style="height: 200px;"> </div>
+ <div class="main-panel" style="width:500PX">
+    <div class="content-wrapper">
+        <div class="page-header">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                </ol>
+            </nav>
+        </div>
+    <div class="row ">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <div style="display: flex">
+                        <div class="col-md-5">
+                        </div>
+                        <form method="post" class="forms-sample" style="margin-left: -80px" >
+                            <div class="form-group col-md-4" style="margin-right: 90px;">
+
+                                <div class="form-check">
+                                    <label class="form-check-label" style="width: 92px;margin-left: -2px;margin-right: 10px;">
+                                        <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios1" value="nom">Nom</label>
+                                        <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios1" value="id">id</label>
+                                        
+                                        <div class="form-check">
+    
+</div>
+                                </div>
+                              
+                            
+                                </div>
+
+                                <button type="Submit" class="btn btn-success btn-fw" style="margin: auto; ">Sort</button>
+                            </div>
+                        </form>
+
+                    </div>
+
+                    <ul class="navbar-nav w-100" style="margin-top: 18px;">
+                        <li class="nav-item w-100">
+                            <form name="Search-method" id="Search-method"method="post" class="forms-sample" style="margin-left: 30px;">
+                                <div class="form-group col-md-5">
+                                    <label style="margin-top: 11px;margin-left: 10px;margin-right: 14px;padding-bottom: 7px;;">Option Recherche</label>
+                                    <select name="optionsearch" class="js-example-basic-single" style="width: 200px;height: 38px; color: white; background-color: #191c24; border-radius: 4px;text-align: center;border: 2px solid #0090e7;margin-right: 15px;">
+                                        <option value="">Choisi un Critére</option>
+                                        <option value="nom">Nom </option>
+                                        <input name="Search" type="text" class="form-control" placeholder="Search Events" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-sm btn-primary" type="Submit">Search</button>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-7">
+                                    <div class="input-group">
+                                       
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </li>
+                    </ul>
+<div class="d-flex align-items-center justify-content-center" style="height: 50px;"> </div>
+<div class="d-flex align-items-center justify-content-center" style="height: 200px;"> </div>  
+<table class="table" style="width:80PX">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Email</th>
+            <th>Mot de passe</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% set name_stats = {} %}
+        {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.nom }}</td>
+                <td>{{ user.prenom}}</td>
+                <td>{{ user.email}}</td>
+                <td>****</td>
+                <td>
+                    <div class="my-2"></div><a href="{{ path('app_user_show', {'id': user.id}) }}"class="btn btn-success btn-icon-split"><span class="text">show</span></a>
+                    <a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-warning">edit</a>
+                </td>
+            </tr>
+            {% set name_count = name_stats[user.nom] is defined ? name_stats[user.nom] + 1 : 1 %}
+            {% set name_stats = name_stats|merge({(user.nom): name_count}) %}
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2>Name Statistics</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Count</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for name, count in name_stats %}
+        <tr>
+            <td>{{ name }}</td>
+            <td>{{ count }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    
+</table>
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Donut Chart</h5>
+
+                <!-- Donut Chart -->
+                <div id="donutChart"></div>
+
+                <script>
+                    document.addEventListener("DOMContentLoaded", () => {
+                        new ApexCharts(document.querySelector("#donutChart"), {
+                            series: [
+                                {% for name, count in name_stats %}
+                                    {{ count }},
+                                {% endfor %}
+                            ],
+                            chart: {
+                                height: 350,
+                                type: 'donut',
+                            },
+                            labels: [
+                                {% for name, count in name_stats %}
+                                    "{{ name }}",
+                                {% endfor %}
+                            ],
+                            colors: [
+                                "#008FFB",
+                                "#00E396",
+                                "#FEB019",
+                                "#FF4560",
+                                "#775DD0",
+                                "#546E7A",
+                                "#26a69a",
+                                "#D10CE8",
+                                "#008FFB",
+                                "#00E396",
+                                "#FEB019",
+                                "#FF4560",
+                                "#775DD0",
+                                "#546E7A",
+                                "#26a69a",
+                                "#D10CE8",
+                                "#008FFB",
+                                "#00E396",
+                                "#FEB019",
+                                "#FF4560",
+                                "#775DD0",
+                                "#546E7A",
+                                "#26a69a",
+                                "#D10CE8",
+                                "#008FFB",
+                                "#00E396",
+                                "#FEB019",
+                                "#FF4560",
+                                "#775DD0",
+                                "#546E7A",
+                                "#26a69a",
+                                "#D10CE8",
+                            ],
+                            legend: {
+                                show: true,
+                                position: 'bottom',
+                                horizontalAlign: 'center', 
+                                fontSize: '14px', 
+                                fontFamily: 'Helvetica, Arial', 
+                                fontWeight: 400, 
+                                inverseOrder: false,
+                                labels: {
+                                    colors: '#787878',
+                                },
+                                markers: {
+                                    width: 18,
+                                    height: 18,
+                                    strokeWidth: 0,
+                                    strokeColor: '#fff',
+                                    radius: 12,
+                                    offsetX: 0,
+                                    offsetY: 0,
+                                },
+                                itemMargin: {
+                                    horizontal: 8,
+                                    vertical: 0
+                                }
+                            },
+                        }).render();
+                    });
+                </script>
+
+            </div>
+        </div>
+    </div>
+</div>
+<form action="{{ path('app_user_index') }}" method="post">
+  
+        {% for user in users %}
+            <option value="{{ user.id }}"></option>
+        {% endfor %}
+    </select>
+    <button type="submit">Filtrer</button>
+
+<a href="{{ path('app_user_new') }}" class="btn btn-danger">Create new</a>
+
+</center>
+    
+  
+
+{% endblock %}

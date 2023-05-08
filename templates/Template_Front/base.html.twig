@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 {% block head %}
 <head>
   
@@ -9,12 +10,12 @@
   <!-- Mobile Metas -->
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <!-- Site Metas -->
-  <meta name="keywords" content="" />
-  <meta name="description" content="" />
-  <meta name="author" content="" />
+  <meta name="keywords" content="hehehehe" />
+  <meta name="description" content="This website was made at the expense of the mental sanity of two of the group members" />
+  <meta name="author" content="The One Winged Angel - Sephiroth" />
   <link rel="shortcut icon" href="{{asset('Template_Front/images/favicon.png')}}" type="">
 
-    <title>{% block title %}{% endblock %} - Orthoc</title>
+    <title>{% block title %}{% endblock %} - HealthHerald</title>
 
   <!-- bootstrap core css -->
   {% block stylesheets %}
@@ -50,11 +51,11 @@
     <!-- header section strats -->
     {% block header %}
     <header class="header_section">
-      <div class="container">
+      <div class="container" style="max-width: 80%;">
         <nav class="navbar navbar-expand-lg custom_nav-container ">
           <a class="navbar-brand" href="{{ path('front_index') }}">
             <span>
-              Orthoc
+              HealthHerald
             </span>
           </a>
 
@@ -71,16 +72,22 @@
                 <a class="nav-link" href="{{ path('front_about') }}"> À propos</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{{ path('front_departments') }}">Departments</a>
+                <a class="nav-link" href="{{ path('app_equipement_front') }}">Equipement</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{{ path('front_doctors') }}">Doctors</a>
+                <a class="nav-link" href="{{ path('app_stockc') }}">Stock</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{{ path('app_equipement_front') }}">Equipements</a>
+                <a class="nav-link" href="{{ path('app_vehicules_front') }}">Véhicules</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{{ path('front_contact') }}">Contact Us</a>
+                <a class="nav-link" href="{{ path('app_plannification_front') }}">Plannification</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ path('front_rendezvous_index') }}">Rendez-Vous</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ path('front_contact') }}">Contact</a>
               </li>
               <form class="form-inline">
                 <button class="btn  my-2 my-sm-0 nav_search-btn" type="submit">
@@ -94,9 +101,13 @@
     </header>
     {% endblock %}
     <!-- end header section -->
-    {% block content %}
+    <section class="contact_section layout_padding" style="background: #71cace;">
+      <div class="container" style="max-width: 80%;">
+        {% block content %}
 
-    {% endblock %}
+        {% endblock %}
+      </div>
+    </section>
   <!-- footer section -->
   {% block footer %}
   <footer class="footer_section">
@@ -108,7 +119,7 @@
               Nous joindre..
             </h4>
             <div class="contact_link_box">
-              <a href="">
+              <a href="{{path('front_contact')}}">
                 <i class="fa fa-map-marker" aria-hidden="true"></i>
                 <span>
                   Localisation
@@ -117,13 +128,13 @@
               <a href="">
                 <i class="fa fa-phone" aria-hidden="true"></i>
                 <span>
-                  Appeler +01 1234567890
+                  Appeler +216 52 953 558
                 </span>
               </a>
               <a href="">
                 <i class="fa fa-envelope" aria-hidden="true"></i>
                 <span>
-                  demo@gmail.com
+                  healthherald@gmail.com
                 </span>
               </a>
             </div>
@@ -165,11 +176,20 @@
               <a class="" href="{{ path('front_about') }}">
                 À propos
               </a>
-              <a class="" href="{{ path('front_departments') }}">
-                Departements
+              <a class="" href="{{ path('app_equipement_front') }}">
+                Equipement
               </a>
-              <a class="" href="{{ path('front_doctors') }}">
-                Docteurs
+              <a class="" href="{{ path('app_stockc') }}">
+                Stocks
+              </a>
+              <a class="" href="{{ path('app_vehicules_front') }}">
+                Véhicules
+              </a>
+              <a class="" href="{{ path('app_plannification_front') }}">
+                Plannification
+              </a>
+              <a class="" href="{{ path('front_rendezvous_index') }}">
+                Rendez-Vous
               </a>
               <a class="" href="{{ path('front_contact') }}">
                 Contact

@@ -1,0 +1,11 @@
+{% extends 'Template_Back/base.html.twig' %}
+
+{% block title %}New Roleuser{% endblock %}
+
+{% block content %}
+    <h1>Create new Roleuser</h1>
+
+    {{ include('roleuser/_form.html.twig') }}
+
+    <a href="{{ path('app_roleuser_index') }}">back to list</a>
+{% endblock %}

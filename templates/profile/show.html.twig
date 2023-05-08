@@ -1,0 +1,75 @@
+{% extends 'base1.html.twig' %}
+
+{% block title %}User{% endblock %}
+
+{% block body %}
+ <section class="section dashboard">
+      
+
+
+<div class="row">
+        <div  style="display: flex;align-items: center;justify-content: center;margin-top: 100px; padding: 20px;">
+
+            <div class="card">
+                <div class="card-body">
+                    
+
+             <h4>User</h4>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ user.id }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ user.email }}</td>
+            </tr>
+            <tr>
+                <th>Roles</th>
+                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
+            </tr>
+            <tr>
+                <th>Password</th>
+                <td>{{ user.password }}</td>
+            </tr>
+            <tr>
+                <th>CIN</th>
+                <td>{{ user.idUt }}</td>
+            </tr>
+            <tr>
+                <th>Nom_ut</th>
+                <td>{{ user.nomUt }}</td>
+            </tr>
+            <tr>
+                <th>Prenom_ut</th>
+                <td>{{ user.prenomUt }}</td>
+            </tr>
+            <tr>
+                <th>Num_tel</th>
+                <td>{{ user.numTel }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+     <a href="{{ path('app_user_index') }}">
+     <button class="btn btn-lg btn-primary" type="submit">
+             back to list
+    </button>
+    </a>
+
+    
+        <a href="{{ path('app_profile_edit') }}">edit</a>
+        
+        </div>
+
+    </div>
+</div>
+   
+</div>
+</section>
+
+{% endblock %}
+
+ 

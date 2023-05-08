@@ -1,0 +1,59 @@
+{% extends 'back1.html.twig' %}
+
+{% block title %}User index{% endblock %}
+
+{% block body %}
+<div class="row">
+        <div  style="display: flex;align-items: center;justify-content: center;margin-top: 50px; padding: 10px;">
+
+            <div class="card">
+                <div class="card-body">
+                    
+    <h4>User index</h4>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Email</th>
+                <th>Roles</th>
+                <th>CIN</th>
+                <th>Nom_ut</th>
+                <th>Prenom_ut</th>
+                <th>Num_tel</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for userM in userM %}
+            <tr>
+                <td>{{ userM.id }}</td>
+                <td>{{ userM.email }}</td>
+                <td>{{ userM.roles ? user.roles|json_encode : '' }}</td>            
+                <td>{{ userM.idUt }}</td>
+                <td>{{ userM.nomUt }}</td>
+                <td>{{ userM.prenomUt }}</td>
+                <td>{{ userM.numTel }}</td>
+                <td>
+                    <a href="{{ path('app_user_show', {'id': userM.id}) }}">show</a>
+                    <a href="{{ path('app_user_edit', {'id': userM.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_user_new') }}"><button class="btn btn-lg btn-primary" type="submit">
+    rechercher
+    </button></a>
+              </div>
+          </div>
+
+        </div>
+
+    </div>
+{% endblock %}

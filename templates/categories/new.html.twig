@@ -1,0 +1,26 @@
+
+{% extends 'Template_Back/base.html.twig' %}
+
+
+{% block content %}
+
+    <table class="table">
+        <tr>
+           <center>
+ <h1 style="color:#336699; font-family: Arial, sans-serif; ;">Ajouter un categorie</h1>
+ </center>
+        </tr>
+        <tr>
+            <td>
+                {{ include('categories/_form.html.twig', {'button_label': 'Update'}) }}
+            </td>
+        </tr>
+       
+            <td>
+                <a href="{{ path('app_categories_index') }}" class="btn btn-secondary mx-0" >back to list</a>
+            </td>
+        </tr>
+    </table>
+
+{% endblock %}
+

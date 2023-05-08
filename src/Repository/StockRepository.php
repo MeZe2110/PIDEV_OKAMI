@@ -38,7 +38,54 @@ class StockRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+    
 
+    public function findEntitiesByString($str){
+        return $this->getEntityManager()
+            ->createQuery(
+                'SELECT p
+                FROM App:stock p
+                WHERE p.nomst LIKE :str'
+                
+            )
+            ->setParameter('str', '%'.$str.'%')
+            ->getResult();
+    }
+
+    public function findExpired(): array
+    {
+        foreach ($result as $stock) {
+            // Check if the stock is expired
+            if ($stock->dateexpirationst <= new \DateTime()) {
+                // Display an alert for the expired stock
+                $alert = 'Attention! Le stock pour '.$stock->nomst.' est expiré.';
+                echo '<script>alert("'.$alert.'")</script>';
+            }
+        }
+    
+        return $result;
+    }
+
+
+    public function findstocktByid($id)
+    {
+        try {
+            return $this->getEntityManager()
+                ->createQuery(
+                    "SELECT p
+                FROM App\Entity\Stock
+                p WHERE p.id = :id"
+                )
+                ->setParameter('id', $id)
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+        }
+    }
+     
+
+    
+    
+    
 //    /**
 //     * @return Stock[] Returns an array of Stock objects
 //     */

@@ -1,0 +1,76 @@
+{% extends 'Template_Back/base.html.twig' %}
+
+
+
+{% block content %}
+
+<style>
+        table {
+            margin: 50px auto;
+            width: 80%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        th {
+            color:blue ;
+            
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+     </style>
+ <div> 
+ <center>
+ <h1 style="color:#336699; font-family: Arial, sans-serif; ;">Liste des Categories</h1>
+ </center>
+        <form action="{{ path('app_categories_index') }}" >
+        <div class="form-group">
+            <label for="search">Rechercher :</label>
+            <input type="text" name="search" id="search" value="{{ app.request.query.get('search') }}" class="form-control" placeholder="Entrez un mot-clé...">
+        </div>
+        <button type="submit" class="btn btn-primary">Rechercher</button>
+    </form><br><br>
+    <a href="{{ path('app_categories_new') }}"class="btn btn-primary">Create new</a>
+ 
+    <table border="6" class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Typecat</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for stockcategory in stockcategories %}
+            <tr>
+                <td>{{ stockcategory.id }}</td>
+                <td>{{ stockcategory.typecat }}</td>
+                <td>
+                    
+                    <a href="{{ path('app_categories_edit', {'id': stockcategory.id}) }}" class="btn btn-primary">edit</a>
+                    <br><br>
+                    <form method="post" action="{{ path('app_categories_delete', {'id': stockcategory.id}) }}">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ stockcategory.id) }}">
+        <button class="btn btn-danger">Delete</button>
+</form>
+
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+ </div>
+    
+{% endblock %}
+
+
+

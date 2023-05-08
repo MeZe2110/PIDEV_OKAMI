@@ -1,0 +1,83 @@
+{% extends 'Template_Back/base.html.twig' %}
+
+{% block title %}Plannification index{% endblock %}
+
+{% block content %}
+    <style>
+        select{
+            margin-left: 500px;
+        }
+
+        table {
+            background-color: rgba(0, 34, 255, 0.03);
+            border-collapse: collapse;
+            margin-top: 50px;
+            font-size: 20px;
+            margin-left: 220px;
+        }
+        h1{
+            text-align: center;
+            font-size: 50px;
+            font-weight: bold;
+            color: blue;
+            margin-bottom: 50px;
+            margin-top: 150px;
+        }
+    </style>
+
+    <h1 class="text-center">Plannifications</h1>
+    <center>
+        <div class="search-bar" style="margin-left: 640px">
+            <form class="search-form d-flex align-items-center" method="GET" action="{{ path('app_plannification_index') }}">
+                <input type="text" name="search" id="search-input" placeholder="Entrez votre recherche">
+                <button type="submit" class="btn-primary">Chercher</button>
+            </form>
+        </div>
+    </center>
+    <form class="form-inline my-2 my-lg-0" method="get" style="width: 500px">
+        <select class="form-control" name="sort">
+            <option value="desc" {% if app.request.query.get('sort') == 'desc' %}selected{% endif %}>Trier par date décroissante</option>
+            <option value="asc" {% if app.request.query.get('sort') == 'asc' %}selected{% endif %}>Trier par date croissante</option>
+        </select>
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit" style="margin-left: 700px">Trier</button>
+    </form>
+<center>
+        <table class="table table-striped" style="width: 70%">
+            <thead>
+            <tr>
+                <th scope="col">Date Plannification</th>
+                <th scope="col">Heure Debut</th>
+                <th scope="col">Heure Fin</th>
+                <th scope="col">Salle</th>
+                <th><a href="{{ path('app_plannification_new') }}" class="btn btn-primary">Ajouter Plannification</a></th>
+                <th><a href="{{ path('app_generateplannification_pdf_all') }}" class="btn btn-success">Exporter PDF</a></th>
+                <th>
+                </th>
+                <th scope="col"></th>
+
+            </tr>
+
+            </thead>
+            <tbody>
+            {% for plannification in plannifications %}
+                <tr>
+                    <td>{{ plannification.datepl ? plannification.datepl|date('Y-m-d') : '' }}</td>
+                    <td>{{ plannification.heuredebutpl ? plannification.heuredebutpl|date('H:i:s') : '' }}</td>
+                    <td>{{ plannification.heurefinpl ? plannification.heurefinpl|date('H:i:s') : '' }}</td>
+                    <td>{{ plannification.salle }}</td>
+                    <td>
+                        <a href="{{ path('app_plannification_show', {'id': plannification.id}) }}" class="btn btn-primary">Consulter</a>
+                        <a href="{{ path('app_plannification_edit', {'id': plannification.id}) }}" class="btn btn-primary">Modifier</a>
+                    </td>
+                    <td>{{ include('plannification/_delete_form.html.twig') }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+</center>
+
+{% endblock %}

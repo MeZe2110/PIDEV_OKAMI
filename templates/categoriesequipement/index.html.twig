@@ -1,15 +1,17 @@
-{% extends 'base.html.twig' %}
+{% extends 'Template_Back/base.html.twig' %}
 
-{% block title %}Categoriesequipement index{% endblock %}
+{% block title %}Categories equipement index{% endblock %}
 
-{% block body %}
-    <h1>Categoriesequipement index</h1>
 
-    <table class="table">
+
+{% block content %}
+    <h1>Liste des catégories d'equipement</h1>
+
+    <table class="table datatable">
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Nomcate</th>
+                <th>Nom</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -19,17 +21,18 @@
                 <td>{{ categoriesequipement.id }}</td>
                 <td>{{ categoriesequipement.nomcate }}</td>
                 <td>
-                    <a href="{{ path('app_categoriesequipement_show', {'id': categoriesequipement.id}) }}">show</a>
+
                     <a href="{{ path('app_categoriesequipement_edit', {'id': categoriesequipement.id}) }}">edit</a>
+                    {{ include('categoriesequipement/_delete_form.html.twig') }}
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="3">no records found</td>
+                <td colspan="3">Aucun résultat</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('app_categoriesequipement_new') }}">Create new</a>
+    <a href="{{ path('app_categoriesequipement_new') }}">Créer une nouvelle catégorie</a>
 {% endblock %}

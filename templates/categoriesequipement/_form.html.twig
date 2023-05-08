@@ -1,4 +1,13 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+
+{{ form_start(form,{'attr':{'novalidate':'novalidate'}}) }}
+<table>
+    <tr>
+        <td>{{ form_label(form.nomcate,"Nom categrorie") }}</td>
+        <td>{{ form_widget(form.nomcate) }}</td>
+        <td>{{ form_errors(form.nomcate) }}</td>
+    </tr>
+
+</table>
+{{ form_widget(form) }}
+<button class="btn">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

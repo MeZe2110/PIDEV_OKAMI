@@ -1,0 +1,41 @@
+{% extends 'Template_Back/base.html.twig' %}
+
+{% block title %}Calendrier{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.3.0/main.min.css" integrity="sha256-uq9PNlMzB+1h01Ij9cx7zeE2OR2pLAfRw3uUUOOPKdA=" crossorigin="anonymous">
+{% endblock %}
+
+{% block content %}
+    <div id="calendrier">
+    </div>
+{% endblock %}
+
+{% block javascript %}
+{{ parent() }}
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.3.0/main.min.js" integrity="sha256-DBxkGZLxKsLKhz054qUpBqtotG00r9AELGpSigJujLg=" crossorigin="anonymous"></script>
+<script>
+    window.onload = () => {
+        let calendarElt = document.querySelector("#calendrier")
+        let calendar = new FullCalendar.Calendar(calendarElt, {
+            initialView: 'timeGridWeek',
+            locale: 'tn',
+            timeZone: 'afrique/tunis',
+            headerToolbar: {
+                start: 'prev,next today',
+                center: 'title',
+                end: 'dayGridMonth,timeGridWeek,listWeek,timeGridDay'
+            },
+            events: {{ data|raw }},
+            editable: true,
+            eventResizableFromStart: true
+        })
+        
+            
+           
+        calendar.render()
+    }
+</script>
+
+{% endblock %}

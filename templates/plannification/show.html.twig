@@ -1,0 +1,64 @@
+{% extends 'Template_Back/base.html.twig' %}
+
+{% block title %}Plannification{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        table{
+            background-color: rgba(0, 34, 255, 0.03);
+            border-collapse: collapse;
+            margin-top: 200px;
+            width: 50%;
+            font-size: 20px;
+            margin-right: 50px;
+            margin-left: 400px;
+
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+
+    <h5>Plannification</h5>
+    <div class="d-flex align-items-center justify-content-center" style="height: 500px">
+        <table class="table table-striped">
+            <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ plannification.id }}</td>
+            </tr>
+            <tr>
+                <th>Date Plannification</th>
+                <td>{{ plannification.datepl ? plannification.datepl|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Heure Debut</th>
+                <td>{{ plannification.heuredebutpl ? plannification.heuredebutpl|date('H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Heure Fin</th>
+                <td>{{ plannification.heurefinpl ? plannification.heurefinpl|date('H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Salle</th>
+                <td>{{ plannification.salle}}</td>
+            </tr>
+            <tr>
+                <th>Etage</th>
+                <td>{{ plannification.salle.etagesa}}</td>
+            </tr>
+            <tr>
+                <th><a href="{{ path('app_plannification_index') }}" class="btn btn-primary">Retour à la liste</a></th>
+
+                <td>
+                    <a href="{{ path('app_plannification_edit', {'id': plannification.id}) }}" class="btn btn-primary">Modifier</a>
+                    <a href="{{ path('app_generate_pdf', {'id': plannification.id}) }}" class="btn btn-success">Exporter PDF</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    {{ include('plannification/_delete_form.html.twig') }}
+{% endblock %}

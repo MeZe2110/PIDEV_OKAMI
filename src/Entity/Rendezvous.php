@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\RendezvousRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -18,20 +20,20 @@ class Rendezvous
     #[ORM\Column]
     #[Groups("rendezvous")]
     private ?int $id = null;
-   
+
     #[ORM\Column(type: Types::DATETIME_MUTABLE, options: ['default' => 'CURRENT_TIMESTAMP'])]
     #[Assert\NotBlank(message:"Une date est requise.")]
     #[Assert\GreaterThanOrEqual("now", message:"Impossible de planifier un Rendez-Vous dans le passé.")]
     #[Groups("rendezvous")]
     private ?\DateTimeInterface $daterv = null;
 
-    #[ORM\ManyToMany(targetEntity: Utilisateur::class, inversedBy: "Rendezvous")]
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: "Rendezvous")]
     #[Assert\Count(min:2, minMessage:"Il doit y avoir au moins deux personne pour planifier un rendez-vous.")]
     #[Groups("rendezvous")]
-    private Collection $Utilisateur;
+    private Collection $User;
 
     #[ORM\ManyToOne(inversedBy: 'Rendezvous')]
-    #[ORM\JoinColumn(name: "Salle", referencedColumnName: "id", nullable: true, onDelete: "SET NULL")]
+    #[ORM\JoinColumn(name: "Salle", referencedColumnName: "id", nullable: false, onDelete: "CASCADE")]
     #[Assert\NotBlank(message:"Un rendez-vous doit se passer dans une salle.")]
     #[Groups("rendezvous")]
     private ?Salle $Salle = null;
@@ -52,7 +54,7 @@ class Rendezvous
 
     public function __construct()
     {
-        $this->Utilisateur = new ArrayCollection();
+        $this->User = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -72,27 +74,26 @@ class Rendezvous
         return $this;
     }
 
-
     /**
-     * @return Collection<int, Utilisateur>
+     * @return Collection<int, User>
      */
-    public function getUtilisateur(): Collection
+    public function getUser(): Collection
     {
-        return $this->Utilisateur;
+        return $this->User;
     }
 
-    public function addUtilisateur(Utilisateur $utilisateur): self
+    public function addUser(User $User): self
     {
-        if (!$this->Utilisateur->contains($utilisateur)) {
-            $this->Utilisateur->add($utilisateur);
+        if (!$this->User->contains($User)) {
+            $this->User->add($User);
         }
 
         return $this;
     }
 
-    public function removeUtilisateur(Utilisateur $utilisateur): self
+    public function removeUser(User $User): self
     {
-        $this->Utilisateur->removeElement($utilisateur);
+        $this->User->removeElement($User);
 
         return $this;
     }
@@ -169,5 +170,4 @@ class Rendezvous
 
         return $duree_string;
     }
-
 }

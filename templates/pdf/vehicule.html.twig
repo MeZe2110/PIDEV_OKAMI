@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Plannification</title>
+    <style>
+        h1 {
+            text-align: center;
+            margin-top: 50px;
+            margin-bottom: 50px;
+            color: rgb(26, 150, 126);
+        }
+
+        table {
+            background-color: white;
+            border: 2px solid rgb(26, 150, 126);
+            border-collapse: collapse;
+            width: 70%;
+            margin: 0 auto;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid rgb(26, 150, 126);
+        }
+    </style>
+</head>
+<body>
+<h1>Plannification {{ plannification.id }}</h1>
+<table class="table table-striped">
+    <tbody>
+    <tr>
+        <th>Id</th>
+        <td>{{ plannification.id }}</td>
+    </tr>
+    <tr>
+        <th>Date Plannification</th>
+        <td>{{ plannification.datepl ? plannification.datepl|date('Y-m-d') : '' }}</td>
+    </tr>
+    <tr>
+        <th>Heure Debut</th>
+        <td>{{ plannification.heuredebutpl ? plannification.heuredebutpl|date('H:i:s') : '' }}</td>
+    </tr>
+    <tr>
+        <th>Heure Fin</th>
+        <td>{{ plannification.heurefinpl ? plannification.heurefinpl|date('H:i:s') : '' }}</td>
+    </tr>
+    <tr>
+        <th>Salle</th>
+        <td>{{ plannification.salle }}</td>
+    </tr>
+    <tr>
+        <th>Etage</th>
+        <td>{{ plannification.salle.etagesa }}</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

@@ -1,0 +1,191 @@
+{% extends 'Template_Front/base.html.twig' %}
+
+{% block title %} Véhicule {% endblock %}
+
+{% block content %}
+
+   
+	<div class="album py-5 bg-light">
+        <div class="container">
+       
+            <h4>Search Bar</h4>
+
+            <div class="sidebar-search">
+                <div class="input-group custom-search-form">
+                    <input type="text" id="search" class="form-control" placeholder="Search here">
+                </div>
+            </div>
+
+            <ul class="nav" id="side-menu">
+                <li>
+                    <a href="#"> Entities<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level" id="entitiesNav">
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var searchRequest = null;
+            $("#search").keyup(function() {
+                var minlength = 1;
+                var that = this;
+                var value = $(this).val();
+                var entitySelector = $("#entitiesNav");
+                entitySelector.empty();
+                if (value.length >= minlength ) {
+                    if (searchRequest != null) {
+                        searchRequest.abort();
+                    }
+                    searchRequest = $.ajax({
+                        type: "GET",
+                        url: "{{ path('search') }}",
+                        data: {
+                            'q' : value
+                        },
+                        dataType: "json",
+                        success: function(result){
+                            if (value===$(that).val()) {
+                                if (result.error) {
+                                    entitySelector.append('<li class="errorLi">'+result.error+'</li>');
+                                } else {
+                                    $.each(result, function(index, value) {
+                                        entitySelector.append('<li><b>' + value.name + '</b>  <br>' + value.etat +'</br><a href="/vehicules/front/'+value.id+' ">voir ici</a></li><img src="/assert2/img/'+value.image+'" style="width: 100px; height: 100px"/>'+'</a></li>');
+
+                                    });
+                                }
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+ 
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="page-header">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                </ol>
+            </nav>
+        </div>
+    <div class="row ">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <div style="display: flex">
+                        <div class="col-md-5">
+                        </div>
+                        <form method="post" class="forms-sample" style="margin-left: -600px" >
+                            <div class="form-group col-md-4" style="margin-right: 500px;">
+
+                                <div class="form-check">
+                                    <label class="form-check-label" style="width: 92px;margin-left: -2px;margin-right: 10px;">
+                                        <input type="checkbox" class="form-check-input" name="optionsRadios" id="optionsRadios[]" value="nomvh">tri par nom</label>
+                                </div>
+                              <div class="form-check">
+                                    <label class="form-check-label" style="width: 92px;margin-left: -2px;margin-right: 10px;">
+                                        <input type="checkbox" class="form-check-input" name="optionsRadios" id="optionsRadios[]" value="dispovh">disponible</label>
+                                </div>
+                                 <div class="form-check">
+                                    <label class="form-check-label" style="width: 92px;margin-left: -2px;margin-right: 10px;">
+                                        <input type="checkbox" class="form-check-input" name="optionsRadios" id="optionsRadios[]" value="descvh">Categorie A</label>
+                                </div>
+                              <div class="form-check">
+                                    <label class="form-check-label" style="width: 92px;margin-left: -2px;margin-right: 10px;">
+                                        <input type="checkbox" class="form-check-input" name="optionsRadios" id="optionsRadios[]" value="descvh1">Categorie B</label>
+                                </div>
+                              <div class="form-check">
+                                    <label class="form-check-label" style="width: 92px;margin-left: -2px;margin-right: 10px;">
+                                        <input type="checkbox" class="form-check-input" name="optionsRadios" id="optionsRadios[]" value="descvh2">Categorie C</label>
+                                </div>
+                            
+                            
+       
+    </select>
+                               
+                                <button type="Submit" class="btn btn-success btn-fw" style="margin: auto; ">Sort</button>
+                                                           
+                            </div>
+                        </form>
+
+                    </div>
+
+                
+<BR>
+ <div class="container-fluid">
+    <div class="row">
+       
+      {% for vehicule in vehicules %}
+
+      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <div class="row">
+            <!--1 card-->
+                    <div class="container block rounded-lg rounded-sm ">
+                             <!--1st row-->
+ 
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12">  
+                                <a ><img class="img-fluid" src="{{asset('assert2/img/' ~ vehicule.imagesvh) }}" alt="image_article" width="200" height="100"></a>
+                                <h4><a> {{vehicule.nomvh }} </a></h4>
+                                 <a  > {{vehicule.etatvh }}</a><br>
+                                   <a  > {{vehicule.catv }}</a>
+                                 <a href="{{ path('hrouz',{'id': vehicule.id}) }}"><button type="button" class="btn btn-sm btn-outline-primary">View</button></a>
+                            </div>
+                        </div>
+                        <!--2nd row-->
+                        <div class="row" >
+                            <div class="col-lg-12 col-md-12 col-sm-12 block2">
+                            <p class="listing-tagline">{{ vehicule.descvh  }}</p>
+                            </div>
+                        </div>
+                    </div>
+                <!--2nd card-->
+                 
+ 
+            </div>
+        </div>
+        {% endfor %}
+        
+
+    </div>
+</div>
+ <style>
+    .pagination-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+        font-size: 1.2rem;
+    }
+    
+
+    .pagination-ellipsis {
+        margin: 0 5px;
+        font-size: 1.5rem;
+    }
+    
+    @media screen and (max-width: 768px) {
+        .pagination-link {
+            padding: 5px;
+            font-size: 1rem;
+        }
+        
+        .pagination-ellipsis {
+            font-size: 1.2rem;
+        }
+    }
+</style>
+
+<div class="pagination-container pagination-link pagination-ellipsis">
+    {{ knp_pagination_render(vehicules) }}
+</div>
+
+
+  <!-- end about section -->
+{% endblock %}

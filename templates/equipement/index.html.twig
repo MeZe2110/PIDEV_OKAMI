@@ -50,7 +50,7 @@
             $('#search').keyup(function() {
                 var value = $(this).val();
                 $.ajax({
-                    url: "{{ path('search') }}",
+                    url: "{{ path('searche') }}",
                     type: "POST",
                     data: {value: value},
                     success: function(data) {
