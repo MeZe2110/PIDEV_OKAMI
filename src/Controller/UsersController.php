@@ -3,19 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\UserType;
 use App\Repository\UserRepository;
-use App\Form\RechercheTypeMail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 #[Route('/users')]
 class UsersController extends AbstractController
@@ -33,7 +27,7 @@ class UsersController extends AbstractController
     public function alluser(UserRepository $userRepository , SerializerInterface $serializer)
     {
         $user = $userRepository->findAll();
-        $json = $serializer->serialize($user, 'json', ['groups' => "user"]);
+        $json = $serializer->serialize($user, 'json', ['groups' => "User"]);
         return new Response($json);
     }
 
@@ -41,7 +35,7 @@ class UsersController extends AbstractController
     public function userbyid($id, NormalizerInterface $normalizer,UserRepository $userRepository)
     {
         $user = $userRepository->find($id);
-        $userNormalises = $normalizer->normalize($user, 'json', ['groups' => "user"]);
+        $userNormalises = $normalizer->normalize($user, 'json', ['groups' => "User"]);
         return new Response(json_encode($userNormalises));
     }
 
@@ -56,7 +50,7 @@ class UsersController extends AbstractController
         
         
         $userRepository->save($user, true);
-        $jsonContent = $Normalizer->normalize($user, 'json', ['groups' => 'user']);
+        $jsonContent = $Normalizer->normalize($user, 'json', ['groups' => 'User']);
         return new Response("Demande Carte updated successfully " . json_encode($jsonContent));
     }
 
@@ -71,7 +65,7 @@ class UsersController extends AbstractController
         
         
         $userRepository->flush();
-        $jsonContent = $Normalizer->normalize($user, 'json', ['groups' => 'user']);
+        $jsonContent = $Normalizer->normalize($user, 'json', ['groups' => 'User']);
         return new Response("Demande Carte updated successfully " . json_encode($jsonContent));
     }
 
@@ -88,7 +82,7 @@ class UsersController extends AbstractController
        
         $userRepository->persist($user);
         $userRepository->flush();
-        $jsonContent = $Normalizer->normalize($user, 'json', ['groups' => 'user']);
+        $jsonContent = $Normalizer->normalize($user, 'json', ['groups' => 'User']);
         return new Response(json_encode($jsonContent));
 
 
@@ -109,7 +103,7 @@ class UsersController extends AbstractController
         $user = $userRepository->find($id);
         $userRepository->remove($user);
         $userRepository->flush();
-        $jsonContent = $Normalizer->normalize($user, 'json', ['groups' => 'user']);
+        $jsonContent = $Normalizer->normalize($user, 'json', ['groups' => 'User']);
         return new Response("Demande Carte deleted successfully " . json_encode($jsonContent));
     }
 
